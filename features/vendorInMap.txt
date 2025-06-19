@@ -1,0 +1,138 @@
+## 🎯 Kodlama Görevi: İnteraktif Türkiye Haritası ile Şube Bulucu Geliştirme
+
+### 📋 Görev Tanımı
+`src/components/UI/BranchFinder.tsx` dosyasındaki mevcut şube bulucu komponentini, ekli fotoğraftaki gibi interaktif Türkiye haritası ile revize et.
+
+### 🔧 Teknik Gereksinimler
+
+#### **1. SVG Harita Entegrasyonu**
+- `public/upload/files/tr.svg` dosyasını React bileşenine entegre et
+- SVG'yi inline olarak kullan veya import et
+- Viewport ve responsive tasarım için uygun boyutlandırma yap
+
+#### **2. Mevcut Şehir Verisi**
+```typescript
+const cities = [
+  { value: 'istanbul', name: 'İstanbul' },
+  { value: 'ankara', name: 'Ankara' },
+  { value: 'izmir', name: 'İzmir' },
+  { value: 'bursa', name: 'Bursa' },
+  { value: 'antalya', name: 'Antalya' },
+  { value: 'adana', name: 'Adana' },
+  { value: 'adiyaman', name: 'Adıyaman' },
+  { value: 'afyonkarahisar', name: 'Afyonkarahisar' },
+  { value: 'aydin', name: 'Aydın' },
+  { value: 'balikesir', name: 'Balıkesir' },
+  { value: 'corum', name: 'Çorum' },
+  { value: 'denizli', name: 'Denizli' },
+  { value: 'isparta', name: 'Isparta' },
+  { value: 'kahramanmaras', name: 'Kahramanmaraş' },
+  { value: 'kocaeli', name: 'Kocaeli' },
+  { value: 'konya', name: 'Konya' },
+  { value: 'malatya', name: 'Malatya' },
+  { value: 'mersin', name: 'Mersin' },
+  { value: 'sanliurfa', name: 'Şanlıurfa' },
+  { value: 'sivas', name: 'Sivas' }
+];
+```
+
+#### **3. SVG İnteraktivite Gereksinimleri**
+
+**A. Şehir Path Elemanları:**
+- Her şehir path'ine `id` ekle (SVG'deki label_points circle class'larından eşleştir)
+- **onMouseEnter**: Hover efekti (renk değişimi)
+- **onMouseLeave**: Normal renge dön
+- **onClick**: Şehir bilgilerini göster (modal/popover/yan panel)
+
+**B. Renk Mantığı:**
+- **Şube var**: `#059669` (yeşil) - koyu dolgu
+- **Şube yok**: `#d1d5db` (gri) - açık dolgu
+- **Hover**: `#065f46` (koyu yeşil) - hover efekti
+
+#### **4. State Yönetimi**
+```typescript
+const [selectedCity, setSelectedCity] = useState('');
+const [hoveredCity, setHoveredCity] = useState('');
+const [showCityInfo, setShowCityInfo] = useState(false);
+const [selectedCityData, setSelectedCityData] = useState(null);
+```
+
+#### **5. Layout Yapısı (Mevcut Korunacak)**
+```jsx
+<div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+  {/* Sol Taraf - Şehir Seçici (md:col-span-4) */}
+  <div className="md:col-span-4">
+    {/* Mevcut form yapısı korunacak */}
+  </div>
+
+  {/* Sağ Taraf - İnteraktif Harita (md:col-span-8) */}
+  <div className="md:col-span-8">
+    {/* SVG Haritası */}
+  </div>
+</div>
+```
+
+#### **6. Fonksiyonel Gereksinimler**
+
+**A. Dropdown İle Senkronizasyon:**
+- Dropdown'dan şehir seçilince haritada highlight yap
+- Haritadan şehir tıklanınca dropdown'u güncelle
+
+**B. Şehir Bilgi Gösterimi:**
+- Şehir tıklanınca modal/popover/yan panel aç
+- Şube varsa: şube sayısı, adres bilgileri
+- Şube yoksa: "Bu şehirde henüz şubemiz bulunmamaktadır" mesajı
+
+**C. Responsive Tasarım:**
+- Mobile'da harita küçük ama kullanılabilir
+- Touch olayları destekle
+
+#### **7. Stil Gereksinimleri**
+
+**SVG Stilleri:**
+```css
+.city-path {
+  stroke: #ffffff;
+  stroke-width: 0.5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.city-has-branch {
+  fill: #059669;
+}
+
+.city-no-branch {
+  fill: #d1d5db;
+}
+
+.city-path:hover {
+  fill: #065f46;
+  stroke-width: 1;
+}
+```
+
+#### **8. Kod Standardları**
+- TypeScript strict mode uyumlu
+- Tailwind CSS kullan
+- ESLint kurallarına uygun
+- Accessibility (aria-label, role vb.) ekle
+- Error boundary handle et
+
+#### **9. Test Edilmesi Gerekenler**
+- Dropdown ve harita senkronizasyonu
+- Hover efektleri
+- Click olayları
+- Responsive davranış
+- Keyboard navigation (erişilebilirlik)
+
+### ⚠️ Önemli Notlar
+1. **Mevcut functionality'yi bozma** - dropdown ve "Ara" butonu çalışmaya devam etmeli
+2. **SVG path eşleştirmesi** - label_points'teki city class'larını kullan
+3. **Performance** - Büyük SVG için optimize et
+4. **Browser uyumluluğu** - Modern browser desteği öncelik
+
+### 🎨 Görsel Referans
+- Sol tarafta yeşil tonlarında mevcut form yapısı
+- Sağ tarafta yeşil tonlarında interaktif Türkiye haritası
+- Şube olan şehirler koyu yeşil, olmayanlar gri
