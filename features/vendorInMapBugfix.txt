@@ -1,425 +1,165 @@
-## 🔍 Tespit Edilen Hatalar
+## 🎯 İnteraktif Türkiye Haritası - Düzeltme Gereksinimleri
 
-### 1. **SVG Path Verilerinin Yanlış/Eksik Olması**
-Agent, `getTurkeyMapPath()` fonksiyonunda manuel olarak path verilerini yazarken büyük bir hata yapmış:
-- Path verileri eksik ve kırık (çoğu `[...]` ile kısaltılmış)
-- Gerçek `tr.svg` dosyasındaki path'lar kullanılmamış
-- Bu yüzden harita parçacık halinde görünüyor
+### 📋 Mevcut Durum Analizi
+Şu anda BranchFinder komponenti şu durumda:
+- ✅ Harita görsel olarak düzgün görünüyor (Image komponenti ile)
+- ✅ Şubeli şehirler için clickable point'ler eklendi
+- ❌ Point'ler şehirlerin yanlış pozisyonlarında
+- ❌ Sadece point'ler tıklanabilir, şehir sınırları değil
+- ❌ Şehir sınırlarında renk farklılaştırması yok
 
-### 2. **SVG Dosyasının Doğru Import Edilmemesi**
-Agent, `public/upload/files/tr.svg` dosyasını doğru şekilde kullanmamış.
+### 🛠️ Gerekli Düzeltmeler
 
-### 3. **ViewBox ve Koordinat Sistemi Hataları**
-SVG viewBox değerleri yanlış ayarlanmış olabilir.
+#### **1. Ana Yaklaşım Değişikliği**
+- Image komponenti yerine **tamamen SVG tabanlı çözüm** kullan
+- Orijinal `tr.svg` dosyasındaki **gerçek path verilerini** kullan
+- Her şehir path'ine **doğrudan interaktivite** ekle
 
-## 🛠️ Çözüm Önerileri
-
-### **Çözüm 1: Gerçek SVG Dosyasını Kullan**
-
-Önce gerçek SVG dosyasının içeriğini görelim:Mükemmel! Şimdi hem orijinal SVG dosyasını hem de agent'ın oluşturduğu kodları gördüm. **Agent'ın yaptığı temel hatalar**:
-
-## 🔍 Tespit Edilen Hatalar
-
-### 1. **SVG Path Verilerini Yanlış Kullanma**
-- Agent kendi path verilerini oluşturmaya çalışmış ama **orijinal SVG'deki gerçek path verilerini kullanmamış**
-- `getTurkeyMapPath()` fonksiyonundaki path'ler eksik ve yanlış
-
-### 2. **SVG ID Eşleştirme Hatası**
-- Orijinal SVG'de şehirler `TR75`, `TR08` vs. ID'leriyle tanımlı
-- Agent kodda doğru ID'leri kullanmış ama **path verileri bu ID'lerle eşleşmiyor**
-
-### 3. **SVG Yapısını Anlamamış**
-- Orijinal SVG'de `<g id="features">` altında tüm path'ler var
-- Agent sadece birkaç şehir eklemiş, **tüm 81 şehri eklememiş**
-
-## 🛠️ Çözüm - Düzeltilmiş Kod
-
-İşte düzeltilmiş `BranchFinder.tsx` dosyası:
-
-```typescript name=src/components/UI/BranchFinder.tsx
-'use client';
-
-import { useState } from 'react';
-import Link from 'next/link';
-
-export default function BranchFinder() {
-  const [selectedCity, setSelectedCity] = useState('');
-  const [hoveredCity, setHoveredCity] = useState('');
-  const [showCityInfo, setShowCityInfo] = useState(false);
-  const [selectedCityData, setSelectedCityData] = useState<{
-    name: string;
-    hasBranch: boolean;
-    branchCount: number;
-    svgId?: string;
-    value?: string;
-  } | null>(null);
-
-  // Şehir verileri - SVG ID'leri ile eşleştirilmiş
-  const cities = [
-    { value: 'istanbul', name: 'İstanbul', svgId: 'TR34', hasBranch: true, branchCount: 8 },
-    { value: 'ankara', name: 'Ankara', svgId: 'TR06', hasBranch: true, branchCount: 3 },
-    { value: 'izmir', name: 'İzmir', svgId: 'TR35', hasBranch: true, branchCount: 2 },
-    { value: 'bursa', name: 'Bursa', svgId: 'TR16', hasBranch: true, branchCount: 2 },
-    { value: 'antalya', name: 'Antalya', svgId: 'TR07', hasBranch: true, branchCount: 1 },
-    { value: 'adana', name: 'Adana', svgId: 'TR01', hasBranch: true, branchCount: 1 },
-    { value: 'adiyaman', name: 'Adıyaman', svgId: 'TR02', hasBranch: true, branchCount: 1 },
-    { value: 'afyonkarahisar', name: 'Afyonkarahisar', svgId: 'TR03', hasBranch: true, branchCount: 1 },
-    { value: 'aydin', name: 'Aydın', svgId: 'TR09', hasBranch: true, branchCount: 1 },
-    { value: 'balikesir', name: 'Balıkesir', svgId: 'TR10', hasBranch: true, branchCount: 1 },
-    { value: 'corum', name: 'Çorum', svgId: 'TR19', hasBranch: true, branchCount: 1 },
-    { value: 'denizli', name: 'Denizli', svgId: 'TR20', hasBranch: true, branchCount: 1 },
-    { value: 'isparta', name: 'Isparta', svgId: 'TR32', hasBranch: true, branchCount: 1 },
-    { value: 'kahramanmaras', name: 'Kahramanmaraş', svgId: 'TR46', hasBranch: true, branchCount: 1 },
-    { value: 'kocaeli', name: 'Kocaeli', svgId: 'TR41', hasBranch: true, branchCount: 1 },
-    { value: 'konya', name: 'Konya', svgId: 'TR42', hasBranch: true, branchCount: 1 },
-    { value: 'malatya', name: 'Malatya', svgId: 'TR44', hasBranch: true, branchCount: 1 },
-    { value: 'mersin', name: 'Mersin', svgId: 'TR33', hasBranch: true, branchCount: 1 },
-    { value: 'sanliurfa', name: 'Şanlıurfa', svgId: 'TR63', hasBranch: true, branchCount: 1 },
-    { value: 'sivas', name: 'Sivas', svgId: 'TR58', hasBranch: true, branchCount: 1 }
-  ];
-
-  // Tüm Türkiye şehirleri (SVG'de olan tüm şehirler) - label_points'ten alınan veriler
-  const allTurkishCities = [
-    { svgId: 'TR01', name: 'Adana' },
-    { svgId: 'TR02', name: 'Adıyaman' },
-    { svgId: 'TR03', name: 'Afyonkarahisar' },
-    { svgId: 'TR04', name: 'Ağrı' },
-    { svgId: 'TR05', name: 'Amasya' },
-    { svgId: 'TR06', name: 'Ankara' },
-    { svgId: 'TR07', name: 'Antalya' },
-    { svgId: 'TR08', name: 'Artvin' },
-    { svgId: 'TR09', name: 'Aydın' },
-    { svgId: 'TR10', name: 'Balıkesir' },
-    { svgId: 'TR11', name: 'Bilecik' },
-    { svgId: 'TR12', name: 'Bingöl' },
-    { svgId: 'TR13', name: 'Bitlis' },
-    { svgId: 'TR14', name: 'Bolu' },
-    { svgId: 'TR15', name: 'Burdur' },
-    { svgId: 'TR16', name: 'Bursa' },
-    { svgId: 'TR17', name: 'Çanakkale' },
-    { svgId: 'TR18', name: 'Çankırı' },
-    { svgId: 'TR19', name: 'Çorum' },
-    { svgId: 'TR20', name: 'Denizli' },
-    { svgId: 'TR21', name: 'Diyarbakır' },
-    { svgId: 'TR22', name: 'Edirne' },
-    { svgId: 'TR23', name: 'Elazığ' },
-    { svgId: 'TR24', name: 'Erzincan' },
-    { svgId: 'TR25', name: 'Erzurum' },
-    { svgId: 'TR26', name: 'Eskişehir' },
-    { svgId: 'TR27', name: 'Gaziantep' },
-    { svgId: 'TR28', name: 'Giresun' },
-    { svgId: 'TR29', name: 'Gümüşhane' },
-    { svgId: 'TR30', name: 'Hakkari' },
-    { svgId: 'TR31', name: 'Hatay' },
-    { svgId: 'TR32', name: 'Isparta' },
-    { svgId: 'TR33', name: 'Mersin' },
-    { svgId: 'TR34', name: 'İstanbul' },
-    { svgId: 'TR35', name: 'İzmir' },
-    { svgId: 'TR36', name: 'Kars' },
-    { svgId: 'TR37', name: 'Kastamonu' },
-    { svgId: 'TR38', name: 'Kayseri' },
-    { svgId: 'TR39', name: 'Kırklareli' },
-    { svgId: 'TR40', name: 'Kırşehir' },
-    { svgId: 'TR41', name: 'Kocaeli' },
-    { svgId: 'TR42', name: 'Konya' },
-    { svgId: 'TR43', name: 'Kütahya' },
-    { svgId: 'TR44', name: 'Malatya' },
-    { svgId: 'TR45', name: 'Manisa' },
-    { svgId: 'TR46', name: 'Kahramanmaraş' },
-    { svgId: 'TR47', name: 'Mardin' },
-    { svgId: 'TR48', name: 'Muğla' },
-    { svgId: 'TR49', name: 'Muş' },
-    { svgId: 'TR50', name: 'Nevşehir' },
-    { svgId: 'TR51', name: 'Niğde' },
-    { svgId: 'TR52', name: 'Ordu' },
-    { svgId: 'TR53', name: 'Rize' },
-    { svgId: 'TR54', name: 'Sakarya' },
-    { svgId: 'TR55', name: 'Samsun' },
-    { svgId: 'TR56', name: 'Siirt' },
-    { svgId: 'TR57', name: 'Sinop' },
-    { svgId: 'TR58', name: 'Sivas' },
-    { svgId: 'TR59', name: 'Tekirdağ' },
-    { svgId: 'TR60', name: 'Tokat' },
-    { svgId: 'TR61', name: 'Trabzon' },
-    { svgId: 'TR62', name: 'Tunceli' },
-    { svgId: 'TR63', name: 'Şanlıurfa' },
-    { svgId: 'TR64', name: 'Uşak' },
-    { svgId: 'TR65', name: 'Van' },
-    { svgId: 'TR66', name: 'Yozgat' },
-    { svgId: 'TR67', name: 'Zonguldak' },
-    { svgId: 'TR68', name: 'Aksaray' },
-    { svgId: 'TR69', name: 'Bayburt' },
-    { svgId: 'TR70', name: 'Karaman' },
-    { svgId: 'TR71', name: 'Kırıkkale' },
-    { svgId: 'TR72', name: 'Batman' },
-    { svgId: 'TR73', name: 'Şırnak' },
-    { svgId: 'TR74', name: 'Bartın' },
-    { svgId: 'TR75', name: 'Ardahan' },
-    { svgId: 'TR76', name: 'Iğdır' },
-    { svgId: 'TR77', name: 'Yalova' },
-    { svgId: 'TR78', name: 'Karabük' },
-    { svgId: 'TR79', name: 'Kilis' },
-    { svgId: 'TR80', name: 'Osmaniye' },
-    { svgId: 'TR81', name: 'Düzce' }
-  ];
-
-  // Yardımcı fonksiyonlar
-  const getCityById = (id: string) => cities.find(city => city.value === id);
-  const getCityBySvgId = (svgId: string) => cities.find(city => city.svgId === svgId);
-  const getCityHasBranch = (svgId: string) => {
-    const city = getCityBySvgId(svgId);
-    return city?.hasBranch || false;
-  };
-
-  // Şehir seçim işlemleri
-  const handleCitySelect = (cityValue: string) => {
-    setSelectedCity(cityValue);
-    const cityData = getCityById(cityValue);
-    if (cityData) {
-      setSelectedCityData(cityData);
-      setShowCityInfo(true);
-    }
-  };
-
-  const handleSvgCityClick = (svgId: string) => {
-    const cityData = getCityBySvgId(svgId);
-    if (cityData) {
-      handleCitySelect(cityData.value);
-    } else {
-      // Şube olmayan şehir için genel bilgi göster
-      const allCityData = allTurkishCities.find(city => city.svgId === svgId);
-      if (allCityData) {
-        setSelectedCityData({
-          name: allCityData.name,
-          hasBranch: false,
-          branchCount: 0,
-          svgId: svgId
-        });
-        setShowCityInfo(true);
-      }
-    }
-  };
-
-  const handleMouseEnter = (svgId: string) => {
-    setHoveredCity(svgId);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredCity('');
-  };
-
-  const handleSearch = () => {
-    if (selectedCity) {
-      window.location.href = `/subeler#${selectedCity}`;
-    }
-  };
-
-  // SVG path stil belirleme
-  const getPathStyle = (svgId: string) => {
-    const baseStyle = {
-      stroke: '#ffffff',
-      strokeWidth: hoveredCity === svgId ? 1 : 0.5,
-      cursor: 'pointer',
-      transition: 'all 0.3s ease'
-    };
-
-    if (hoveredCity === svgId) {
-      return { ...baseStyle, fill: '#065f46' }; // Hover
-    } else if (getCityHasBranch(svgId)) {
-      return { ...baseStyle, fill: '#059669' }; // Şube var
-    } else {
-      return { ...baseStyle, fill: '#d1d5db' }; // Şube yok
-    }
-  };
-
-  const closeModal = () => {
-    setShowCityInfo(false);
-    setSelectedCityData(null);
-  };
-
-  return (
-    <>
-      <div className="section section-two-columns bg-gray-50 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {/* Sol Taraf - Şehir Seçici */}
-            <div className="md:col-span-4 home-dealer">
-              <h2 className="text-3xl font-bold text-orange-600 mb-4">
-                EN YAKIN
-              </h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
-                Şehrini seç, en yakın Pide By Pide&apos;ye ulaş lezzetin tadını çıkar.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="form-group">
-                  <div className="select-wrapper">
-                    <select
-                      name="il"
-                      id="il"
-                      value={selectedCity}
-                      onChange={(e) => handleCitySelect(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-800"
-                    >
-                      <option value="">Şehir Seçiniz</option>
-                      {cities.map((city) => (
-                        <option key={city.value} value={city.value}>
-                          {city.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                
-                <button
-                  type="button"
-                  onClick={handleSearch}
-                  disabled={!selectedCity}
-                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                  Ara
-                </button>
-              </div>
-            </div>
-
-            {/* Sağ Taraf - İnteraktif Türkiye Haritası */}
-            <div className="md:col-span-8 home-map">
-              <div className="svg-turkiye-haritasi bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
-                  Türkiye Genelinde Hizmet Veriyoruz
-                </h3>
-                
-                {/* Orijinal SVG'yi doğrudan kullan */}
-                <div className="relative">
-                  <svg 
-                    baseProfile="tiny" 
-                    fill="#6f9c76" 
-                    height="422" 
-                    stroke="#ffffff" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth=".5" 
-                    version="1.2" 
-                    viewBox="0 0 1000 422" 
-                    width="1000" 
-                    className="w-full h-auto max-h-[400px]"
-                    style={{ backgroundColor: '#f8fafc' }}
-                  >
-                    <g id="features">
-                      {/* Tüm path'leri orijinal SVG'den kopyala ve interaktif hale getir */}
-                      <path 
-                        d="M889.7 82.2l-3.1 1.1-4.8 2.7-7.7 3.3-7.8 3.3-5.7 3-1.1 4.8-0.7 7.5-0.9 4.5-5.7 0.6-5.5 1.1-1.4-2.6-1.9-1.9-1.4-2.1-1-2.4-1.3-1.7-1.8-1.2-2.4-3.7-1-4.9 3-5.9 4.1-4.6 4-2 1.2-4.2-1.3-4.4-0.9-2.3-0.4-0.7-0.5-1.5-0.3-2.7-0.7-3.6 47-22 10.9-1.8 8.9-3.1 1.9-2.1 1.6-0.6 3.1-2.1 3.2-1.3 1.5 0.3 0.6 0.5 1.6 0.7 1 0 1.5 1.1 1.1 2.3 1.4 1.9 4.3 2 3 0.7 0.3 0.9 0.3 0.9 4.4 0.7 4.7-0.6 3.5 1.1 3.7 0.5 8.5-2 1.8 0.5 0.8 0.6z"
-                        style={getPathStyle('TR75')}
-                        onMouseEnter={() => handleMouseEnter('TR75')}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => handleSvgCityClick('TR75')}
-                        role="button"
-                        aria-label="Ardahan"
-                      />
-                      {/* Buraya tüm 81 şehrin path'lerini ekleyeceksiniz - orijinal SVG'deki tüm path elementlerini kopyalayıp interaktif hale getirin */}
-                      
-                      {/* Örnek için birkaç daha ekleyeyim: */}
-                      <path 
-                        d="M842.7 61.7l0.7 3.6 0.3 2.7 0.5 1.5 0.4 0.7 0.9 2.3 1.3 4.4-1.2 4.2-4 2-4.1 4.6-3 5.9-2.8 0.3-2.8 0.6-3.3-0.3-3.2 0.3-1.6 0.8-1.5 1.3-0.6 2.5 0.3 2.7-1.2 2.5-1.9 1.9-0.9 2.5-0.1 2.8-2.2 3.3-4.5 1.3-3.7 0.4-7.9-1.9-0.9-1.9-0.5-1.3-0.5-1.2-0.7-0.9-1.4-0.5-1.8-1.6-2.2-0.7-2.2-2.1-1.8-2.1-4.3-2.9-6.1-0.6-0.7-0.6-1.1-1.4 1.5-1.9 3.3-0.4 2.7-1.3 1.7-2.4 2.5-3.5-1 5.4 5.2 0.2 5-1.3 2.1-4.6 2.7-0.8 4.5-4.3-0.4-4.5 3-2.2-1.7-4.7-1.3-2.8-0.5-3.8 0.3-0.9 0.6-1.4 1.1-4.8 0.7-3.5 2.9-0.8 2.1-0.3 1.7 0.1 2.1-4.6 2.7-0.8 4.5-4.3-0.4-4.5 3-2.2-1.7-4.7-1.3-2.8-0.5-3.8 15.2-5.1 9.7-5.4 8.6-7.1 9.7-6z"
-                        style={getPathStyle('TR08')}
-                        onMouseEnter={() => handleMouseEnter('TR08')}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => handleSvgCityClick('TR08')}
-                        role="button"
-                        aria-label="Artvin"
-                      />
-                      {/* Burada tüm diğer path'leri ekleyeceksiniz... */}
-                    </g>
-                  </svg>
-                </div>
-                
-                {/* İstatistikler */}
-                <div className="grid grid-cols-3 gap-4 mt-6">
-                  <div className="text-center bg-white rounded-lg p-4 shadow">
-                    <div className="text-2xl font-bold text-orange-600">20</div>
-                    <div className="text-sm text-gray-600">Şehir</div>
-                  </div>
-                  <div className="text-center bg-white rounded-lg p-4 shadow">
-                    <div className="text-2xl font-bold text-orange-600">25+</div>
-                    <div className="text-sm text-gray-600">Şube</div>
-                  </div>
-                  <div className="text-center bg-white rounded-lg p-4 shadow">
-                    <div className="text-2xl font-bold text-orange-600">7</div>
-                    <div className="text-sm text-gray-600">Bölge</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Şehir Bilgi Modal */}
-      {showCityInfo && selectedCityData && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 relative">
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              aria-label="Kapat"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                {selectedCityData.name}
-              </h3>
-
-              {selectedCityData.hasBranch ? (
-                <div>
-                  <div className="text-green-600 text-4xl mb-2">✓</div>
-                  <p className="text-lg font-semibold text-green-600 mb-2">
-                    Şubemiz Bulunuyor!
-                  </p>
-                  <p className="text-gray-600 mb-4">
-                    {selectedCityData.branchCount} şubemizle hizmet veriyoruz.
-                  </p>
-                  <Link
-                    href={`/subeler#${selectedCityData.value || selectedCityData.name.toLowerCase()}`}
-                    className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors"
-                    onClick={closeModal}
-                  >
-                    Şube Detaylarını Görüntüle
-                  </Link>
-                </div>
-              ) : (
-                <div>
-                  <div className="text-gray-400 text-4xl mb-2">ⓘ</div>
-                  <p className="text-lg font-semibold text-gray-600 mb-2">
-                    Henüz Şubemiz Yok
-                  </p>
-                  <p className="text-gray-500 mb-4">
-                    Bu şehirde henüz şubemiz bulunmamaktadır. Yakında geliyoruz!
-                  </p>
-                  <button
-                    onClick={closeModal}
-                    className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-                  >
-                    Tamam
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
+#### **2. SVG Path Entegrasyonu**
+// Orijinal tr.svg dosyasından tüm path verilerini al
+// Her path için şu format:
+<path 
+  id="TR{ilKodu}"
+  d="[gerçek path verisi]"
+  style={getPathStyle('TR{ilKodu}')}
+  onMouseEnter={() => handleMouseEnter('TR{ilKodu}')}
+  onMouseLeave={handleMouseLeave}
+  onClick={() => handleSvgCityClick('TR{ilKodu}')}
+  role="button"
+  aria-label="{şehirAdı}"
+/>
 ```
 
-## 🎯 Temel Çözüm Yaklaşımı
+#### **3. Stil Sistemi Düzeltmeleri**
+const getPathStyle = (svgId: string) => {
+  const baseStyle = {
+    stroke: '#ffffff',
+    strokeWidth: 0.5,
+    cursor: 'pointer',
+    transition: 'fill 0.3s ease, stroke-width 0.3s ease'
+  };
 
-**En iyi çözüm**: Orijinal SVG dosyasındaki **tüm path verilerini doğrudan kopyalayıp** her birine `onClick`, `onMouseEnter`, `onMouseLeave` event'lerini eklemek.
+  if (hoveredCity === svgId) {
+    return { 
+      ...baseStyle, 
+      fill: '#065f46', // Koyu yeşil hover
+      strokeWidth: 1
+    };
+  } else if (getCityHasBranch(svgId)) {
+    return { 
+      ...baseStyle, 
+      fill: '#059669' // Yeşil - şube var
+    };
+  } else {
+    return { 
+      ...baseStyle, 
+      fill: '#d1d5db' // Gri - şube yok
+    };
+  }
+};
+```
 
-Yukarıdaki kodda sadece 2 şehir örneği verdim. **Tüm 81 şehir için**, orijinal SVG'deki `<g id="features">` altındaki tüm `<path>` elementlerini kopyalayıp interaktif hale getirmeniz gerekiyor.
+#### **4. Koordinat Sistemi Kaldırma**
+- `getCityPosition()` fonksiyonunu tamamen kaldır
+- Manuel koordinat tanımlamalarını sil
+- Point overlay sistem yerine **path-based** sistem kullan
 
-Bu şekilde harita doğru görünecek ve tüm şehirler tıklanabilir olacak! 🎯
+#### **5. Render Yapısı**
+<div className="relative">
+  <svg 
+    baseProfile="tiny" 
+    height="422" 
+    stroke="#ffffff" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    strokeWidth=".5" 
+    version="1.2" 
+    viewBox="0 0 1000 422" 
+    width="1000" 
+    className="w-full h-auto max-h-[400px]"
+    style={{ backgroundColor: '#f8fafc' }}
+  >
+    <g id="features">
+      {/* Tüm 81 şehir path'ini buraya ekle */}
+      {allTurkishCities.map((city) => (
+        <path
+          key={city.svgId}
+          id={city.svgId}
+          d={getTurkeyPathData(city.svgId)} // Gerçek path verisi
+          style={getPathStyle(city.svgId)}
+          onMouseEnter={() => handleMouseEnter(city.svgId)}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => handleSvgCityClick(city.svgId)}
+          role="button"
+          aria-label={city.name}
+        />
+      ))}
+    </g>
+  </svg>
+</div>
+```
+
+#### **6. Path Verisi Fonksiyonu**
+const getTurkeyPathData = (svgId: string): string => {
+  const pathData: Record<string, string> = {
+    // Orijinal tr.svg dosyasındaki tüm path verilerini buraya kopyala
+    'TR01': 'M539.2 332.9l-1-0.4-1-0.2-0.9 0.5...', // Adana - TAM VERİ
+    'TR02': 'M726.3 311.1l0.6 7 1.4 1.5 1.5 1.3...', // Adıyaman - TAM VERİ
+    // ... Tüm 81 şehir için TAM path verileri
+  };
+  
+  return pathData[svgId] || '';
+};
+```
+
+### 🎯 Uygulama Adımları
+
+#### **Adım 1: Image Yaklaşımını Kaldır**
+- `<Image src="/upload/files/tr.svg" />` satırını sil
+- Overlay div yapısını kaldır
+- getCityPosition fonksiyonunu sil
+
+#### **Adım 2: Gerçek SVG Path'leri Ekle**
+- `public/upload/files/tr.svg` dosyasını aç
+- `<g id="features">` içindeki **TÜM** path elementlerini kopyala
+- Her path'in `d` attribute'ündeki veriyi `getTurkeyPathData` fonksiyonuna ekle
+
+#### **Adım 3: İnteraktivite Ekle**
+- Her path element'ine `onClick`, `onMouseEnter`, `onMouseLeave` ekle
+- `getPathStyle` ile renk yönetimi yap
+- Şube durumuna göre fill color'ları ayarla
+
+### ⚠️ Kritik Noktalar
+
+1. **Path Verisi Bütünlüğü**
+   - tr.svg'deki TAMAMINI kopyala
+   - Hiçbir path'i atlama
+   - d attribute'lerini tam kopyala ([...] yok)
+
+2. **ID Eşleştirmesi**
+   - tr.svg'deki id'ler ile kod'daki svgId'ler eşleşmeli
+   - TR01, TR02... formatında olmalı
+
+3. **Performans**
+   - 81 path element olacak
+   - Transition efektlerini optimize et
+   - Event handler'ları minimize et
+
+### 🔧 Örnek Tam Path Implementasyonu
+// Gerçek tr.svg'den alınan örnek
+const getTurkeyPathData = (svgId: string): string => {
+  const pathData: Record<string, string> = {
+    'TR75': 'M889.7 82.2l-3.1 1.1-4.8 2.7-7.7 3.3-7.8 3.3-5.7 3-1.1 4.8-0.7 7.5-0.9 4.5-5.7 0.6-5.5 1.1-1.4-2.6-1.9-1.9-1.4-2.1-1-2.4-1.3-1.7-1.8-1.2-2.4-3.7-1-4.9 3-5.9 4.1-4.6 4-2 1.2-4.2-1.3-4.4-0.9-2.3-0.4-0.7-0.5-1.5-0.3-2.7-0.7-3.6 47-22 10.9-1.8 8.9-3.1 1.9-2.1 1.6-0.6 3.1-2.1 3.2-1.3 1.5 0.3 0.6 0.5 1.6 0.7 1 0 1.5 1.1 1.1 2.3 1.4 1.9 4.3 2 3 0.7 0.3 0.9 0.3 0.9 4.4 0.7 4.7-0.6 3.5 1.1 3.7 0.5 8.5-2 1.8 0.5 0.8 0.6z',
+    // ... Burada TÜM 81 şehrin GERÇEK path verilerini ekle
+  };
+  
+  return pathData[svgId] || '';
+};
+```
+
+### 🎨 Beklenen Sonuç
+
+- **Şube Olan Şehirler**: Yeşil (#059669) fill, tıklanabilir, hover'da koyu yeşil (#065f46)
+- **Şube Olmayan Şehirler**: Gri (#d1d5db) fill, tıklanabilir, hover'da koyu yeşil
+- **Tüm Şehirler**: Sınırları tamamen tıklanabilir ve hover efektli
+- **Görsel Bütünlük**: Harita tam ve düzgün görünüm

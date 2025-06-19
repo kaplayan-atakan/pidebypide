@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import TurkeyMap from './TurkeyMap';
 
-export default function BranchFinder() {
-  const [selectedCity, setSelectedCity] = useState('');
+export default function BranchFinder() {  const [selectedCity, setSelectedCity] = useState('');
   const [hoveredCity, setHoveredCity] = useState('');
   const [showCityInfo, setShowCityInfo] = useState(false);
   const [selectedCityData, setSelectedCityData] = useState<{
@@ -13,8 +12,7 @@ export default function BranchFinder() {
     hasBranch: boolean;
     branchCount: number;
     svgId?: string;
-    value?: string;
-  } | null>(null);
+    value?: string;  } | null>(null);
 
   // Şehir verileri - SVG ID'leri ile eşleştirilmiş
   const cities = [
@@ -42,184 +40,74 @@ export default function BranchFinder() {
 
   // Tüm Türkiye şehirleri (SVG'de olan tüm şehirler)
   const allTurkishCities = [
-    { svgId: 'TR01', name: 'Adana' },
-    { svgId: 'TR02', name: 'Adıyaman' },
-    { svgId: 'TR03', name: 'Afyonkarahisar' },
-    { svgId: 'TR04', name: 'Ağrı' },
-    { svgId: 'TR05', name: 'Amasya' },
-    { svgId: 'TR06', name: 'Ankara' },
-    { svgId: 'TR07', name: 'Antalya' },
-    { svgId: 'TR08', name: 'Artvin' },
-    { svgId: 'TR09', name: 'Aydın' },
-    { svgId: 'TR10', name: 'Balıkesir' },
-    { svgId: 'TR11', name: 'Bilecik' },
-    { svgId: 'TR12', name: 'Bingöl' },
-    { svgId: 'TR13', name: 'Bitlis' },
-    { svgId: 'TR14', name: 'Bolu' },
-    { svgId: 'TR15', name: 'Burdur' },
-    { svgId: 'TR16', name: 'Bursa' },
-    { svgId: 'TR17', name: 'Çanakkale' },
-    { svgId: 'TR18', name: 'Çankırı' },
-    { svgId: 'TR19', name: 'Çorum' },
-    { svgId: 'TR20', name: 'Denizli' },
-    { svgId: 'TR21', name: 'Diyarbakır' },
-    { svgId: 'TR22', name: 'Edirne' },
-    { svgId: 'TR23', name: 'Elazığ' },
-    { svgId: 'TR24', name: 'Erzincan' },
-    { svgId: 'TR25', name: 'Erzurum' },
-    { svgId: 'TR26', name: 'Eskişehir' },
-    { svgId: 'TR27', name: 'Gaziantep' },
-    { svgId: 'TR28', name: 'Giresun' },
-    { svgId: 'TR29', name: 'Gümüşhane' },
-    { svgId: 'TR30', name: 'Hakkari' },
-    { svgId: 'TR31', name: 'Hatay' },
-    { svgId: 'TR32', name: 'Isparta' },
-    { svgId: 'TR33', name: 'Mersin' },
-    { svgId: 'TR34', name: 'İstanbul' },
-    { svgId: 'TR35', name: 'İzmir' },
-    { svgId: 'TR36', name: 'Kars' },
-    { svgId: 'TR37', name: 'Kastamonu' },
-    { svgId: 'TR38', name: 'Kayseri' },
-    { svgId: 'TR39', name: 'Kırklareli' },
-    { svgId: 'TR40', name: 'Kırşehir' },
-    { svgId: 'TR41', name: 'Kocaeli' },
-    { svgId: 'TR42', name: 'Konya' },
-    { svgId: 'TR43', name: 'Kütahya' },
-    { svgId: 'TR44', name: 'Malatya' },
-    { svgId: 'TR45', name: 'Manisa' },
-    { svgId: 'TR46', name: 'Kahramanmaraş' },
-    { svgId: 'TR47', name: 'Mardin' },
-    { svgId: 'TR48', name: 'Muğla' },
-    { svgId: 'TR49', name: 'Muş' },
-    { svgId: 'TR50', name: 'Nevşehir' },
-    { svgId: 'TR51', name: 'Niğde' },
-    { svgId: 'TR52', name: 'Ordu' },
-    { svgId: 'TR53', name: 'Rize' },
-    { svgId: 'TR54', name: 'Sakarya' },
-    { svgId: 'TR55', name: 'Samsun' },
-    { svgId: 'TR56', name: 'Siirt' },
-    { svgId: 'TR57', name: 'Sinop' },
-    { svgId: 'TR58', name: 'Sivas' },
-    { svgId: 'TR59', name: 'Tekirdağ' },
-    { svgId: 'TR60', name: 'Tokat' },
-    { svgId: 'TR61', name: 'Trabzon' },
-    { svgId: 'TR62', name: 'Tunceli' },
-    { svgId: 'TR63', name: 'Şanlıurfa' },
-    { svgId: 'TR64', name: 'Uşak' },
-    { svgId: 'TR65', name: 'Van' },
-    { svgId: 'TR66', name: 'Yozgat' },
-    { svgId: 'TR67', name: 'Zonguldak' },
-    { svgId: 'TR68', name: 'Aksaray' },
-    { svgId: 'TR69', name: 'Bayburt' },
-    { svgId: 'TR70', name: 'Karaman' },
-    { svgId: 'TR71', name: 'Kırıkkale' },
-    { svgId: 'TR72', name: 'Batman' },
-    { svgId: 'TR73', name: 'Şırnak' },
-    { svgId: 'TR74', name: 'Bartın' },
-    { svgId: 'TR75', name: 'Ardahan' },
-    { svgId: 'TR76', name: 'Iğdır' },
-    { svgId: 'TR77', name: 'Yalova' },
-    { svgId: 'TR78', name: 'Karabük' },
-    { svgId: 'TR79', name: 'Kilis' },
-    { svgId: 'TR80', name: 'Osmaniye' },
-    { svgId: 'TR81', name: 'Düzce' }
+    { svgId: 'TR01', name: 'Adana' }, { svgId: 'TR02', name: 'Adıyaman' }, { svgId: 'TR03', name: 'Afyonkarahisar' },
+    { svgId: 'TR04', name: 'Ağrı' }, { svgId: 'TR05', name: 'Amasya' }, { svgId: 'TR06', name: 'Ankara' },
+    { svgId: 'TR07', name: 'Antalya' }, { svgId: 'TR08', name: 'Artvin' }, { svgId: 'TR09', name: 'Aydın' },
+    { svgId: 'TR10', name: 'Balıkesir' }, { svgId: 'TR11', name: 'Bilecik' }, { svgId: 'TR12', name: 'Bingöl' },
+    { svgId: 'TR13', name: 'Bitlis' }, { svgId: 'TR14', name: 'Bolu' }, { svgId: 'TR15', name: 'Burdur' },
+    { svgId: 'TR16', name: 'Bursa' }, { svgId: 'TR17', name: 'Çanakkale' }, { svgId: 'TR18', name: 'Çankırı' },
+    { svgId: 'TR19', name: 'Çorum' }, { svgId: 'TR20', name: 'Denizli' }, { svgId: 'TR21', name: 'Diyarbakır' },
+    { svgId: 'TR22', name: 'Edirne' }, { svgId: 'TR23', name: 'Elazığ' }, { svgId: 'TR24', name: 'Erzincan' },
+    { svgId: 'TR25', name: 'Erzurum' }, { svgId: 'TR26', name: 'Eskişehir' }, { svgId: 'TR27', name: 'Gaziantep' },
+    { svgId: 'TR28', name: 'Giresun' }, { svgId: 'TR29', name: 'Gümüşhane' }, { svgId: 'TR30', name: 'Hakkari' },
+    { svgId: 'TR31', name: 'Hatay' }, { svgId: 'TR32', name: 'Isparta' }, { svgId: 'TR33', name: 'Mersin' },
+    { svgId: 'TR34', name: 'İstanbul' }, { svgId: 'TR35', name: 'İzmir' }, { svgId: 'TR36', name: 'Kars' },
+    { svgId: 'TR37', name: 'Kastamonu' }, { svgId: 'TR38', name: 'Kayseri' }, { svgId: 'TR39', name: 'Kırklareli' },
+    { svgId: 'TR40', name: 'Kırşehir' }, { svgId: 'TR41', name: 'Kocaeli' }, { svgId: 'TR42', name: 'Konya' },
+    { svgId: 'TR43', name: 'Kütahya' }, { svgId: 'TR44', name: 'Malatya' }, { svgId: 'TR45', name: 'Manisa' },
+    { svgId: 'TR46', name: 'Kahramanmaraş' }, { svgId: 'TR47', name: 'Mardin' }, { svgId: 'TR48', name: 'Muğla' },
+    { svgId: 'TR49', name: 'Muş' }, { svgId: 'TR50', name: 'Nevşehir' }, { svgId: 'TR51', name: 'Niğde' },
+    { svgId: 'TR52', name: 'Ordu' }, { svgId: 'TR53', name: 'Rize' }, { svgId: 'TR54', name: 'Sakarya' },
+    { svgId: 'TR55', name: 'Samsun' }, { svgId: 'TR56', name: 'Siirt' }, { svgId: 'TR57', name: 'Sinop' },
+    { svgId: 'TR58', name: 'Sivas' }, { svgId: 'TR59', name: 'Tekirdağ' }, { svgId: 'TR60', name: 'Tokat' },
+    { svgId: 'TR61', name: 'Trabzon' }, { svgId: 'TR62', name: 'Tunceli' }, { svgId: 'TR63', name: 'Şanlıurfa' },
+    { svgId: 'TR64', name: 'Uşak' }, { svgId: 'TR65', name: 'Van' }, { svgId: 'TR66', name: 'Yozgat' },
+    { svgId: 'TR67', name: 'Zonguldak' }, { svgId: 'TR68', name: 'Aksaray' }, { svgId: 'TR69', name: 'Bayburt' },
+    { svgId: 'TR70', name: 'Karaman' }, { svgId: 'TR71', name: 'Kırıkkale' }, { svgId: 'TR72', name: 'Batman' },
+    { svgId: 'TR73', name: 'Şırnak' }, { svgId: 'TR74', name: 'Bartın' }, { svgId: 'TR75', name: 'Ardahan' },
+    { svgId: 'TR76', name: 'Iğdır' }, { svgId: 'TR77', name: 'Yalova' }, { svgId: 'TR78', name: 'Karabük' },
+    { svgId: 'TR79', name: 'Kilis' }, { svgId: 'TR80', name: 'Osmaniye' }, { svgId: 'TR81', name: 'Düzce' }
   ];
-  // Şehir pozisyon bilgileri (yaklaşık koordinatlar)
-  const getCityPosition = (svgId: string) => {
-    const positions: { [key: string]: { x: number; y: number; width: number; height: number } } = {
-      'TR01': { x: 640, y: 300, width: 40, height: 40 }, // Adana
-      'TR02': { x: 720, y: 330, width: 40, height: 40 }, // Adıyaman
-      'TR03': { x: 320, y: 190, width: 60, height: 60 }, // Afyonkarahisar
-      'TR04': { x: 870, y: 210, width: 30, height: 40 }, // Ağrı
-      'TR05': { x: 540, y: 80, width: 40, height: 30 }, // Amasya
-      'TR06': { x: 360, y: 120, width: 50, height: 40 }, // Ankara
-      'TR07': { x: 270, y: 310, width: 50, height: 40 }, // Antalya
-      'TR08': { x: 810, y: 80, width: 30, height: 40 }, // Artvin
-      'TR09': { x: 180, y: 210, width: 40, height: 30 }, // Aydın
-      'TR10': { x: 160, y: 120, width: 100, height: 40 }, // Balıkesir
-      'TR11': { x: 290, y: 140, width: 30, height: 20 }, // Bilecik
-      'TR12': { x: 830, y: 190, width: 30, height: 30 }, // Bingöl
-      'TR13': { x: 840, y: 220, width: 30, height: 30 }, // Bitlis
-      'TR14': { x: 290, y: 100, width: 40, height: 30 }, // Bolu
-      'TR15': { x: 270, y: 280, width: 30, height: 30 }, // Burdur
-      'TR16': { x: 200, y: 170, width: 50, height: 30 }, // Bursa
-      'TR17': { x: 90, y: 110, width: 40, height: 30 }, // Çanakkale
-      'TR18': { x: 430, y: 150, width: 30, height: 30 }, // Çankırı
-      'TR19': { x: 480, y: 120, width: 40, height: 30 }, // Çorum
-      'TR20': { x: 280, y: 250, width: 40, height: 40 }, // Denizli
-      'TR21': { x: 800, y: 280, width: 40, height: 40 }, // Diyarbakır
-      'TR22': { x: 100, y: 50, width: 30, height: 40 }, // Edirne
-      'TR23': { x: 760, y: 200, width: 40, height: 30 }, // Elazığ
-      'TR24': { x: 720, y: 160, width: 40, height: 30 }, // Erzincan
-      'TR25': { x: 820, y: 140, width: 50, height: 40 }, // Erzurum
-      'TR26': { x: 320, y: 160, width: 40, height: 30 }, // Eskişehir
-      'TR27': { x: 670, y: 320, width: 40, height: 30 }, // Gaziantep
-      'TR28': { x: 680, y: 90, width: 30, height: 30 }, // Giresun
-      'TR29': { x: 730, y: 120, width: 30, height: 30 }, // Gümüşhane
-      'TR30': { x: 880, y: 310, width: 30, height: 30 }, // Hakkari
-      'TR31': { x: 560, y: 350, width: 40, height: 30 }, // Hatay
-      'TR32': { x: 310, y: 260, width: 30, height: 30 }, // Isparta
-      'TR33': { x: 560, y: 320, width: 40, height: 30 }, // Mersin
-      'TR34': { x: 160, y: 50, width: 50, height: 30 }, // İstanbul
-      'TR35': { x: 120, y: 180, width: 40, height: 40 }, // İzmir
-      'TR36': { x: 840, y: 110, width: 40, height: 30 }, // Kars
-      'TR37': { x: 480, y: 80, width: 60, height: 30 }, // Kastamonu
-      'TR38': { x: 550, y: 220, width: 40, height: 40 }, // Kayseri
-      'TR39': { x: 140, y: 50, width: 30, height: 20 }, // Kırklareli
-      'TR40': { x: 470, y: 180, width: 30, height: 30 }, // Kırşehir
-      'TR41': { x: 200, y: 100, width: 30, height: 30 }, // Kocaeli
-      'TR42': { x: 450, y: 280, width: 80, height: 80 }, // Konya
-      'TR43': { x: 250, y: 180, width: 40, height: 30 }, // Kütahya
-      'TR44': { x: 720, y: 200, width: 40, height: 40 }, // Malatya
-      'TR45': { x: 150, y: 170, width: 40, height: 30 }, // Manisa
-      'TR46': { x: 630, y: 270, width: 40, height: 40 }, // Kahramanmaraş
-      'TR47': { x: 810, y: 320, width: 40, height: 30 }, // Mardin
-      'TR48': { x: 200, y: 280, width: 50, height: 40 }, // Muğla
-      'TR49': { x: 840, y: 240, width: 30, height: 30 }, // Muş
-      'TR50': { x: 520, y: 240, width: 30, height: 30 }, // Nevşehir
-      'TR51': { x: 490, y: 290, width: 30, height: 30 }, // Niğde
-      'TR52': { x: 650, y: 90, width: 40, height: 30 }, // Ordu
-      'TR53': { x: 780, y: 70, width: 30, height: 30 }, // Rize
-      'TR54': { x: 230, y: 120, width: 30, height: 30 }, // Sakarya
-      'TR55': { x: 520, y: 90, width: 60, height: 30 }, // Samsun
-      'TR56': { x: 850, y: 280, width: 30, height: 30 }, // Siirt
-      'TR57': { x: 540, y: 70, width: 30, height: 20 }, // Sinop
-      'TR58': { x: 630, y: 140, width: 60, height: 50 }, // Sivas
-      'TR59': { x: 120, y: 80, width: 40, height: 30 }, // Tekirdağ
-      'TR60': { x: 590, y: 130, width: 40, height: 30 }, // Tokat
-      'TR61': { x: 730, y: 90, width: 40, height: 30 }, // Trabzon
-      'TR62': { x: 760, y: 180, width: 30, height: 30 }, // Tunceli
-      'TR63': { x: 720, y: 350, width: 50, height: 40 }, // Şanlıurfa
-      'TR64': { x: 250, y: 220, width: 30, height: 30 }, // Uşak
-      'TR65': { x: 870, y: 260, width: 40, height: 40 }, // Van
-      'TR66': { x: 570, y: 150, width: 30, height: 30 }, // Yozgat
-      'TR67': { x: 440, y: 70, width: 60, height: 30 }, // Zonguldak
-      'TR68': { x: 480, y: 260, width: 30, height: 30 }, // Aksaray
-      'TR69': { x: 750, y: 120, width: 20, height: 20 }, // Bayburt
-      'TR70': { x: 430, y: 320, width: 30, height: 30 }, // Karaman
-      'TR71': { x: 450, y: 160, width: 30, height: 30 }, // Kırıkkale
-      'TR72': { x: 800, y: 300, width: 30, height: 30 }, // Batman
-      'TR73': { x: 860, y: 330, width: 30, height: 30 }, // Şırnak
-      'TR74': { x: 380, y: 80, width: 30, height: 20 }, // Bartın
-      'TR75': { x: 830, y: 80, width: 40, height: 30 }, // Ardahan
-      'TR76': { x: 890, y: 170, width: 30, height: 30 }, // Iğdır
-      'TR77': { x: 230, y: 110, width: 20, height: 20 }, // Yalova
-      'TR78': { x: 340, y: 80, width: 30, height: 20 }, // Karabük
-      'TR79': { x: 600, y: 360, width: 30, height: 20 }, // Kilis
-      'TR80': { x: 570, y: 340, width: 30, height: 20 }, // Osmaniye
-      'TR81': { x: 320, y: 120, width: 30, height: 20 }  // Düzce
-    };
-    
-    return positions[svgId] || { x: 500, y: 200, width: 30, height: 30 };
-  };
+
+  // Yardımcı fonksiyonlar
   const getCityById = (id: string) => cities.find(city => city.value === id);
   const getCityBySvgId = (svgId: string) => cities.find(city => city.svgId === svgId);
   const getCityHasBranch = (svgId: string) => {
     const city = getCityBySvgId(svgId);
     return city?.hasBranch || false;
+  };  // Basit hover stil fonksiyonu - renk değişimi + glow + shadow
+  const getPathStyle = (svgId: string): React.CSSProperties => {
+    const hasBranch = getCityHasBranch(svgId);
+    const isHovered = hoveredCity === svgId;
+    
+    const baseStyle: React.CSSProperties = {
+      fill: isHovered 
+        ? (hasBranch ? '#dc2626' : '#9ca3af')  // Hover renkleri
+        : (hasBranch ? '#ef4444' : '#d1d5db'), // Normal renkler
+      stroke: '#ffffff',
+      strokeWidth: 1,
+      cursor: 'pointer',
+      transition: 'fill 0.3s ease, filter 0.3s ease'  // Renk ve filter geçişi
+    };
+
+    // Hover durumunda glow ve shadow efektleri ekle
+    if (isHovered) {
+      const filters = [];
+      
+      // Shadow efekti
+      filters.push('drop-shadow(0 6px 12px rgba(0,0,0,0.4))');
+      
+      // Glow efekti
+      const glowColor = hasBranch ? 'rgba(239, 68, 68, 0.6)' : 'rgba(156, 163, 175, 0.4)';
+      filters.push(`drop-shadow(0 0 8px ${glowColor})`);
+      
+      baseStyle.filter = filters.join(' ');
+    }
+
+    return baseStyle;
   };
 
-  // Şehir seçim işlemleri
+  // Event handlers
   const handleCitySelect = (cityValue: string) => {
     setSelectedCity(cityValue);
     const cityData = getCityById(cityValue);
@@ -234,7 +122,6 @@ export default function BranchFinder() {
     if (cityData) {
       handleCitySelect(cityData.value);
     } else {
-      // Şube olmayan şehir için genel bilgi göster
       const allCityData = allTurkishCities.find(city => city.svgId === svgId);
       if (allCityData) {
         setSelectedCityData({
@@ -262,12 +149,10 @@ export default function BranchFinder() {
     }
   };
 
-
   const closeModal = () => {
     setShowCityInfo(false);
     setSelectedCityData(null);
   };
-
 
   return (
     <>
@@ -276,9 +161,7 @@ export default function BranchFinder() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Sol Taraf - Şehir Seçici */}
             <div className="md:col-span-4 home-dealer">
-              <h2 className="text-3xl font-bold text-orange-600 mb-4">
-                EN YAKIN
-              </h2>
+              <h2 className="text-3xl font-bold text-orange-600 mb-4">EN YAKIN</h2>
               <p className="text-gray-700 mb-6 leading-relaxed">
                 Şehrini seç, en yakın Pide By Pide&apos;ye ulaş lezzetin tadını çıkar.
               </p>
@@ -314,108 +197,33 @@ export default function BranchFinder() {
               </div>
             </div>
 
-            {/* Sağ Taraf - İnteraktif Türkiye Haritası */}
+            {/* Sağ Taraf - İnteraktif Türkiye Haritası (Point/Circle Kaldırıldı) */}
             <div className="md:col-span-8 home-map">
               <div className="svg-turkiye-haritasi bg-white rounded-lg shadow-lg p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
                   Türkiye Genelinde Hizmet Veriyoruz
-                </h3>                {/* İnteraktif SVG Türkiye Haritası */}
-                <div className="relative">
-                  {/* Basit yaklaşım: Orijinal SVG'yi kullan ve üzerine interaktif alanlar ekle */}
-                  <div className="relative bg-gray-100 rounded-lg overflow-hidden">                    <Image 
-                      src="/upload/files/tr.svg" 
-                      alt="Türkiye Haritası" 
-                      width={1000}
-                      height={422}
-                      className="w-full h-auto max-h-[400px]"
-                    />
-                    
-                    {/* İnteraktif overlay */}
-                    <div className="absolute inset-0">
-                      <svg 
-                        viewBox="0 0 1000 422" 
-                        className="w-full h-full"
-                      >
-                        {/* Her şehir için tıklanabilir alan */}
-                        {allTurkishCities.map((city) => {
-                          const pos = getCityPosition(city.svgId);
-                          const hasBranch = getCityHasBranch(city.svgId);
-                          
-                          return (
-                            <g key={city.svgId}>
-                              {/* Tıklanabilir alan */}
-                              <rect
-                                x={pos.x}
-                                y={pos.y}
-                                width={pos.width}
-                                height={pos.height}
-                                fill="transparent"
-                                stroke={hoveredCity === city.svgId ? '#059669' : 'transparent'}
-                                strokeWidth={hoveredCity === city.svgId ? 2 : 0}
-                                className="cursor-pointer transition-all duration-300"
-                                onMouseEnter={() => handleMouseEnter(city.svgId)}
-                                onMouseLeave={handleMouseLeave}
-                                onClick={() => handleSvgCityClick(city.svgId)}
-                                role="button"
-                                aria-label={city.name}
-                              />
-                              
-                              {/* Şube durumu göstergesi */}
-                              <circle
-                                cx={pos.x + pos.width/2}
-                                cy={pos.y + pos.height/2}
-                                r={hasBranch ? 4 : 2}
-                                fill={hasBranch ? '#059669' : '#d1d5db'}
-                                className="pointer-events-none"
-                                opacity={0.8}
-                              />
-                              
-                              {/* Hover durumunda şehir ismi */}
-                              {hoveredCity === city.svgId && (
-                                <g>
-                                  {/* Yazı arka planı */}
-                                  <rect
-                                    x={pos.x + pos.width/2 - city.name.length * 3}
-                                    y={pos.y - 20}
-                                    width={city.name.length * 6}
-                                    height={16}
-                                    fill="rgba(0,0,0,0.8)"
-                                    rx={3}
-                                    className="pointer-events-none"
-                                  />
-                                  {/* Şehir ismi */}
-                                  <text
-                                    x={pos.x + pos.width/2}
-                                    y={pos.y - 8}
-                                    textAnchor="middle"
-                                    className="text-xs font-bold fill-white pointer-events-none"
-                                  >
-                                    {city.name}
-                                  </text>
-                                </g>
-                              )}
-                            </g>
-                          );
-                        })}
-                      </svg>
-                    </div>
-                  </div>
+                </h3>
+                  <div className="relative bg-gray-100 rounded-lg overflow-hidden">                  <TurkeyMap 
+                    getPathStyle={getPathStyle}
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleSvgCityClick={handleSvgCityClick}
+                  /></div>
+              </div>
+              
+              {/* İstatistikler */}
+              <div className="grid grid-cols-3 gap-4 mt-6">
+                <div className="text-center bg-white rounded-lg p-4 shadow">
+                  <div className="text-2xl font-bold text-orange-600">20</div>
+                  <div className="text-sm text-gray-600">Şehir</div>
                 </div>
-                
-                {/* İstatistikler */}
-                <div className="grid grid-cols-3 gap-4 mt-6">
-                  <div className="text-center bg-white rounded-lg p-4 shadow">
-                    <div className="text-2xl font-bold text-orange-600">17</div>
-                    <div className="text-sm text-gray-600">Şehir</div>
-                  </div>
-                  <div className="text-center bg-white rounded-lg p-4 shadow">
-                    <div className="text-2xl font-bold text-orange-600">25+</div>
-                    <div className="text-sm text-gray-600">Şube</div>
-                  </div>
-                  <div className="text-center bg-white rounded-lg p-4 shadow">
-                    <div className="text-2xl font-bold text-orange-600">7</div>
-                    <div className="text-sm text-gray-600">Bölge</div>
-                  </div>
+                <div className="text-center bg-white rounded-lg p-4 shadow">
+                  <div className="text-2xl font-bold text-orange-600">25+</div>
+                  <div className="text-sm text-gray-600">Şube</div>
+                </div>
+                <div className="text-center bg-white rounded-lg p-4 shadow">
+                  <div className="text-2xl font-bold text-orange-600">7</div>
+                  <div className="text-sm text-gray-600">Bölge</div>
                 </div>
               </div>
             </div>
