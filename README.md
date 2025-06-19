@@ -1,4 +1,20 @@
+# PBYP - Next.js Project
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Project Structure
+
+- `src/app/` - App Router pages and layouts
+- `src/components/` - Reusable React components
+- `public/` - Static assets
+- `.github/copilot-instructions.md` - Copilot custom instructions
+
+## Technologies Used
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Static type checking
+- **Tailwind CSS** - Utility-first CSS framework
+- **ESLint** - Code linting and formatting
 
 ## Getting Started
 
@@ -6,17 +22,11 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

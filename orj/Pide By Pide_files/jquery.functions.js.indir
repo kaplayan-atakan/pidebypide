@@ -1,0 +1,384 @@
+// Left menu toggle on mobile
+
+$(function() {
+
+	$('.toggle-left-menu').on('click', function() {
+
+		$(this).toggleClass('active');
+
+		$('.left-column').toggleClass('expanded', 'fast');
+
+	});
+
+});
+
+
+
+// Left menu 100% height
+
+$(window).on('load resize orientationchange', function() {
+
+	if( $(window).width() > 991 ) {
+
+		$('.left-column').css( 'min-height', $('.main-content').height() );
+
+	}
+
+});
+
+
+
+
+
+// Scroll icon
+
+
+/*$.animateMouse = function(direction) {
+
+	if( direction ){
+
+		$('.icon-mouse').animate({
+
+			bottom: '20px'
+
+		}, 1800, 'easeInOutQuad', function(){
+
+			$.animateMouse();
+
+		});
+
+	}else{
+
+		$('.icon-mouse').animate({
+
+			bottom: '0px'
+
+		}, 1200, 'easeInOutQuad', function(){
+
+			$.animateMouse(true);
+
+		});
+
+	}
+
+}*/
+
+$(window).on('scroll',  function() {
+
+	if( $(window).scrollTop() > $(document).outerHeight() - ( $(window).height() + 140 ) )
+
+		$('.icon-mouse').addClass('remove');
+
+	else
+
+		$('.icon-mouse').removeClass('remove');
+
+});
+
+
+
+$.shareOnFacebook = function(url, caption, picture) {
+
+    FB.ui({
+
+        method: 'feed',
+
+        link: url,
+
+        caption: caption,
+
+        picture: picture
+
+    }, function(response){});
+
+};
+
+
+
+$.shareOnTwitter = function(url, caption) {
+
+    var width  = 575,
+
+        height = 400,
+
+        left   = ($(window).width()  - width)  / 2,
+
+        top    = ($(window).height() - height) / 2,
+
+        url    = url,
+
+        opts   = 'status=1' + ',width=' + width + ',height=' + height + ',top=' + top + ',left=' + left;
+
+
+
+    window.open('https://twitter.com/share?url=' + url + '&text=' + caption, '_blank', opts);
+
+};
+
+
+
+$.shareOnGPlus = function(theUrl) {
+
+    window.open(theUrl, '_blank', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
+
+    return false;
+
+    //gapi.plus.go();
+
+};
+
+
+
+$.findBootstrapEnvironment = function() {
+
+
+
+    var envs = ['xs', 'sm', 'md', 'lg'];
+
+
+
+    var $el = $('<div>');
+
+    $el.appendTo($('body'));
+
+
+
+    for (var i = envs.length - 1; i >= 0; i--) {
+
+        var env = envs[i];
+
+
+
+        $el.addClass('hidden-'+env);
+
+        if ($el.is(':hidden')) {
+
+            $el.remove();
+
+            return env;
+
+        }
+
+    }
+
+
+
+}
+
+
+
+$.getList = function(city) {
+
+
+
+    if (city == '') {
+
+        alert("Lütfen şehir seçiniz");
+
+        return false;
+
+    }
+
+
+
+    var request	= $.ajax({
+
+        url: "ajax",
+
+        type: "POST",
+
+        data: {
+
+            process: 'getAvailableTowns',
+
+            city: city
+
+        },
+
+        beforeSend: function() {
+
+            $.showLoading();
+
+        },
+
+        complete: function() {
+
+            $.hideLoading();
+
+        }
+
+    });
+
+
+
+    request.done(function(content) {
+
+        $(".ajax-content-reseller").html(content);
+
+    });
+
+
+
+    request.fail(function(jqXHR, textStatus) {
+
+        alert("İçerik yüklenemedi");
+
+    });
+
+
+
+}
+
+
+
+$.getOffice = function(city) {
+
+
+
+    if (city == '') {
+
+        alert("Lütfen şehir seçiniz");
+
+        return false;
+
+    }
+
+
+
+    var request	= $.ajax({
+
+        url: "ajax",
+
+        type: "POST",
+
+        data: {
+
+            process: 'getAvailableOffice',
+
+            city: city
+
+        },
+
+        beforeSend: function() {
+
+            $.showLoading();
+
+        },
+
+        complete: function() {
+
+            $.hideLoading();
+
+        }
+
+    });
+
+
+
+    request.done(function(content) {
+
+        $(".ajax-content-reseller").html(content);
+
+    });
+
+
+
+    request.fail(function(jqXHR, textStatus) {
+
+        alert("İçerik yüklenemedi");
+
+    });
+
+
+
+}
+
+
+
+$(function () {
+
+    jQuery('img.svg').each(function(){
+
+        var $img = jQuery(this);
+
+        var imgID = $img.attr('id');
+
+        var imgClass = $img.attr('class');
+
+        var imgURL = $img.attr('src');
+
+
+
+        jQuery.get(imgURL, function(data) {
+
+            var $svg = jQuery(data).find('svg');
+
+            if(typeof imgID !== 'undefined') { $svg = $svg.attr('id', imgID); }
+
+            if(typeof imgClass !== 'undefined') { $svg = $svg.attr('class', imgClass+' replaced-svg'); }
+
+            $svg = $svg.removeAttr('xmlns:a');
+
+            $img.replaceWith($svg);
+
+        }, 'xml');
+
+    });
+
+});
+
+
+
+
+
+$(function () {
+    var nc = document.getElementById("mainMenu"),
+        mb = document.getElementById("menu-bg"),
+        header = document.getElementById("header"),
+        n = 0,
+        x = 76,
+        st = "sticky";
+
+    var setFixedHeader = function (t) {
+            document.body.removeAttribute("style");
+            if (window.innerWidth > 992) {
+                if (header !== null) {
+                    var hstyle = header.currentStyle || window.getComputedStyle(header);
+                    var hMargin = hstyle.marginTop.replace('px', ''),
+                            hPaddingTop = hstyle.paddingTop.replace('px', ''),
+                            hPaddingBottom = hstyle.paddingBottom.replace('px', '');
+                    //document.body.style.paddingTop = parseInt((hstyle.height).replace('px', '')) + 'px';
+                    document.body.style.paddingTop = x + 'px';
+                } else {
+                    document.body.removeAttribute("style");
+                }
+            }
+            if (t >= x) {
+                $(header).addClass(st);
+            } else {
+                $(header).removeClass(st);
+                document.body.removeAttribute("style");
+            }
+        };  
+        var getScroll = function() {
+            return window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
+        };
+        $(window).on("resize", function() {
+            setFixedHeader(getScroll());
+        });
+        $(window).scroll(function () {
+            if(window.innerWidth > 992) {
+                setFixedHeader(getScroll());
+            }
+    });  
+
+    var main = document.getElementById("main");
+    	if(main !== null) {
+    		$(".panel-default > .panel-body").css("min-height",window.innerHeight - ( $("#header").height() + $(".section-footer").height() + $(".panel-heading").height() + 90 ) );
+    		
+    		$(window).on("resize", function() {
+	            $(".panel-default > .panel-body").css("min-height",window.innerHeight - ( $("#header").height() + $(".section-footer").height() + $(".panel-heading").height() + 90 ));
+	        });
+    	}
+
+});

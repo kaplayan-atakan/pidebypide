@@ -1,0 +1,2 @@
+.bar, .bar:hover {background-color: #f59b23;position: fixed;top:45%;right:0;display:block;text-align:center;line-height: 1.2;color:#ffffff;text-decoration: none;max-width:85px;padding:15px 26px;border-top-left-radius:25px;border-bottom-left-radius:25px;box-shadow: -10px 0px 15px 0px rgba(0,0,0,0.25);}
+.bar span {display:block;font-size:14px; font-weight: bold;}
