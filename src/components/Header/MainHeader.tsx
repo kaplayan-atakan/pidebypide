@@ -8,45 +8,44 @@ import { getAssetPath } from "@/utils/assetPath";
 export default function MainHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  return (
-    <div className="bg-white">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between py-4 px-4">
-          {/* Logo */}          <div className="flex-shrink-0">
+  return (    <div className="bg-white">
+      <div className="container mx-auto container-responsive">
+        <div className="flex items-center justify-between spacing-sm">
+          {/* Logo */}
+          <div className="flex-shrink-0">
             <Link href="/" className="logo">
               <Image 
                 src={getAssetPath("upload/files/logo.png")} 
                 alt="Pide By Pide - logo" 
                 width={200} 
                 height={100}
-                className="max-w-[150px] lg:max-w-[200px] h-auto"
+                sizes="(max-width: 640px) 120px, (max-width: 1024px) 150px, 200px"
+                className="w-[120px] sm:w-[150px] lg:w-[200px] h-auto"
+                priority
               />
             </Link>
-          </div>
-
-          {/* Desktop Navigasyon Menüsü */}          <nav className="hidden lg:flex">
-            <ul className="flex items-center space-x-8 font-bold text-[#14543c]">
+          </div>          {/* Desktop Navigasyon Menüsü */}
+          <nav className="hidden lg:flex">
+            <ul className="flex items-center space-x-6 xl:space-x-8 font-bold navigation-item text-[#14543c] font-header text-responsive-sm">
               <li className="relative group">
-                <a href="#" className="hover:text-[#f29b24] transition-colors">KURUMSAL</a>
-                <div className="absolute top-full left-0 bg-white shadow-lg rounded-md p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 min-w-[200px]">
-                  <Link href="/hakkimizda" className="block py-2 hover:text-[#f29b24]">• Hakkımızda</Link>
-                  <Link href="/sertifika" className="block py-2 hover:text-[#f29b24]">• Sertifikalarımız</Link>
+                <a href="#" className="hover:text-[#f29b24] transition-colors btn-touch">KURUMSAL</a>
+                <div className="absolute top-full left-0 bg-white shadow-lg rounded-md spacing-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 min-w-[200px]">                  <Link href="/hakkimizda" className="block py-2 hover:text-[#f29b24] font-header btn-touch">• Hakkımızda</Link>
+                  <Link href="/sertifika" className="block py-2 hover:text-[#f29b24] font-header btn-touch">• Sertifikalarımız</Link>
                 </div>
+              </li>              <li>
+                <Link href="/kariyer" className="hover:text-[#f29b24] transition-colors btn-touch">KARİYER</Link>
               </li>
               <li>
-                <Link href="/kariyer" className="hover:text-[#f29b24] transition-colors">KARİYER</Link>
+                <Link href="/urunler" className="hover:text-[#f29b24] transition-colors btn-touch">ÜRÜNLER</Link>
               </li>
               <li>
-                <Link href="/urunler" className="hover:text-[#f29b24] transition-colors">ÜRÜNLER</Link>
+                <Link href="/franchise" className="hover:text-[#f29b24] transition-colors btn-touch">FRANCHISE</Link>
               </li>
               <li>
-                <Link href="/franchise" className="hover:text-[#f29b24] transition-colors">FRANCHISE</Link>
+                <Link href="/subeler" className="hover:text-[#f29b24] transition-colors btn-touch">ŞUBELER</Link>
               </li>
               <li>
-                <Link href="/subeler" className="hover:text-[#f29b24] transition-colors">ŞUBELER</Link>
-              </li>
-              <li>
-                <Link href="/iletisim" className="hover:text-[#f29b24] transition-colors">İLETİŞİM</Link>
+                <Link href="/iletisim" className="hover:text-[#f29b24] transition-colors btn-touch">İLETİŞİM</Link>
               </li>
             </ul>
           </nav>
@@ -80,16 +79,15 @@ export default function MainHeader() {
           }`}
         >
           <nav className="px-4 py-4">
-            <ul className="space-y-4 font-bold text-[#14543c]">
+            <ul className="space-y-4 font-bold navigation-item text-[#14543c] font-header">
               <li>
                 <details className="group">
                   <summary className="cursor-pointer hover:text-[#f29b24] transition-colors list-none flex items-center justify-between">
                     KURUMSAL
                     <span className="text-sm ml-2 group-open:rotate-180 transition-transform">▼</span>
-                  </summary>
-                  <div className="mt-2 ml-4 space-y-2">
-                    <Link href="/hakkimizda" className="block py-2 text-[#7b7934] hover:text-[#f29b24]">• Hakkımızda</Link>
-                    <Link href="/sertifika" className="block py-2 text-[#7b7934] hover:text-[#f29b24]">• Sertifikalarımız</Link>
+                  </summary>                  <div className="mt-2 ml-4 space-y-2">
+                    <Link href="/hakkimizda" className="block py-2 text-[#7b7934] hover:text-[#f29b24] font-header">• Hakkımızda</Link>
+                    <Link href="/sertifika" className="block py-2 text-[#7b7934] hover:text-[#f29b24] font-header">• Sertifikalarımız</Link>
                   </div>
                 </details>
               </li>

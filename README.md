@@ -11,6 +11,7 @@ Kurumsal web sitesi - Next.js 15 ile geliştirilmiştir.
 - **Interaktif Türkiye Haritası** - Şube konumları ile
 - **Responsive Design** - Tüm cihazlarda uyumlu
 - **Kurumsal Renk Paleti** - Tutarlı brand identity
+- **Custom Typography** - NEXA HEAVY (başlıklar) + RED HAT DISPLAY (body text)
 
 ## 🎨 Kurumsal Renk Paleti
 
@@ -18,31 +19,97 @@ Kurumsal web sitesi - Next.js 15 ile geliştirilmiştir.
 - **Vurgu rengi:** `#f29b24` (turuncu) - Hover efektleri, CTA'lar, ikonlar  
 - **İkincil renk:** `#7b7934` (zeytin yeşili) - Arka planlar, kenarlıklar, ikincil öğeler
 
-## Getting Started
+## 🔤 Typography
 
-First, run the development server:
+- **Başlıklar:** NEXA HEAVY (font-weight: 900) - `font-header` utility class
+- **Body Text:** RED HAT DISPLAY (Google Fonts) - `font-body` utility class
+- **Navigation:** RED HAT DISPLAY (font-weight: 600)
+- **Butonlar:** RED HAT DISPLAY (font-weight: 600)
+
+### Font Dosyaları
+
+- RED HAT DISPLAY: Google Fonts üzerinden otomatik yüklenir
+- NEXA HEAVY: `/public/assets/fonts/` klasöründe bulunur (lisanslı font)
+
+**Not:** NEXA HEAVY font dosyaları şu anda placeholder'dır. Gerçek lisanslı font dosyalarını temin ettikten sonra aşağıdaki dosyaları değiştirin:
+- `public/assets/fonts/NexaHeavy.woff2`
+- `public/assets/fonts/NexaHeavy.woff`
+- `public/assets/fonts/NexaHeavy.ttf`
+
+## 🚦 Geliştirme
+
+### Gereksinimler
+- Node.js 18+ 
+- npm veya yarn
+
+### Kurulum ve Çalıştırma
 
 ```bash
+# Bağımlılıkları yükle
+npm install
+
+# Geliştirme sunucusunu başlat
 npm run dev
+
+# Production build
+npm run build
+
+# Linting
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### GitHub Pages Deployment
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+Proje GitHub Pages üzerinde çalışacak şekilde yapılandırılmıştır:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Static export oluştur
+npm run build
 
-## Learn More
+# Build dosyaları ./out klasöründe oluşur
+```
 
-To learn more about Next.js, take a look at the following resources:
+GitHub Actions ile otomatik deployment yapılır. Manuel deployment için:
+1. `npm run build` çalıştırın
+2. `./out` klasörünü GitHub Pages'e yükleyin
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### URL Yapısı
+- **Local:** `http://localhost:3000`
+- **GitHub Pages:** `https://username.github.io/pidebypide`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Proje Yapısı
 
-## Deploy on Vercel
+```
+src/
+├── app/                    # Next.js App Router sayfaları
+├── components/            # React bileşenleri
+│   ├── Header/           # Header bileşenleri
+│   ├── Footer/           # Footer bileşenleri
+│   └── UI/               # UI bileşenleri (TurkeyMap, Slider, etc.)
+├── data/                 # Static data (cityPaths.ts)
+└── utils/                # Utility fonksiyonları (assetPath.ts)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+public/
+├── assets/
+│   ├── fonts/           # Custom font files
+│   ├── images/          # Site görselleri
+│   └── favicons/        # Favicon dosyaları
+└── upload/              # Upload edilen dosyalar
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎯 Önemli Notlar
+
+- Tüm görseller `getAssetPath()` utility fonksiyonu ile yüklenir
+- Favicon dinamik olarak değişir (aktif/pasif sekme)
+- Türkiye haritası tamamen SVG path'ler ile çizilir (overlay yok)
+- Responsive tasarım tüm ekran boyutlarında test edilmiştir
+- Türkçe karakter desteği mevcuttur
+
+## 🐛 Bilinen Sorunlar
+
+- NEXA HEAVY font dosyaları placeholder durumundadır
+- Build sırasında metadataBase uyarısı (minor - functionality etkilemez)
+
+## 📞 Destek
+
+Proje hakkında sorularınız için geliştirici ekibi ile iletişime geçin.

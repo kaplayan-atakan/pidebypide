@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* NEXA HEAVY font for headers */
+@font-face {
+  font-family: 'NEXA HEAVY';
+  src: url('/assets/fonts/NexaHeavy.woff2') format('woff2'),
+       url('/assets/fonts/NexaHeavy.woff') format('woff'),
+       url('/assets/fonts/NexaHeavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -18,6 +29,10 @@
   --corporate-main-dark: #0f3d2a;
   --corporate-accent-dark: #d4821a;
   --corporate-secondary-dark: #5d5c26;
+
+  /* Font Variables */
+  --font-headers: 'NEXA HEAVY', 'Arial Black', Impact, sans-serif;
+  --font-body: var(--font-red-hat-display), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,7 +45,100 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headers);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+/* Responsive heading sizes */
+h1 {
+  font-size: 1.875rem; /* 30px mobile */
+  
+  @media (min-width: 640px) {
+    font-size: 2.25rem; /* 36px sm+ */
+  }
+  
+  @media (min-width: 768px) {
+    font-size: 2.5rem; /* 40px md+ */
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: 3rem; /* 48px lg+ */
+  }
+}
+
+h2 {
+  font-size: 1.5rem; /* 24px mobile */
+  
+  @media (min-width: 640px) {
+    font-size: 1.875rem; /* 30px sm+ */
+  }
+  
+  @media (min-width: 768px) {
+    font-size: 2.25rem; /* 36px md+ */
+  }
+}
+
+h3 {
+  font-size: 1.25rem; /* 20px mobile */
+  
+  @media (min-width: 640px) {
+    font-size: 1.5rem; /* 24px sm+ */
+  }
+  
+  @media (min-width: 768px) {
+    font-size: 1.75rem; /* 28px md+ */
+  }
+}
+
+h4 {
+  font-size: 1.125rem; /* 18px mobile */
+  
+  @media (min-width: 640px) {
+    font-size: 1.25rem; /* 20px sm+ */
+  }
+}
+
+h5 {
+  font-size: 1rem; /* 16px mobile */
+  
+  @media (min-width: 640px) {
+    font-size: 1.125rem; /* 18px sm+ */
+  }
+}
+
+h6 {
+  font-size: 0.875rem; /* 14px mobile */
+  
+  @media (min-width: 640px) {
+    font-size: 1rem; /* 16px sm+ */
+  }
+}
+
+/* Responsive body text */
+p, ul, ol, li, span, div {
+  font-family: var(--font-body);
+  font-size: 0.875rem; /* 14px mobile */
+  line-height: 1.6;
+  
+  @media (min-width: 768px) {
+    font-size: 1rem; /* 16px md+ */
+    line-height: 1.7;
+  }
+}
+
+/* Button text */
+button, .btn {
+  font-family: var(--font-body);
+  font-weight: 600;
 }
 
 /* Türkiye Haritası Container - temel stiller + glow efektleri */
@@ -84,4 +192,228 @@ body {
 
 .animate-pulse-slow {
   animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom Font Utility Classes */
+.font-header {
+  font-family: var(--font-headers) !important;
+  font-weight: 900 !important;
+}
+
+.font-body {
+  font-family: var(--font-body) !important;
+}
+
+/* Navigation and menu items - use headers font */
+nav, .nav, .menu {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* Override Tailwind font-bold for headers */
+h1.font-bold, h2.font-bold, h3.font-bold, h4.font-bold, h5.font-bold, h6.font-bold {
+  font-family: var(--font-headers);
+  font-weight: 900;
+}
+
+/* Ensure navigation items use proper weight */
+.navigation-item {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* Statistics numbers should use headers font */
+.stat-number {
+  font-family: var(--font-headers);
+  font-weight: 900;
+}
+
+/* Button text should be medium weight */
+button, .btn, input[type="submit"] {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* Türkçe karakter desteği */
+@supports (font-feature-settings: "liga") {
+  * {
+    font-feature-settings: "liga", "kern";
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Responsive Utility Classes */
+
+/* Container spacing */
+.container-responsive {
+  padding-left: 1rem; /* px-4 */
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem; /* sm:px-6 */
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2rem; /* lg:px-8 */
+    padding-right: 2rem;
+  }
+}
+
+/* Responsive spacing */
+.spacing-sm {
+  padding: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .spacing-sm {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .spacing-sm {
+    padding: 1.5rem;
+  }
+}
+
+.spacing-md {
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .spacing-md {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .spacing-md {
+    padding: 2rem;
+  }
+}
+
+.spacing-lg {
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .spacing-lg {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .spacing-lg {
+    padding: 3rem;
+  }
+}
+
+/* Responsive margins */
+.margin-responsive {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .margin-responsive {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .margin-responsive {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Touch-friendly buttons */
+.btn-touch {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem;
+}
+
+/* Responsive text sizes */
+.text-responsive-sm {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .text-responsive-sm {
+    font-size: 1rem;
+  }
+}
+
+.text-responsive-md {
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .text-responsive-md {
+    font-size: 1.125rem;
+  }
+}
+
+.text-responsive-lg {
+  font-size: 1.125rem;
+}
+
+@media (min-width: 768px) {
+  .text-responsive-lg {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-responsive-lg {
+    font-size: 1.5rem;
+  }
+}
+
+/* Responsive grid gaps */
+.gap-responsive {
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .gap-responsive {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .gap-responsive {
+    gap: 2rem;
+  }
+}
+
+/* Mobile-first breakpoint utilities */
+@media (max-width: 640px) {
+  .hidden-mobile {
+    display: none;
+  }
+  
+  .text-center-mobile {
+    text-align: center;
+  }
+  
+  .full-width-mobile {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .hidden-tablet {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop {
+    display: none;
+  }
 }

@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import FaviconProvider from "@/components/FaviconProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const redHatDisplay = Red_Hat_Display({
+  variable: "--font-red-hat-display",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -18,6 +15,7 @@ export const metadata: Metadata = {
   description: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide ve daha bir çok pide çeşidi Pide By Pide'de. 365 gün, 1 pide alana 1 pide bedava.",
   keywords: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide",
   robots: "index, follow",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   icons: {
     // Dinamik favicon kullanacağımız için metadata favicon'ları devre dışı bırakıyoruz
     icon: [], 
@@ -74,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${redHatDisplay.variable} antialiased`}
       >
         <FaviconProvider />
         {children}

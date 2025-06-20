@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import TurkeyMap from './TurkeyMap';
+import ResponsiveModal from './ResponsiveModal';
 
 export default function BranchFinder() {  const [selectedCity, setSelectedCity] = useState('');
   const [hoveredCity, setHoveredCity] = useState('');
@@ -157,13 +158,13 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
   };
 
   return (
-    <>
-      <div className="section section-two-columns bg-gray-50 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+    <>      <div className="section section-two-columns bg-gray-50 py-8 sm:py-12">
+        <div className="container mx-auto container-responsive">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-responsive">
             {/* Sol Taraf - Şehir Seçici */}
-            <div className="md:col-span-4 home-dealer">              <h2 className="text-3xl font-bold text-[#14543c] mb-4">EN YAKIN</h2>
-              <p className="text-[#7b7934] mb-6 leading-relaxed">
+            <div className="lg:col-span-4 home-dealer">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-header text-[#14543c] margin-responsive">EN YAKIN</h2>
+              <p className="text-responsive-md text-[#7b7934] margin-responsive leading-relaxed">
                 Şehrini seç, en yakın Pide By Pide&apos;ye ulaş lezzetin tadını çıkar.
               </p>
               
@@ -174,7 +175,7 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                       id="il"
                       value={selectedCity}
                       onChange={(e) => handleCitySelect(e.target.value)}
-                      className="w-full px-4 py-3 border border-[#7b7934] rounded-lg focus:ring-2 focus:ring-[#f29b24] focus:border-transparent bg-white text-[#14543c]"
+                      className="w-full px-4 py-3 border border-[#7b7934] rounded-lg focus:ring-2 focus:ring-[#f29b24] focus:border-transparent bg-white text-[#14543c] text-responsive-sm btn-touch"
                     >
                       <option value="">Şehir Seçiniz</option>
                       {cities.map((city) => (
@@ -189,100 +190,89 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                   type="button"
                   onClick={handleSearch}
                   disabled={!selectedCity}
-                  className="w-full bg-[#14543c] text-white py-3 px-6 rounded-lg font-bold hover:bg-[#0f3d2a] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full bg-[#14543c] text-white py-3 px-6 rounded-lg font-bold hover:bg-[#0f3d2a] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed btn-touch text-responsive-md"
                 >
                   Ara
                 </button>
               </div>
-            </div>
-
-            {/* Sağ Taraf - İnteraktif Türkiye Haritası (Point/Circle Kaldırıldı) */}
-            <div className="md:col-span-8 home-map">
-              <div className="svg-turkiye-haritasi bg-white rounded-lg shadow-lg p-6">                <h3 className="text-xl font-bold text-[#14543c] mb-4 text-center">
+            </div>            {/* Sağ Taraf - İnteraktif Türkiye Haritası */}
+            <div className="lg:col-span-8 home-map">              <div className="svg-turkiye-haritasi bg-white rounded-lg shadow-lg spacing-sm">
+                <h3 className="text-lg sm:text-xl font-bold font-header text-[#14543c] margin-responsive text-center">
                   Türkiye Genelinde Hizmet Veriyoruz
                 </h3>
-                  <div className="relative bg-gray-100 rounded-lg overflow-hidden">                  <TurkeyMap 
+                <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+                  <TurkeyMap 
                     getPathStyle={getPathStyle}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                     handleSvgCityClick={handleSvgCityClick}
-                  /></div>
+                  />
+                </div>
               </div>
               
-              {/* İstatistikler */}              <div className="grid grid-cols-3 gap-4 mt-6">
-                <div className="text-center bg-white rounded-lg p-4 shadow">
-                  <div className="text-2xl font-bold text-[#f29b24]">20</div>
-                  <div className="text-sm text-[#7b7934]">Şehir</div>
+              {/* İstatistikler */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 sm:mt-6">
+                <div className="text-center bg-white rounded-lg spacing-sm shadow">
+                  <div className="text-lg sm:text-2xl font-bold font-header stat-number text-[#f29b24]">20</div>
+                  <div className="text-xs sm:text-sm text-[#7b7934]">Şehir</div>
                 </div>
-                <div className="text-center bg-white rounded-lg p-4 shadow">
-                  <div className="text-2xl font-bold text-[#f29b24]">25+</div>
-                  <div className="text-sm text-[#7b7934]">Şube</div>
+                <div className="text-center bg-white rounded-lg spacing-sm shadow">
+                  <div className="text-lg sm:text-2xl font-bold font-header stat-number text-[#f29b24]">25+</div>
+                  <div className="text-xs sm:text-sm text-[#7b7934]">Şube</div>
                 </div>
-                <div className="text-center bg-white rounded-lg p-4 shadow">
-                  <div className="text-2xl font-bold text-[#f29b24]">7</div>
-                  <div className="text-sm text-[#7b7934]">Bölge</div>
+                <div className="text-center bg-white rounded-lg spacing-sm shadow">
+                  <div className="text-lg sm:text-2xl font-bold font-header stat-number text-[#f29b24]">7</div>
+                  <div className="text-xs sm:text-sm text-[#7b7934]">Bölge</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Şehir Bilgi Modal */}
-      {showCityInfo && selectedCityData && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 relative">
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              aria-label="Kapat"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>            <div className="text-center">
-              <h3 className="text-2xl font-bold text-[#14543c] mb-4">
-                {selectedCityData.name}
-              </h3>
-
-              {selectedCityData.hasBranch ? (
-                <div>
-                  <div className="text-[#14543c] text-4xl mb-2">✓</div>
-                  <p className="text-lg font-semibold text-[#14543c] mb-2">
-                    Şubemiz Bulunuyor!
-                  </p>
-                  <p className="text-[#7b7934] mb-4">
-                    {selectedCityData.branchCount} şubemizle hizmet veriyoruz.
-                  </p>
-                  <Link
-                    href={`/subeler#${selectedCityData.value || selectedCityData.name.toLowerCase()}`}
-                    className="inline-block bg-[#f29b24] text-white px-6 py-2 rounded-lg hover:bg-[#d4821a] transition-colors"
-                    onClick={closeModal}
-                  >
-                    Şube Detaylarını Görüntüle
-                  </Link>
-                </div>
-              ) : (
-                <div>
-                  <div className="text-[#7b7934] text-4xl mb-2">ⓘ</div>
-                  <p className="text-lg font-semibold text-[#7b7934] mb-2">
-                    Henüz Şubemiz Yok
-                  </p>
-                  <p className="text-[#7b7934] mb-4 opacity-75">
-                    Bu şehirde henüz şubemiz bulunmamaktadır. Yakında geliyoruz!
-                  </p>
-                  <button
-                    onClick={closeModal}
-                    className="bg-[#7b7934] text-white px-6 py-2 rounded-lg hover:bg-[#5d5c26] transition-colors"
-                  >
-                    Tamam
-                  </button>
-                </div>
-              )}
-            </div>
+      </div>      {/* Şehir Bilgi Modal */}
+      <ResponsiveModal
+        isOpen={showCityInfo}
+        onClose={closeModal}
+        title={selectedCityData?.name || ''}
+      >
+        {selectedCityData && (
+          <div className="text-center">
+            {selectedCityData.hasBranch ? (
+              <div>
+                <div className="text-[#14543c] text-4xl mb-2">✓</div>
+                <p className="text-lg font-semibold text-[#14543c] mb-2">
+                  Şubemiz Bulunuyor!
+                </p>
+                <p className="text-[#7b7934] mb-4">
+                  {selectedCityData.branchCount} şubemizle hizmet veriyoruz.
+                </p>
+                <Link
+                  href={`/subeler#${selectedCityData.value || selectedCityData.name.toLowerCase()}`}
+                  className="inline-block bg-[#f29b24] text-white px-6 py-2 rounded-lg hover:bg-[#d4821a] transition-colors btn-touch"
+                  onClick={closeModal}
+                >
+                  Şube Detaylarını Görüntüle
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <div className="text-[#7b7934] text-4xl mb-2">ⓘ</div>
+                <p className="text-lg font-semibold text-[#7b7934] mb-2">
+                  Henüz Şubemiz Yok
+                </p>
+                <p className="text-[#7b7934] mb-4 opacity-75">
+                  Bu şehirde henüz şubemiz bulunmamaktadır. Yakında geliyoruz!
+                </p>
+                <button
+                  onClick={closeModal}
+                  className="bg-[#7b7934] text-white px-6 py-2 rounded-lg hover:bg-[#5d5c26] transition-colors btn-touch"
+                >
+                  Tamam
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        )}
+      </ResponsiveModal>
     </>
   );
 }

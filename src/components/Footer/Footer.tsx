@@ -3,31 +3,34 @@ import Image from "next/image";
 import { getAssetPath } from "@/utils/assetPath";
 
 export default function Footer() {
-  return (
-    <div className="section-footer section-footer-new section-footer-home bg-white border-t border-[#7b7934] py-8">
-      <div className="container mx-auto px-4">
+  return (    <div className="section-footer section-footer-new section-footer-home bg-white border-t border-[#7b7934] spacing-md">
+      <div className="container mx-auto container-responsive">
         <div className="footer-wrapper">
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-            <div className="col-span-12 sm:col-span-4 mb-5 text-center sm:text-left">              <div className="mb-2">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-responsive">
+            <div className="col-span-12 lg:col-span-5 margin-responsive text-center lg:text-left">
+              <div className="margin-responsive">
                 <Link href="/" title="Pide By Pide">
                   <Image 
                     src={getAssetPath("upload/files/logo.png")} 
                     alt="Pide By Pide" 
                     width={240} 
                     height={120}
-                    className="max-w-[240px] h-auto mx-auto sm:mx-0"
+                    sizes="(max-width: 640px) 180px, 240px"
+                    className="w-[180px] sm:w-[240px] h-auto mx-auto lg:mx-0"
                   />
                 </Link>
-              </div><div className="text-sm text-[#7b7934]">
+              </div>
+              <div className="text-responsive-sm text-[#7b7934]">
                 © 2025 Pide By Pide - Tüm hakları saklıdır.
               </div>
             </div>
             
-            <div className="col-span-12 sm:col-span-6 text-center sm:text-right">              <div className="mb-2 hidden sm:block footer-menu">
-                <Link href="/" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">Anasayfa</Link>
-                <Link href="/hakkimizda" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">Hakkımızda</Link>
-                <Link href="/urunler" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">Ürünler</Link>
-                <Link href="/franchise" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">Franchise</Link>
+            <div className="col-span-12 lg:col-span-7 text-center lg:text-right">
+              <div className="margin-responsive hidden lg:block footer-menu">
+                <Link href="/" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold text-responsive-sm btn-touch">Anasayfa</Link>
+                <Link href="/hakkimizda" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold text-responsive-sm btn-touch">Hakkımızda</Link>
+                <Link href="/urunler" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold text-responsive-sm btn-touch">Ürünler</Link>
+                <Link href="/franchise" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold text-responsive-sm btn-touch">Franchise</Link>
                 <Link href="/subeler" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">Şubeler</Link>
                 <Link href="/kariyer" className="mr-4 text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">Kariyer</Link>
                 <Link href="/iletisim" className="text-[#14543c] hover:text-[#f29b24] transition-colors font-bold">İletişim</Link>
