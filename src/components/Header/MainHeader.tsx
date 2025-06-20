@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getAssetPath } from "@/utils/assetPath";
 
 export default function MainHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -11,11 +12,10 @@ export default function MainHeader() {
     <div className="bg-white">
       <div className="container mx-auto">
         <div className="flex items-center justify-between py-4 px-4">
-          {/* Logo */}
-          <div className="flex-shrink-0">
+          {/* Logo */}          <div className="flex-shrink-0">
             <Link href="/" className="logo">
               <Image 
-                src="/upload/files/logo.png" 
+                src={getAssetPath("upload/files/logo.png")} 
                 alt="Pide By Pide - logo" 
                 width={200} 
                 height={100}

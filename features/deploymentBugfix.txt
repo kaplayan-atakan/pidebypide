@@ -1,0 +1,174 @@
+# GitHub Pages Deployment Issue with Next.js Project
+
+It looks like you're having issues with your Next.js project deployed on GitHub Pages. The console logs show multiple 404 errors for assets, which explains why your preview environment doesn't match your local development environment.
+
+## The Problem
+
+GitHub Pages is hosting your site at `https://kaplayan-atakan.github.io/pidebypide/`, but the application is trying to load assets from the root path (e.g., `/_next/static/...`) instead of using the correct subpath.
+
+## Solution
+
+Let's fix the configuration to make your Next.js app work correctly on GitHub Pages:
+
+### 1. Update next.config.mjs
+
+```javascript name=next.config.mjs
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export', // Static HTML export required for GitHub Pages
+  basePath: process.env.NODE_ENV === 'production' ? '/pidebypide' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/pidebypide/' : '',
+  images: {
+    unoptimized: true, // Required for static export
+  },
+  // Ensure trailing slashes for better GitHub Pages compatibility
+  trailingSlash: true,
+};
+
+export default nextConfig;
+```
+
+### 2. Create a utility for handling assets
+
+```typescript name=src/utils/assetPath.ts
+/**
+ * Returns the correct path for assets based on environment
+ * @param path - The asset path without leading slash
+ * @returns The complete asset path
+ */
+export function getAssetPath(path: string): string {
+  const basePath = process.env.NODE_ENV === 'production' ? '/pidebypide' : '';
+  // Ensure path doesn't start with a slash to avoid double slashes
+  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  return `${basePath}/${cleanPath}`;
+}
+```
+
+### 3. Update your components to use the utility
+
+```tsx name=src/components/example.tsx
+import Image from 'next/image';
+import { getAssetPath } from '../utils/assetPath';
+
+export function ExampleComponent() {
+  return (
+    <div>
+      <Image 
+        src={getAssetPath('assets/images/pide1.jpg')}
+        alt="Pide" 
+        width={500} 
+        height={300}
+      />
+    </div>
+  );
+}
+```
+
+### 4. Create a proper GitHub workflow file
+
+```yaml name=.github/workflows/deploy.yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build with Next.js
+        run: npm run build
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+```
+
+### 5. Fix asset organization
+
+Make sure all your static assets are properly placed in the `/public` directory:
+
+```
+public/
+├── assets/
+│   ├── images/
+│   │   ├── favicon/
+│   │   │   └── site.webmanifest
+│   │   ├── pide1.jpg
+│   │   ├── pide2.jpg
+│   │   └── social/
+│   │       ├── facebook.png
+│   │       └── ...
+├── upload/
+│   └── files/
+│       └── logo.png
+└── favicon.ico
+```
+
+### 6. Update package.json scripts
+
+```json name=package.json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  }
+}
+```
+
+## Additional Recommendations
+
+1. **Enable GitHub Pages in repository settings**:
+   - Go to repository Settings > Pages
+   - Set source to "GitHub Actions"
+
+2. **Test locally before deploying**:
+   ```bash
+   npm run build
+   npx serve out
+   ```
+
+3. **Check public directory structure**:
+   Make sure all referenced assets exist in the correct locations within your `/public` directory.
+
+4. **Verify .gitignore**:
+   Ensure your `.gitignore` doesn't exclude any necessary static files.
+
+Let me know if you need any clarification or have further questions about these changes!

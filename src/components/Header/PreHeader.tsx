@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import { getAssetPath } from "@/utils/assetPath";
 
 export default function PreHeader() {
   return (
@@ -12,11 +13,10 @@ export default function PreHeader() {
                 <span className="mr-1">✏️</span> Görüş ve Önerileriniz
               </a>
             </li>
-            {/* Sosyal Medya İkonları */}
-            <li>
+            {/* Sosyal Medya İkonları */}            <li>
               <a href="https://www.facebook.com/pidebypide/" target="_blank" rel="noopener noreferrer">
                 <Image 
-                  src="/assets/images/social/facebook.png" 
+                  src={getAssetPath("assets/images/social/facebook.png")} 
                   alt="Facebook" 
                   width={40} 
                   height={40} 
@@ -27,7 +27,7 @@ export default function PreHeader() {
             <li>
               <a href="https://www.instagram.com/pidebypide/" target="_blank" rel="noopener noreferrer">
                 <Image 
-                  src="/assets/images/social/instagram.png" 
+                  src={getAssetPath("assets/images/social/instagram.png")} 
                   alt="Instagram" 
                   width={40} 
                   height={40} 
@@ -38,7 +38,7 @@ export default function PreHeader() {
             <li>
               <a href="https://x.com/pidebypide" target="_blank" rel="noopener noreferrer">
                 <Image 
-                  src="/assets/images/social/x.png" 
+                  src={getAssetPath("assets/images/social/x.png")} 
                   alt="X (Twitter)" 
                   width={40} 
                   height={40} 
@@ -49,7 +49,7 @@ export default function PreHeader() {
             <li>
               <a href="https://tr.linkedin.com/company/pidebypide" target="_blank" rel="noopener noreferrer">
                 <Image 
-                  src="/assets/images/social/linkedin.png" 
+                  src={getAssetPath("assets/images/social/linkedin.png")} 
                   alt="LinkedIn" 
                   width={40} 
                   height={40} 

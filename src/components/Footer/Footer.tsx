@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getAssetPath } from "@/utils/assetPath";
 
 export default function Footer() {
   return (
@@ -7,18 +8,17 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="footer-wrapper">
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-            <div className="col-span-12 sm:col-span-4 mb-5 text-center sm:text-left">
-              <div className="mb-2">
+            <div className="col-span-12 sm:col-span-4 mb-5 text-center sm:text-left">              <div className="mb-2">
                 <Link href="/" title="Pide By Pide">
                   <Image 
-                    src="/upload/files/logo.png" 
+                    src={getAssetPath("upload/files/logo.png")} 
                     alt="Pide By Pide" 
                     width={240} 
                     height={120}
                     className="max-w-[240px] h-auto mx-auto sm:mx-0"
                   />
                 </Link>
-              </div>              <div className="text-sm text-[#7b7934]">
+              </div><div className="text-sm text-[#7b7934]">
                 © 2025 Pide By Pide - Tüm hakları saklıdır.
               </div>
             </div>
