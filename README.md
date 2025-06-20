@@ -1,20 +1,22 @@
-# PBYP - Next.js Project
+# Pide By Pide - Website
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Kurumsal web sitesi - Next.js 15 ile geliştirilmiştir.
 
-## Project Structure
+## 🚀 Özellikler
 
-- `src/app/` - App Router pages and layouts
-- `src/components/` - Reusable React components
-- `public/` - Static assets
-- `.github/copilot-instructions.md` - Copilot custom instructions
+- **Next.js 15** - App Router mimarisi
+- **TypeScript** - Tip güvenliği
+- **Tailwind CSS** - Modern CSS framework
+- **Dinamik Favicon** - Aktif/pasif sekme durumuna göre değişir
+- **Interaktif Türkiye Haritası** - Şube konumları ile
+- **Responsive Design** - Tüm cihazlarda uyumlu
+- **Kurumsal Renk Paleti** - Tutarlı brand identity
 
-## Technologies Used
+## 🎨 Kurumsal Renk Paleti
 
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Static type checking
-- **Tailwind CSS** - Utility-first CSS framework
-- **ESLint** - Code linting and formatting
+- **Ana renk:** `#14543c` (kurumsal yeşil) - Butonlar, başlıklar, anahtar eylemler
+- **Vurgu rengi:** `#f29b24` (turuncu) - Hover efektleri, CTA'lar, ikonlar  
+- **İkincil renk:** `#7b7934` (zeytin yeşili) - Arka planlar, kenarlıklar, ikincil öğeler
 
 ## Getting Started
 

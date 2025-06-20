@@ -7,9 +7,8 @@ export default function PreHeader() {
     <div className="bg-white h-10">
       <div className="container mx-auto">
         <div className="flex justify-end items-center py-2 px-4">
-          <ul className="flex items-center">
-            <li className="hidden md:block font-bold mr-4">
-              <a href="/gorus-ve-onerileriniz" className="text-gray-700 hover:text-orange-500 flex items-center h-10">
+          <ul className="flex items-center">            <li className="hidden md:block font-bold mr-4">
+              <a href="/gorus-ve-onerileriniz" className="text-[#14543c] hover:text-[#f29b24] flex items-center h-10">
                 <span className="mr-1">✏️</span> Görüş ve Önerileriniz
               </a>
             </li>

@@ -75,30 +75,32 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
   const getCityHasBranch = (svgId: string) => {
     const city = getCityBySvgId(svgId);
     return city?.hasBranch || false;
-  };  // Basit hover stil fonksiyonu - renk değişimi + glow + shadow
+  };  // Kurumsal renk paleti ile hover stil fonksiyonu
   const getPathStyle = (svgId: string): React.CSSProperties => {
     const hasBranch = getCityHasBranch(svgId);
     const isHovered = hoveredCity === svgId;
     
     const baseStyle: React.CSSProperties = {
       fill: isHovered 
-        ? (hasBranch ? '#dc2626' : '#9ca3af')  // Hover renkleri
-        : (hasBranch ? '#ef4444' : '#d1d5db'), // Normal renkler
+        ? (hasBranch ? '#f29b24' : '#7b7934')  // Hover: turuncu (şubeli) / zeytin yeşili (şubesiz)
+        : (hasBranch ? '#14543c' : '#d1d5db'), // Normal: kurumsal yeşil (şubeli) / gri (şubesiz)
       stroke: '#ffffff',
       strokeWidth: 1,
       cursor: 'pointer',
-      transition: 'fill 0.3s ease, filter 0.3s ease'  // Renk ve filter geçişi
+      transition: 'fill 0.3s ease, filter 0.3s ease'
     };
 
-    // Hover durumunda glow ve shadow efektleri ekle
+    // Hover durumunda glow ve shadow efektleri
     if (isHovered) {
       const filters = [];
       
       // Shadow efekti
       filters.push('drop-shadow(0 6px 12px rgba(0,0,0,0.4))');
       
-      // Glow efekti
-      const glowColor = hasBranch ? 'rgba(239, 68, 68, 0.6)' : 'rgba(156, 163, 175, 0.4)';
+      // Kurumsal renklere uygun glow efekti
+      const glowColor = hasBranch 
+        ? 'rgba(242, 155, 36, 0.6)'   // Turuncu glow (şubeli)
+        : 'rgba(123, 121, 52, 0.4)';  // Zeytin yeşili glow (şubesiz)
       filters.push(`drop-shadow(0 0 8px ${glowColor})`);
       
       baseStyle.filter = filters.join(' ');
@@ -160,21 +162,19 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Sol Taraf - Şehir Seçici */}
-            <div className="md:col-span-4 home-dealer">
-              <h2 className="text-3xl font-bold text-orange-600 mb-4">EN YAKIN</h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
+            <div className="md:col-span-4 home-dealer">              <h2 className="text-3xl font-bold text-[#14543c] mb-4">EN YAKIN</h2>
+              <p className="text-[#7b7934] mb-6 leading-relaxed">
                 Şehrini seç, en yakın Pide By Pide&apos;ye ulaş lezzetin tadını çıkar.
               </p>
               
               <div className="space-y-4">
                 <div className="form-group">
-                  <div className="select-wrapper">
-                    <select
+                  <div className="select-wrapper">                    <select
                       name="il"
                       id="il"
                       value={selectedCity}
                       onChange={(e) => handleCitySelect(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-800"
+                      className="w-full px-4 py-3 border border-[#7b7934] rounded-lg focus:ring-2 focus:ring-[#f29b24] focus:border-transparent bg-white text-[#14543c]"
                     >
                       <option value="">Şehir Seçiniz</option>
                       {cities.map((city) => (
@@ -185,12 +185,11 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                     </select>
                   </div>
                 </div>
-                
-                <button
+                  <button
                   type="button"
                   onClick={handleSearch}
                   disabled={!selectedCity}
-                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full bg-[#14543c] text-white py-3 px-6 rounded-lg font-bold hover:bg-[#0f3d2a] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   Ara
                 </button>
@@ -199,8 +198,7 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
 
             {/* Sağ Taraf - İnteraktif Türkiye Haritası (Point/Circle Kaldırıldı) */}
             <div className="md:col-span-8 home-map">
-              <div className="svg-turkiye-haritasi bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+              <div className="svg-turkiye-haritasi bg-white rounded-lg shadow-lg p-6">                <h3 className="text-xl font-bold text-[#14543c] mb-4 text-center">
                   Türkiye Genelinde Hizmet Veriyoruz
                 </h3>
                   <div className="relative bg-gray-100 rounded-lg overflow-hidden">                  <TurkeyMap 
@@ -211,19 +209,18 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                   /></div>
               </div>
               
-              {/* İstatistikler */}
-              <div className="grid grid-cols-3 gap-4 mt-6">
+              {/* İstatistikler */}              <div className="grid grid-cols-3 gap-4 mt-6">
                 <div className="text-center bg-white rounded-lg p-4 shadow">
-                  <div className="text-2xl font-bold text-orange-600">20</div>
-                  <div className="text-sm text-gray-600">Şehir</div>
+                  <div className="text-2xl font-bold text-[#f29b24]">20</div>
+                  <div className="text-sm text-[#7b7934]">Şehir</div>
                 </div>
                 <div className="text-center bg-white rounded-lg p-4 shadow">
-                  <div className="text-2xl font-bold text-orange-600">25+</div>
-                  <div className="text-sm text-gray-600">Şube</div>
+                  <div className="text-2xl font-bold text-[#f29b24]">25+</div>
+                  <div className="text-sm text-[#7b7934]">Şube</div>
                 </div>
                 <div className="text-center bg-white rounded-lg p-4 shadow">
-                  <div className="text-2xl font-bold text-orange-600">7</div>
-                  <div className="text-sm text-gray-600">Bölge</div>
+                  <div className="text-2xl font-bold text-[#f29b24]">7</div>
+                  <div className="text-sm text-[#7b7934]">Bölge</div>
                 </div>
               </div>
             </div>
@@ -243,25 +240,23 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </button>
-
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+            </button>            <div className="text-center">
+              <h3 className="text-2xl font-bold text-[#14543c] mb-4">
                 {selectedCityData.name}
               </h3>
 
               {selectedCityData.hasBranch ? (
                 <div>
-                  <div className="text-green-600 text-4xl mb-2">✓</div>
-                  <p className="text-lg font-semibold text-green-600 mb-2">
+                  <div className="text-[#14543c] text-4xl mb-2">✓</div>
+                  <p className="text-lg font-semibold text-[#14543c] mb-2">
                     Şubemiz Bulunuyor!
                   </p>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-[#7b7934] mb-4">
                     {selectedCityData.branchCount} şubemizle hizmet veriyoruz.
                   </p>
                   <Link
                     href={`/subeler#${selectedCityData.value || selectedCityData.name.toLowerCase()}`}
-                    className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+                    className="inline-block bg-[#f29b24] text-white px-6 py-2 rounded-lg hover:bg-[#d4821a] transition-colors"
                     onClick={closeModal}
                   >
                     Şube Detaylarını Görüntüle
@@ -269,16 +264,16 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                 </div>
               ) : (
                 <div>
-                  <div className="text-gray-400 text-4xl mb-2">ⓘ</div>
-                  <p className="text-lg font-semibold text-gray-600 mb-2">
+                  <div className="text-[#7b7934] text-4xl mb-2">ⓘ</div>
+                  <p className="text-lg font-semibold text-[#7b7934] mb-2">
                     Henüz Şubemiz Yok
                   </p>
-                  <p className="text-gray-500 mb-4">
+                  <p className="text-[#7b7934] mb-4 opacity-75">
                     Bu şehirde henüz şubemiz bulunmamaktadır. Yakında geliyoruz!
                   </p>
                   <button
                     onClick={closeModal}
-                    className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+                    className="bg-[#7b7934] text-white px-6 py-2 rounded-lg hover:bg-[#5d5c26] transition-colors"
                   >
                     Tamam
                   </button>

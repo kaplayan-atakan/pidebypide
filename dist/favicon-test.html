@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon Test</title>
+</head>
+<body>
+    <h1>Favicon Test Sayfası</h1>
+    <p>Bu sayfayı açın ve başka bir sekmeye geçip geri dönün. Console'da log'ları kontrol edin.</p>
+    
+    <button onclick="testFavicon()">Manual Favicon Test</button>
+    
+    <script>
+        console.log('🧪 Favicon test sayfası yüklendi');
+        
+        function testFavicon() {
+            console.log('🔧 Manual favicon test başlatılıyor...');
+            
+            // Mevcut favicon'ları temizle
+            const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+            existingFavicons.forEach(favicon => favicon.remove());
+            
+            // Test favicon ekle
+            const testIcon = document.createElement('link');
+            testIcon.rel = 'icon';
+            testIcon.href = '/favicons/favicon-inactive.ico?t=' + Date.now();
+            document.head.appendChild(testIcon);
+            
+            console.log('✅ Test favicon eklendi');
+        }
+        
+        // Event listeners
+        document.addEventListener('visibilitychange', () => {
+            console.log('👁️ Visibility değişti:', document.hidden ? 'HIDDEN' : 'VISIBLE');
+        });
+        
+        window.addEventListener('focus', () => {
+            console.log('🟢 Window FOCUS');
+        });
+        
+        window.addEventListener('blur', () => {
+            console.log('🔴 Window BLUR');
+        });
+    </script>
+</body>
+</html>

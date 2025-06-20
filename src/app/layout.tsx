@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import FaviconProvider from "@/components/FaviconProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +18,26 @@ export const metadata: Metadata = {
   description: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide ve daha bir çok pide çeşidi Pide By Pide'de. 365 gün, 1 pide alana 1 pide bedava.",
   keywords: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide",
   robots: "index, follow",
+  icons: {
+    // Dinamik favicon kullanacağımız için metadata favicon'ları devre dışı bırakıyoruz
+    icon: [], 
+    shortcut: [],
+    apple: [
+      {
+        url: "/assets/images/favicon/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/assets/images/favicon/safari-pinned-tab.svg",
+        color: "#5bbad5",
+      },
+    ],
+  },
+  manifest: "/assets/images/favicon/site.webmanifest",
   openGraph: {
     title: "Ana Sayfa - Pide By Pide",
     description: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide ve daha bir çok pide çeşidi Pide By Pide'de. 365 gün, 1 pide alana 1 pide bedava.",
@@ -40,6 +61,8 @@ export const metadata: Metadata = {
   },
   other: {
     "google-site-verification": "CfrSFORuLxishdrr71MGa43cSpux9_zN8d8yDmtnwK8",
+    "msapplication-TileColor": "#da532c",
+    "theme-color": "#ffffff",
   },
 };
 
@@ -50,18 +73,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png" />
-        <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
-        <link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <FaviconProvider />
         {children}
       </body>
     </html>

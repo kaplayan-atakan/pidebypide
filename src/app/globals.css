@@ -3,6 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Kurumsal Renk Paleti */
+  --corporate-main: #14543c;     /* Ana yeşil - butonlar, başlıklar, anahtar eylemler */
+  --corporate-accent: #f29b24;   /* Turuncu - hover efektleri, CTA'lar, ikonlar */
+  --corporate-secondary: #7b7934; /* Zeytin yeşili - arka planlar, kenarlıklar, ikincil öğeler */
+  
+  /* Açık tonları */
+  --corporate-main-light: #1a654a;
+  --corporate-accent-light: #f5ad42;
+  --corporate-secondary-light: #8b8642;
+  
+  /* Koyu tonları */
+  --corporate-main-dark: #0f3d2a;
+  --corporate-accent-dark: #d4821a;
+  --corporate-secondary-dark: #5d5c26;
 }
 
 @media (prefers-color-scheme: dark) {
