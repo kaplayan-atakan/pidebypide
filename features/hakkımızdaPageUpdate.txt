@@ -1,0 +1,116 @@
+# PideByPide "Hakkımızda" Sayfası Revizyonu
+
+## Görev Tanımı
+Mevcut `temp copy\hakkimizda.html` dosyasını içerik ve tasarım unsurlarını koruyarak Next.js yapısına uygun şekilde revize et. Anasayfada kullanılan tasarım standartları ve responsive design prensiplerini "Hakkımızda" sayfasına da uygulamalısın.
+
+## Mevcut Durum ve Kaynaklar
+1. `temp copy\hakkimizda.html`: Eski web sitesinden alınan, korunacak içerik ve tasarım elementlerini içeren HTML
+2. Anasayfada (`src/app/page.tsx`) oluşturulan tasarım standartları referans alınacak
+
+## İstenen Çıktı
+`src/app/hakkimizda/page.tsx` (veya tercihen `src/app/hakkinda/page.tsx`) dosyasını oluştur. Bu sayfada:
+
+1. Mevcut HTML'deki içeriği koru
+2. Next.js ve React prensiplerini uygula
+3. Anasayfadaki responsive tasarım standartlarını uygula
+4. Tailwind CSS'i doğru şekilde kullan
+
+## Teknik Gereklilikler
+
+### Görsel Kullanımı
+```tsx
+// HTML'deki <img> taglerini next/image ile değiştir
+import Image from "next/image";
+
+// Örnek
+<Image 
+  src="/images/hakkimizda-gorsel.jpg" 
+  alt="Hakkımızda" 
+  width={600} 
+  height={400} 
+  className="w-full h-auto rounded-lg shadow-md object-cover" 
+/>
+```
+
+### Layout Yapısı
+```tsx
+// Temel sayfa yapısı
+export default function HakkimizdaPage() {
+  return (
+    <main className="min-h-screen">
+      {/* Hero Bölümü */}
+      <section className="bg-primary-50 py-12 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Hero içeriği */}
+        </div>
+      </section>
+      
+      {/* İçerik Bölümleri */}
+      <section className="py-8 md:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Bölüm içerikleri */}
+        </div>
+      </section>
+      
+      {/* Diğer bölümler */}
+    </main>
+  );
+}
+```
+
+### Responsive İçerik Blokları
+```tsx
+// Resim ve metin içeren bir bölüm için
+<div className="flex flex-col md:flex-row gap-8 items-center py-8 md:py-12">
+  <div className="w-full md:w-1/2">
+    <Image 
+      src="/images/hikayemiz.jpg" 
+      alt="Hikayemiz" 
+      width={600} 
+      height={400} 
+      className="w-full h-auto rounded-lg shadow-md" 
+    />
+  </div>
+  <div className="w-full md:w-1/2 space-y-4">
+    <h2 className="text-2xl md:text-3xl font-bold text-primary-700">Hikayemiz</h2>
+    <p className="text-gray-700 text-sm md:text-base leading-relaxed">
+      {/* HTML'deki içerikleri buraya ekle */}
+    </p>
+  </div>
+</div>
+```
+
+### Tipografi
+```tsx
+// Başlıklar
+<h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary-800">Başlık</h1>
+<h2 className="text-2xl md:text-3xl font-bold text-primary-700">Alt Başlık</h2>
+
+// İçerik metinleri
+<p className="text-sm md:text-base leading-relaxed text-gray-700">İçerik metni</p>
+```
+
+## Önemli Notlar
+1. **İçerik Korunmalı**: Orijinal HTML'deki tüm metin içerikleri, görseller, ve bölümler korunmalı
+2. **Tasarım Tutarlılığı**: Anasayfadaki tasarım dilini (renk şeması, boşluklar, köşe yuvarlaklığı) devam ettir
+3. **Modüler Yaklaşım**: Gerektiğinde içeriği bileşenlere ayırabilirsin
+4. **SEO**: Meta etiketlerini ve semantik HTML yapısını doğru şekilde uygula
+5. **Responsive Davranış**: Tüm içerik mobil öncelikli tasarlanmalı ve daha büyük ekranlara ölçeklenmeli
+
+## Uygulama Adımları
+1. Mevcut HTML içeriğini analiz et ve bölümlere ayır
+2. Sayfanın genel yapısını oluştur
+3. Her bir bölümü Next.js ve Tailwind CSS ile yeniden yapılandır
+4. Görselleri optimize et ve next/image kullan
+5. Responsive davranışı test et ve ince ayarlar yap
+
+## Örnek İş Akışı
+1. HTML'den içeriği çıkar
+2. `src/app/hakkimizda/page.tsx` dosyasını oluştur
+3. Meta etiketlerini ekle
+4. Hero bölümünü oluştur
+5. Hikaye, misyon, vizyon gibi içerik bölümlerini ekle
+6. Varsa ekip üyeleri, konum bilgisi vb. bölümlerini ekle
+7. Sayfanın responsive davranışını kontrol et
+
+Anasayfanın kod yapısını ve tasarım standartlarını referans alarak "Hakkımızda" sayfasını bu standartlara uygun şekilde revize et.
