@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic'; // statik dışa aktarım için devre dışı bırakıldı
 
 export async function POST(req: NextRequest) {
   try {

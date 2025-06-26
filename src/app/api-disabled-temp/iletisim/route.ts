@@ -3,7 +3,7 @@ import { writeFile } from 'fs/promises';
 import path from 'path';
 import nodemailer from 'nodemailer';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic'; // statik dışa aktarım için devre dışı bırakıldı
 
 export async function POST(request: NextRequest) {
   try {

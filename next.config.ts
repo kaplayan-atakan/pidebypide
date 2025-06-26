@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // output: 'export' // API rotalarını kullanabilmek için kaldırıldı
+  output: 'export', // GitHub Pages için statik dışa aktarım
   basePath: process.env.NODE_ENV === 'production' ? '/pidebypide' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/pidebypide/' : '',
   trailingSlash: true,
