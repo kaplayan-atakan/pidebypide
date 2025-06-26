@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
@@ -52,33 +55,51 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Burada gerçek email gönderme servisi entegre edilebilir
-    // Örneğin: SendGrid, AWS SES, Nodemailer, vs.
-    
-    console.log('İletişim formu gönderildi:', {
-      adSoyad,
-      email,
-      telefon,
-      konu,
-      mesaj,
-      tarih: new Date().toISOString()
-    });
-
-    // Email içeriğini hazırla
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const emailContent = `
-      Yeni İletişim Formu Mesajı
+    // E-posta gönderme işlemi
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST as string,
+        port: parseInt(process.env.SMTP_PORT as string),
+        secure: false, // TLS için false
+        auth: {
+          user: process.env.SMTP_USER as string,
+          pass: process.env.SMTP_PASS as string
+        }
+      });
       
-      Ad Soyad: ${adSoyad}
-      Email: ${email}
-      Telefon: ${telefon || 'Belirtilmemiş'}
-      Konu: ${konu}
+      const tarih = new Date().toLocaleString('tr-TR');
       
-      Mesaj:
-      ${mesaj}
+      // Email içeriğini hazırla
+      const emailHtml = `
+        <h2>Yeni İletişim Formu Mesajı</h2>
+        <p><strong>Ad Soyad:</strong> ${adSoyad}</p>
+        <p><strong>E-posta:</strong> ${email}</p>
+        <p><strong>Telefon:</strong> ${telefon || 'Belirtilmemiş'}</p>
+        <p><strong>Konu:</strong> ${konu}</p>
+        <p><strong>Mesaj:</strong> ${mesaj}</p>
+        <p><strong>Gönderilme Tarihi:</strong> ${tarih}</p>
+      `;
       
-      Gönderilme Tarihi: ${new Date().toLocaleString('tr-TR')}
-    `;
+      // E-posta gönder
+      await transporter.sendMail({
+        from: process.env.SMTP_USER,
+        to: 'iletisim@pidebypide.com',
+        subject: 'Yeni İletişim Formu Mesajı',
+        text: `Ad Soyad: ${adSoyad}\nE-posta: ${email}\nTelefon: ${telefon || 'Belirtilmemiş'}\nKonu: ${konu}\nMesaj: ${mesaj}\nGönderilme Tarihi: ${tarih}`,
+        html: emailHtml
+      });
+      
+      console.log('İletişim formu e-postası gönderildi:', {
+        adSoyad,
+        email,
+        telefon,
+        konu,
+        tarih
+      });
+    } catch (emailError) {
+      console.error('E-posta gönderme hatası:', emailError);
+      // E-posta gönderilemese bile işlem başarılı sayılsın
+    }
 
     // Başarılı yanıt
     return NextResponse.json(

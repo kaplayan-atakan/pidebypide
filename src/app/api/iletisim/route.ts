@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import nodemailer from 'nodemailer';
 
 export const dynamic = 'force-dynamic';
 
@@ -119,17 +120,62 @@ export async function POST(request: NextRequest) {
       tarih: new Date().toISOString(),
     };
     
-    // Burada form verilerini e-posta olarak gönderme veya veritabanına kaydetme işlemi yapılabilir
-    console.log('Form verileri:', formSubmissionData);
-    
-    // Başarılı yanıt
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Mesajınız başarıyla gönderildi. En kısa sürede sizinle iletişime geçeceğiz.'
-      },
-      { status: 200 }
-    );
+    // E-posta gönderme işlemi
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST as string,
+        port: parseInt(process.env.SMTP_PORT as string),
+        secure: false, // TLS için false
+        auth: {
+          user: process.env.SMTP_USER as string,
+          pass: process.env.SMTP_PASS as string
+        }
+      });
+      
+      const emailHtml = `
+        <h2>Yeni İletişim Formu Mesajı</h2>
+        <p><strong>İl:</strong> ${il}</p>
+        <p><strong>Şube:</strong> ${sube}</p>
+        <p><strong>Ad Soyad:</strong> ${adiSoyadi}</p>
+        <p><strong>E-posta:</strong> ${email}</p>
+        <p><strong>Telefon:</strong> ${telefon}</p>
+        <p><strong>Mesaj:</strong> ${formSubmissionData.mesaj || 'Belirtilmedi'}</p>
+        ${fileUrl ? `<p><strong>Dosya:</strong> <a href="${fileUrl}">Gönderilen Dosya</a></p>` : ''}
+        <p><strong>Tarih:</strong> ${formSubmissionData.tarih}</p>
+      `;
+      
+      await transporter.sendMail({
+        from: process.env.SMTP_USER,
+        to: 'iletisim@pidebypide.com',
+        subject: 'Yeni İletişim Formu Mesajı',
+        text: `İl: ${il}\nŞube: ${sube}\nAd Soyad: ${adiSoyadi}\nE-posta: ${email}\nTelefon: ${telefon}\nMesaj: ${formSubmissionData.mesaj || 'Belirtilmedi'}\nTarih: ${formSubmissionData.tarih}`,
+        html: emailHtml
+      });
+      
+      console.log('E-posta başarıyla gönderildi:', formSubmissionData);
+      
+      // Başarılı yanıt
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Mesajınız başarıyla gönderildi. En kısa sürede sizinle iletişime geçeceğiz.'
+        },
+        { status: 200 }
+      );
+    } catch (emailError) {
+      console.error('E-posta gönderme hatası:', emailError);
+      
+      // E-posta gönderiminde hata olsa bile işlem başarılı sayılsın ancak loglama yapılsın
+      console.log('Form verileri (e-posta gönderilemedi):', formSubmissionData);
+      
+      return NextResponse.json(
+        {
+          success: true, 
+          message: 'Mesajınız alındı. En kısa sürede sizinle iletişime geçeceğiz.'
+        },
+        { status: 200 }
+      );
+    }
     
   } catch (error) {
     console.error('İletişim formu hatası:', error);

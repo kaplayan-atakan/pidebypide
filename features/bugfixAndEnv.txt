@@ -1,0 +1,63 @@
+# Prompt: Next.js API Routes ve Static Export Sorununu Çözme
+
+```markdown
+# Next.js API Routes ve Static Export Sorunu Çözümü
+
+## Mevcut Problem Analizi
+GitHub Actions'da yaşanan şu hata üzerinde çalışmanızı rica ediyorum:
+
+```
+Error: export const dynamic = "force-dynamic" on page "/api/iletisim" cannot be used with "output: export". See more info here: https://nextjs.org/docs/advanced-features/static-html-export
+```
+
+Bu hata mesajı temel olarak şunu ifade ediyor: Projemizin `next.config.mjs` dosyasında `output: 'export'` ayarı bulunuyor, ancak API rotaları statik dışa aktarma (static export) modu ile uyumlu değildir.
+
+## Araştırılması Gereken Konular
+Kodlama agent'ımızın aşağıdaki konuları araştırmasını istiyorum:
+
+1. Next.js'te API rotaları neden "output: export" ile kullanılamaz?
+2. `src/app/api/` dizinindeki tüm API rotalarının incelenmesi
+3. Hata alan tüm route'larda `export const dynamic = 'force-dynamic'` ifadesinin nasıl ve neden kullanıldığı
+4. API rotalarımızın çalışması için `next.config.mjs` dosyasında yapılması gereken değişiklikler
+5. İki tür yaklaşımın artı ve eksileri:
+   - API rotalarından vazgeçmek ve formu statik sayfa olarak tasarlamak
+   - "output: export" yapılandırmasından vazgeçerek sunucu özelliklerini kullanmak
+
+## Çözüm İçin Yapılması Gerekenler
+Lütfen aşağıdaki adımları takip edin:
+
+1. Mevcut `next.config.mjs` dosyasını inceleyin ve şu anki yapılandırmayı analiz edin
+2. `/src/app/api/` altındaki tüm route dosyalarını gözden geçirin ve bunların amacını belirleyin
+3. Kullanılan formların hangi API rotalarına bağlı olduğunu tespit edin
+4. İki seçeneğe yönelik çözüm önerileri sunun:
+   - API rotalarını koruyarak, `next.config.mjs`'yi güncelleme
+   - API rotalarına ihtiyaç duymadan formları işleyecek alternatif yöntemler
+
+## E-posta Gönderimi İçin SMTP Ayarları
+Form gönderimlerinden sonra e-posta bildirimlerinin çalışması için aşağıdaki SMTP bilgilerini kullanın:
+
+```javascript
+// API fonksiyonlarında e-posta gönderimi için:
+const transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false, // TLS için false
+  auth: {
+    user: 'admin@pidebypide.com',
+    pass: 'XxnbDfHJ6cqx#7t5'
+  }
+});
+```
+
+Bu bilgilerin güvenli bir şekilde kullanılması için:
+1. Bir `.env` dosyasına bu bilgileri ekleyin
+2. `.env` dosyasının `.gitignore` içinde olduğundan emin olun
+3. Environment değişkenlerini process.env üzerinden erişilebilir şekilde yapılandırın
+
+## Beklenen Çözüm Çıktıları
+
+1. `next.config.mjs` için gerekli değişiklikleri içeren kod örneği
+2. Her bir API rotası için düzeltilmiş kodlar
+3. E-posta gönderimi için güvenli yapılandırma
+4. Bu değişikliklerin yan etkileri ve dikkat edilmesi gereken noktalar
+5. Uzun vadede önerilen yaklaşım ve gerekçeleri

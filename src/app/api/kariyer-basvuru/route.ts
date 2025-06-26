@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
@@ -91,11 +94,9 @@ export async function POST(req: NextRequest) {
     }
     */
     
-    // E-posta veya veritabanı işlemleri burada yapılacak
-    // ----
-    
-    // Başvuru verilerini loglayalım
-    console.log('Yeni iş başvurusu alındı:', {
+    // E-posta gönderme işlemi
+    const tarih = new Date().toLocaleString('tr-TR');
+    const basvuruVerileri = {
       ad_soyad,
       email,
       telefon,
@@ -104,8 +105,51 @@ export async function POST(req: NextRequest) {
       deneyim: deneyim || 'Belirtilmedi',
       mesaj: mesaj || 'Belirtilmedi',
       cv: cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi',
-      tarih: new Date().toLocaleString('tr-TR')
-    });
+      tarih
+    };
+    
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST as string,
+        port: parseInt(process.env.SMTP_PORT as string),
+        secure: false, // TLS için false
+        auth: {
+          user: process.env.SMTP_USER as string,
+          pass: process.env.SMTP_PASS as string
+        }
+      });
+      
+      // Email içeriğini hazırla
+      const emailHtml = `
+        <h2>Yeni Kariyer Başvurusu</h2>
+        <p><strong>Ad Soyad:</strong> ${ad_soyad}</p>
+        <p><strong>E-posta:</strong> ${email}</p>
+        <p><strong>Telefon:</strong> ${telefon}</p>
+        <p><strong>Pozisyon:</strong> ${pozisyon}</p>
+        <p><strong>Şube:</strong> ${sube || 'Belirtilmedi'}</p>
+        <p><strong>Deneyim:</strong> ${deneyim || 'Belirtilmedi'}</p>
+        <p><strong>Mesaj:</strong> ${mesaj || 'Belirtilmedi'}</p>
+        <p><strong>CV:</strong> ${cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi'}</p>
+        <p><strong>Gönderilme Tarihi:</strong> ${tarih}</p>
+      `;
+      
+      // E-posta gönder
+      await transporter.sendMail({
+        from: process.env.SMTP_USER,
+        to: 'kariyer@pidebypide.com',
+        subject: `Yeni Kariyer Başvurusu - ${pozisyon}`,
+        text: `Ad Soyad: ${ad_soyad}\nE-posta: ${email}\nTelefon: ${telefon}\nPozisyon: ${pozisyon}\nŞube: ${sube || 'Belirtilmedi'}\nDeneyim: ${deneyim || 'Belirtilmedi'}\nMesaj: ${mesaj || 'Belirtilmedi'}\nCV: ${cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi'}\nGönderilme Tarihi: ${tarih}`,
+        html: emailHtml
+      });
+      
+      console.log('Kariyer başvurusu e-postası gönderildi:', basvuruVerileri);
+    } catch (emailError) {
+      console.error('E-posta gönderme hatası:', emailError);
+      // E-posta gönderilemese bile başvuru kaydı yapılsın ve işlem başarılı sayılsın
+    }
+    
+    // Başvuru verilerini loglayalım
+    console.log('Yeni iş başvurusu alındı:', basvuruVerileri);
     
     // Başarılı yanıt
     return NextResponse.json({ 
