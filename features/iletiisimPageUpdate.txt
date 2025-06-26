@@ -1,0 +1,589 @@
+# PideByPide "İletişim" Sayfası Revizyonu
+
+## Görev Tanımı
+Mevcut `temp copy\iletisim.html` dosyasını içerik ve tasarım unsurlarını koruyarak Next.js yapısına uygun şekilde revize et. Anasayfada kullanılan tasarım standartları ve responsive design prensiplerini "İletişim" sayfasına da uygulamalısın.
+
+## Sayfa Yapısı
+Yeni dosya yolu: `src/app/iletisim/page.tsx`
+URL: `/iletisim`
+
+## Mevcut Durum ve Kaynaklar
+1. `temp copy\iletisim.html`: Eski web sitesinden alınan, korunacak içerik ve tasarım elementlerini içeren HTML
+2. Anasayfadaki (`src/app/page.tsx`) tasarım standartları referans alınacak
+3. Meta verileri: Başlık ve açıklama mevcut HTML'den alınmalı
+
+## Sayfa Yapısı Analizi
+Mevcut HTML sayfasında 2 ana bölüm bulunmaktadır:
+1. **İletişim Bilgileri**: Genel merkez, telefon, e-posta ve departman bilgileri
+2. **İletişim Formu**: Kullanıcıların mesaj gönderebileceği bir form
+
+Form özellikleri:
+- İl seçimi (dropdown)
+- Şube seçimi (dropdown)
+- Ad Soyad (text input)
+- E-posta (email input)
+- Telefon (tel input)
+- Mesaj (textarea)
+- Dosya Ekle (file input)
+- KVKK onay kutusu (checkbox)
+- reCAPTCHA
+- Gönder butonu
+
+## Teknik İyileştirme Gereksinimleri
+
+### 1. Metadata Optimizasyonu
+```tsx
+export const metadata = {
+  title: 'İletişim - Pide By Pide',
+  description: 'Pide By Pide ile iletişime geçin. Görüş ve önerilerinizi bizimle paylaşın.',
+  keywords: 'İletişim, Pide By Pide iletişim, müşteri hizmetleri, görüş öneri'
+};
+```
+
+### 2. İletişim Bilgileri Bölümü
+```tsx
+<section className="mb-10">
+  <h3 className="text-2xl font-bold text-primary-800 mb-4">İletişim Bilgilerimiz</h3>
+  <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+    <div>
+      <p className="font-semibold">Genel Merkez:</p>
+      <p className="flex items-center text-gray-700 mt-1">
+        <MapPinIcon className="h-5 w-5 mr-2 text-primary-600" /> Pide By Pide Genel Merkez
+      </p>
+      <p className="flex items-center text-gray-700 mt-1">
+        <PhoneIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+        <a href="tel:08504417433" className="text-primary-700 hover:underline">0850 441 7433</a>
+      </p>
+      <p className="flex items-center text-gray-700 mt-1">
+        <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+        <a href="mailto:info@pidebypide.com" className="text-primary-700 hover:underline">info@pidebypide.com</a>
+      </p>
+    </div>
+    
+    <hr className="border-gray-200" />
+    
+    <div>
+      <p className="font-semibold">Müşteri Hizmetleri:</p>
+      <p className="flex items-center text-gray-700 mt-1">
+        <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+        <a href="mailto:musterihizmetleri@pidebypide.com" className="text-primary-700 hover:underline">musterihizmetleri@pidebypide.com</a>
+      </p>
+    </div>
+    
+    <div>
+      <p className="font-semibold">Franchise:</p>
+      <p className="flex items-center text-gray-700 mt-1">
+        <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+        <a href="mailto:franchise@pidebypide.com" className="text-primary-700 hover:underline">franchise@pidebypide.com</a>
+      </p>
+    </div>
+    
+    <div>
+      <p className="font-semibold">İnsan Kaynakları:</p>
+      <p className="flex items-center text-gray-700 mt-1">
+        <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+        <a href="mailto:ik@pidebypide.com" className="text-primary-700 hover:underline">ik@pidebypide.com</a>
+      </p>
+    </div>
+  </div>
+</section>
+```
+
+### 3. İletişim Formu Bileşeni
+İletişim formu bileşeni client-side olmalıdır çünkü interaktif elementler ve form gönderimi içerir. Form validasyonu için client-side state kullanılmalıdır.
+
+```tsx
+'use client';
+
+import { useState, FormEvent } from 'react';
+
+export default function ContactForm() {
+  const [formData, setFormData] = useState({
+    il: '',
+    sube: '',
+    adi_soyadi: '',
+    email: '',
+    telefon: '',
+    mesaj: '',
+    kvkk: false
+  });
+  
+  const [file, setFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null);
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+  
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitResult(null);
+    
+    // Form verilerini hazırla
+    const formDataToSend = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataToSend.append(key, value.toString());
+    });
+    
+    if (file) {
+      formDataToSend.append('userfile', file);
+    }
+    
+    try {
+      // API endpoint'i buraya gelecek
+      const response = await fetch('/api/iletisim', {
+        method: 'POST',
+        body: formDataToSend
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSubmitResult({
+          success: true,
+          message: 'Mesajınız başarıyla gönderildi. En kısa sürede sizinle iletişime geçeceğiz.'
+        });
+        // Formu temizle
+        setFormData({
+          il: '',
+          sube: '',
+          adi_soyadi: '',
+          email: '',
+          telefon: '',
+          mesaj: '',
+          kvkk: false
+        });
+        setFile(null);
+      } else {
+        setSubmitResult({
+          success: false,
+          message: data.message || 'Mesajınız gönderilirken bir hata oluştu. Lütfen tekrar deneyiniz.'
+        });
+      }
+    } catch (error) {
+      setSubmitResult({
+        success: false,
+        message: 'Bağlantı hatası. Lütfen internet bağlantınızı kontrol edip tekrar deneyiniz.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  return (
+    <section>
+      <h3 className="text-2xl font-bold text-primary-800 mb-4">İletişim Formu</h3>
+      
+      {submitResult && (
+        <div className={`mb-6 p-4 rounded-md ${submitResult.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+          {submitResult.message}
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="il" className="block text-sm font-medium text-gray-700 mb-1">İl *</label>
+            <select 
+              id="il" 
+              name="il"
+              value={formData.il}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              required
+            >
+              <option value="">İl Seçiniz</option>
+              <option value="İzmir">İzmir</option>
+              <option value="Ankara">Ankara</option>
+              <option value="İstanbul">İstanbul</option>
+              <option value="Diğer">Diğer</option>
+            </select>
+          </div>
+          
+          <div>
+            <label htmlFor="sube" className="block text-sm font-medium text-gray-700 mb-1">Şube *</label>
+            <select 
+              id="sube" 
+              name="sube"
+              value={formData.sube}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              required
+            >
+              <option value="">Şube Seçiniz</option>
+              <option value="Bayraklı">Bayraklı</option>
+              <option value="Edremit">Edremit</option>
+              <option value="Genel">Genel</option>
+            </select>
+          </div>
+        </div>
+        
+        <div>
+          <label htmlFor="adi_soyadi" className="block text-sm font-medium text-gray-700 mb-1">Ad Soyad *</label>
+          <input 
+            type="text" 
+            id="adi_soyadi" 
+            name="adi_soyadi"
+            value={formData.adi_soyadi}
+            onChange={handleInputChange}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            required
+          />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">E-posta *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              required
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">Telefon *</label>
+            <input 
+              type="tel" 
+              id="telefon" 
+              name="telefon"
+              value={formData.telefon}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="5XXXXXXXXX" 
+              maxLength={11}
+              required
+            />
+          </div>
+        </div>
+        
+        <div>
+          <label htmlFor="mesaj" className="block text-sm font-medium text-gray-700 mb-1">Mesajınız</label>
+          <textarea 
+            id="mesaj" 
+            name="mesaj"
+            value={formData.mesaj}
+            onChange={handleInputChange}
+            rows={5}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            placeholder="Mesajınızı buraya yazabilirsiniz..."
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="userfile" className="block text-sm font-medium text-gray-700 mb-1">Dosya Ekle (Opsiyonel)</label>
+          <input 
+            type="file" 
+            id="userfile" 
+            name="userfile"
+            onChange={handleFileChange}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            accept=".jpg,.jpeg,.png,.gif"
+          />
+          <p className="mt-1 text-xs text-gray-500">Sadece resim dosyaları (jpg, png, gif) yükleyebilirsiniz. Maksimum 3MB.</p>
+        </div>
+        
+        <div>
+          <div className="flex items-start">
+            <input 
+              type="checkbox" 
+              id="kvkk" 
+              name="kvkk"
+              checked={formData.kvkk}
+              onChange={handleInputChange}
+              className="h-4 w-4 text-primary-600 mt-1"
+              required
+            />
+            <label htmlFor="kvkk" className="ml-2 block text-sm text-gray-700">
+              <a href="/kisisel-verilerin-korunmasi" target="_blank" className="text-primary-700 hover:underline">
+                Kişisel Verilerin Korunması Kanunu Aydınlatma Metni
+              </a>'ni okudum ve kabul ediyorum.
+            </label>
+          </div>
+        </div>
+        
+        <div className="mt-4">
+          <div id="recaptcha" className="g-recaptcha" data-sitekey="6LdnK4IaAAAAAF8dCYxS9oMNMEq5jjHxZOB--4-k"></div>
+        </div>
+        
+        <div className="mt-6">
+          <button 
+            type="submit" 
+            className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-md transition duration-200"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'GÖNDERİLİYOR...' : 'GÖNDER'}
+          </button>
+        </div>
+      </form>
+    </section>
+  );
+}
+```
+
+### 4. Icon Bileşenleri
+Form ve iletişim bilgileri için gerekli icon bileşenleri:
+```tsx
+// Heroicons'dan SVG iconları
+function MapPinIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function PhoneIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function EnvelopeIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+      <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+    </svg>
+  );
+}
+```
+
+### 5. reCAPTCHA Script Entegrasyonu
+`layout.tsx` dosyasında veya sayfa içerisinde script eklemek için:
+
+```tsx
+// src/app/iletisim/layout.tsx
+export default function IletisimLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      {children}
+      {/* reCAPTCHA Script */}
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </>
+  );
+}
+```
+
+## Ana Sayfa Bileşeni
+```tsx
+// src/app/iletisim/page.tsx
+import { Metadata } from 'next';
+import ContactForm from '@/components/ContactForm';
+
+export const metadata: Metadata = {
+  title: 'İletişim - Pide By Pide',
+  description: 'Pide By Pide ile iletişime geçin. Görüş ve önerilerinizi bizimle paylaşın.',
+  keywords: 'İletişim, Pide By Pide iletişim, müşteri hizmetleri, görüş öneri',
+};
+
+export default function IletisimPage() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Hero Bölümü */}
+      <section className="bg-primary-50 py-12 md:py-20">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary-800 text-center mb-4">
+            İLETİŞİM
+          </h1>
+          <nav className="flex justify-center" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500">
+              <li>
+                <a href="/" className="hover:text-primary-700">Anasayfa</a>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="font-medium text-gray-700">İletişim</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      {/* İçerik Bölümü */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* İletişim Bilgileri */}
+            <div>
+              <h3 className="text-2xl font-bold text-primary-800 mb-4">İletişim Bilgilerimiz</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="font-semibold">Genel Merkez:</p>
+                  <p className="flex items-center text-gray-700 mt-1">
+                    <MapPinIcon className="h-5 w-5 mr-2 text-primary-600" /> Pide By Pide Genel Merkez
+                  </p>
+                  <p className="flex items-center text-gray-700 mt-1">
+                    <PhoneIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+                    <a href="tel:08504417433" className="text-primary-700 hover:underline">0850 441 7433</a>
+                  </p>
+                  <p className="flex items-center text-gray-700 mt-1">
+                    <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+                    <a href="mailto:info@pidebypide.com" className="text-primary-700 hover:underline">info@pidebypide.com</a>
+                  </p>
+                </div>
+                
+                <hr className="border-gray-200" />
+                
+                <div>
+                  <p className="font-semibold">Müşteri Hizmetleri:</p>
+                  <p className="flex items-center text-gray-700 mt-1">
+                    <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+                    <a href="mailto:musterihizmetleri@pidebypide.com" className="text-primary-700 hover:underline">musterihizmetleri@pidebypide.com</a>
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="font-semibold">Franchise:</p>
+                  <p className="flex items-center text-gray-700 mt-1">
+                    <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+                    <a href="mailto:franchise@pidebypide.com" className="text-primary-700 hover:underline">franchise@pidebypide.com</a>
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="font-semibold">İnsan Kaynakları:</p>
+                  <p className="flex items-center text-gray-700 mt-1">
+                    <EnvelopeIcon className="h-5 w-5 mr-2 text-primary-600" /> 
+                    <a href="mailto:ik@pidebypide.com" className="text-primary-700 hover:underline">ik@pidebypide.com</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* İletişim Formu */}
+            <div>
+              <ContactForm />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+## API Endpoint (Form Gönderimi için)
+
+Form gönderimi için bir API endpoint'i oluşturulmalıdır:
+
+```tsx
+// src/app/api/iletisim/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    
+    // Form verilerini al
+    const il = formData.get('il') as string;
+    const sube = formData.get('sube') as string;
+    const adi_soyadi = formData.get('adi_soyadi') as string;
+    const email = formData.get('email') as string;
+    const telefon = formData.get('telefon') as string;
+    const mesaj = formData.get('mesaj') as string;
+    const kvkk = formData.get('kvkk') as string;
+    const userfile = formData.get('userfile') as File | null;
+    
+    // Dosya bilgilerini kontrol et
+    let fileInfo = null;
+    if (userfile && userfile instanceof File) {
+      // Dosya boyutu kontrolü (maksimum 3MB)
+      if (userfile.size > 3 * 1024 * 1024) {
+        return NextResponse.json({ success: false, message: 'Dosya boyutu 3MB\'dan büyük olamaz.' }, { status: 400 });
+      }
+      
+      // Dosya türü kontrolü
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!allowedTypes.includes(userfile.type)) {
+        return NextResponse.json({ success: false, message: 'Sadece jpg, png ve gif uzantılı dosyalar yükleyebilirsiniz.' }, { status: 400 });
+      }
+      
+      fileInfo = {
+        name: userfile.name,
+        type: userfile.type,
+        size: userfile.size
+      };
+    }
+    
+    // reCAPTCHA doğrulaması
+    // Bu örnekte reCAPTCHA token'ı formDataStart dan alınıp sunucu tarafında doğrulanmalıdır
+    // Gerçek bir uygulamada Google reCAPTCHA API'si kullanılarak token doğrulaması yapılmalıdır
+    
+    // Burada form verilerini e-posta gönderme veya veritabanına kaydetme işlemleri yapılacak
+    
+    // Başarı cevabı
+    return NextResponse.json({ success: true, message: 'Mesajınız başarıyla gönderildi.' }, { status: 200 });
+  } catch (error) {
+    console.error('Form gönderimi hatası:', error);
+    return NextResponse.json({ success: false, message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.' }, { status: 500 });
+  }
+}
+```
+
+## Önemli Notlar ve Talimatlar
+
+1. **Form İşlemleri**
+   - İletişim formu client-side bir bileşen olmalıdır
+   - Form validasyonu client-side olarak yapılmalıdır
+   - Form gönderimi için API endpoint'i oluşturulmalıdır
+   - reCAPTCHA entegrasyonu yapılmalıdır
+
+2. **Responsive Tasarım**
+   - Mobil görünümde iletişim bilgileri ve form alt alta gösterilmelidir
+   - Form elemanlarının mobil uyumlu olmasına dikkat edilmelidir
+   - Büyük ekranlarda iki sütun yapısı korunmalıdır
+
+3. **Erişilebilirlik**
+   - Form elemanlarına uygun label'lar eklenmelidir
+   - Zorunlu alanlar için uygun bildirimler yapılmalıdır
+   - Hata mesajları kullanıcıya anlaşılır şekilde gösterilmelidir
+
+4. **Validasyon**
+   - Ad Soyad: Boş olmamalı
+   - E-posta: Geçerli bir e-posta formatında olmalı
+   - Telefon: 11 karakter uzunluğunda ve sadece rakam içermeli
+   - İl ve Şube: Seçim yapılmalı
+   - KVKK onayı: İşaretlenmeli
+   - Dosya: Maksimum 3MB ve sadece jpg, png, gif formatında olmalı
+
+5. **Güvenlik**
+   - Form gönderimi sırasında CSRF koruması sağlanmalıdır
+   - Dosya yüklemeleri için güvenlik önlemleri alınmalıdır
+   - reCAPTCHA ile bot koruması yapılmalıdır
+
+6. **Performance**
+   - Büyük kütüphaneler import edilmemeli, sadece ihtiyaç duyulan bileşenler kullanılmalıdır
+   - İkon bileşenleri için gerektiğinde Heroicon veya benzer bir kütüphane kullanılabilir
+
+7. **Next.js 15 App Router Özellikleri**
+   - Sayfa Server Component olarak oluşturulmalı
+   - Form bileşeni Client Component olarak işaretlenmeli
+   - API Route kullanılarak form verilerinin işlenmesi sağlanmalı
+
+Bu prompt ile "İletişim" sayfasını orijinal içeriğini ve tasarım unsurlarını koruyarak Next.js yapısına uyarlamalı ve responsive tasarım prensiplerini uygulamalısın.

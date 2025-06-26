@@ -1,0 +1,245 @@
+# Prompt: PideByPide "Ürünler" Sayfası Revizyonu
+
+```markdown
+# PideByPide "Ürünler" Sayfası Revizyonu
+
+## Görev Tanımı
+Mevcut `temp copy\lezzetler.html` dosyasını içerik ve tasarım unsurlarını koruyarak Next.js yapısına uygun şekilde revize et. Anasayfada kullanılan tasarım standartları ve responsive design prensiplerini "Ürünler" sayfasına da uygulamalısın.
+
+## Sayfa Yapısı
+Yeni dosya yolu: `src/app/urunler/page.tsx`
+URL: `/urunler`
+
+## Mevcut Durum ve Kaynaklar
+1. `temp copy\lezzetler.html`: Eski web sitesinden alınan, korunacak içerik ve tasarım elementlerini içeren HTML
+2. Anasayfadaki (`src/app/page.tsx`) tasarım standartları referans alınacak
+3. Meta verileri: Başlık ve açıklama mevcut HTML'den alınmalı
+
+## Sayfa Yapısı Analizi
+Mevcut HTML sayfasında 3 ana bölüm bulunmaktadır:
+1. **Pideler**: 8 farklı pide çeşidinin görselleri ve açıklamaları
+2. **Tatlılar**: 2 farklı tatlı çeşidinin görselleri ve açıklamaları
+3. **Diğer Ürünler**: 2 farklı ürünün görselleri ve açıklamaları
+
+Her ürün için aşağıdakiler bulunuyor:
+- Ürün başlığı (h3)
+- Ürün görseli (img)
+- Ürün açıklaması (p)
+
+## Teknik İyileştirme Gereksinimleri
+
+### 1. Metadata Optimizasyonu
+```tsx
+export const metadata = {
+  title: 'Lezzetler - Pide By Pide',
+  description: 'Patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide ve daha birçok lezzet Pide By Pide\'de.',
+  keywords: 'Lezzetler, ürünler, patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, künefe, by bomba'
+};
+```
+
+### 2. Görsel Optimizasyonu
+Tüm ürün görselleri için `next/image` kullanımı:
+
+```tsx
+import Image from "next/image";
+
+<Image 
+  src="/images/products/patatesli.jpg" 
+  alt="Patatesli Pide" 
+  width={360} 
+  height={280} 
+  className="w-full h-auto rounded-lg object-cover"
+/>
+```
+
+### 3. Responsive Ürün Grid Yapısı
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {/* Ürün kartları */}
+</div>
+```
+
+### 4. Ürün Kartı Bileşeni
+```tsx
+interface ProductCardProps {
+  title: string;
+  image: string;
+  description: string;
+  imageAlt?: string;
+}
+
+function ProductCard({ title, image, description, imageAlt = title }: ProductCardProps) {
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg">
+      <div className="p-4">
+        <h3 className="text-xl md:text-2xl font-bold text-primary-700 mb-3">{title}</h3>
+        <div className="relative aspect-[4/3] mb-4">
+          <Image 
+            src={image} 
+            alt={imageAlt}
+            fill
+            className="object-cover rounded-md"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+        <p className="text-gray-700 text-sm md:text-base">{description}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### 5. Kategori Başlıkları için Stil
+
+```tsx
+<h2 className="text-2xl md:text-3xl font-bold text-primary-800 mb-6 pb-2 border-b-2 border-primary-200 relative">
+  <span className="relative inline-block">
+    Pideler
+    <span className="absolute bottom-0 left-0 w-1/2 h-1 bg-primary-500"></span>
+  </span>
+</h2>
+```
+
+## Uygulama Adımları
+
+1. **Temel Sayfa Yapısı**
+```tsx
+export default function UrunlerPage() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Hero Bölümü */}
+      <section className="bg-primary-50 py-12 md:py-20">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary-800 text-center mb-4">
+            LEZZETLER
+          </h1>
+          <nav className="flex justify-center" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500">
+              <li>
+                <a href="/" className="hover:text-primary-700">Anasayfa</a>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="font-medium text-gray-700">Lezzetler</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      {/* Ürün Kategorileri */}
+      <div className="container mx-auto px-4 py-12 md:py-16">
+        {/* Pideler Bölümü */}
+        <section className="mb-16">
+          <h2 className="...">Pideler</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Pide ürün kartları */}
+          </div>
+        </section>
+
+        {/* Tatlılar Bölümü */}
+        <section className="mb-16">
+          <h2 className="...">Tatlılar</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Tatlı ürün kartları */}
+          </div>
+        </section>
+
+        {/* Diğer Ürünler Bölümü */}
+        <section className="mb-16">
+          <h2 className="...">Diğer Ürünler</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Diğer ürün kartları */}
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+```
+
+2. **Ürün Verileri**
+
+```tsx
+// Bu veriler src/data/products.ts dosyasında saklanabilir
+export const pideProducts = [
+  {
+    title: "Patatesli",
+    image: "/images/products/patatesli.jpg",
+    description: "İştah kabartan patatesli pidemiz damaklarda iz bırakıyor. Doyurucu menüsüyle öne çıkan patatesli pideyi tatmanın tam zamanı!"
+  },
+  {
+    title: "Ispanaklı",
+    image: "/images/products/ispanakli.jpg",
+    description: "Hafızalara kazınacak tadı ve doyurucu menüsüyle Ispanaklı pide keyfini tam anlamıyla yaşatıyor."
+  },
+  // Diğer pideler...
+];
+
+export const dessertProducts = [
+  {
+    title: "By Bomba",
+    image: "/images/products/by-bomba.jpg",
+    description: "By Bomba, eşsiz tadıyla benzersiz bir tatlı olarak damaklarda iz bırakıyor."
+  },
+  // Diğer tatlılar...
+];
+
+export const otherProducts = [
+  {
+    title: "Mercimek Çorba",
+    image: "/images/products/mercimek-corba.jpg",
+    description: "Çorba içmek isteyenler için akla gelen ilk lezzet mercimek çorbasının yapımında tereyağı kullanıyor, mercimeği kaynatıp çırparak tamamen katkısız bir şekilde sunuyoruz."
+  },
+  // Diğer ürünler...
+];
+```
+
+## Önemli Notlar ve Talimatlar
+
+1. **Görsel Kaynakları**
+   - Eski HTML'de görsellerin paths: `_cache/croped/[ürün-adı].jpg` formatında
+   - Yeni yapıda görsellerin `/images/products/[ürün-adı].jpg` formatında public klasöründe olduğunu varsay
+   - Eğer görseller mevcut değilse, placeholder olarak `https://via.placeholder.com/360x280` kullan 
+
+2. **SEO Optimizasyonu**
+   - Mevcut meta bilgilerini koru
+   - Semantic HTML yapısını korumaya özen göster (h1, h2, h3 hiyerarşisi)
+   - Alt metinlerini doğru şekilde uygula
+
+3. **Responsive Tasarım**
+   - Mobil öncelikli yaklaşım kullan
+   - Ürün kartları küçük ekranlarda tek sütun, orta boyut ekranlarda iki sütun, büyük ekranlarda üç sütun olmalı
+   - Image boyutlandırma için aspect ratio koru
+   - Yazı boyutlarını responsive hale getir
+
+4. **Loading State ve Performance**
+   - Ana görseller için `priority={true}` ekleyerek LCP iyileştirmesi yap
+   - Sayfa yüklenirken ürünlerin yerine loading state göster (skeleton loaders)
+
+5. **Erişilebilirlik (A11y)**
+   - Tüm görsellere uygun alt metinleri ekle
+   - Başlık hiyerarşisini koru (h1 > h2 > h3)
+   - Renk kontrastını doğru uygula
+   - Etkileşimli elementler için ARIA etiketleri ekle
+
+## Kod Yapısı ve Best Practices
+
+1. **Modülerlik**
+   - Ürün kartı bileşenini (ProductCard) ayrı bir bileşen olarak oluştur
+   - Kategori başlıkları için SectionTitle bileşeni oluşturabilirsin
+   - Ürün verilerini ayrı bir dosyada yönet
+
+2. **Type Safety**
+   - TypeScript tip tanımlamalarını kullan
+   - Interface ve tip tanımlamalarını modülerize et
+
+3. **Client vs. Server Bileşenler**
+   - Sayfa ve veri gösterim bileşenlerini server component olarak tanımla
+   - Etkileşimli bileşenleri (varsa) 'use client' ile client component olarak işaretle
+
+4. **Başlıklar ve İçerik Alanları**
+   - Sayfa başlığı: "LEZZETLER"
+   - Kategori başlıkları: "Pideler", "Tatlılar", "Diğer Ürünler"
+
+Bu prompt ile "Ürünler" sayfasını orijinal içeriğini ve tasarım unsurlarını koruyarak Next.js yapısına uyarlamalı ve responsive tasarım prensiplerini uygulamalısın.

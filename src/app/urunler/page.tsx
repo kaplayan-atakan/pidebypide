@@ -1,184 +1,260 @@
+import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
-import Image from "next/image";
 
-export default function Urunler() {
-  const pideTurleri = [
-    {
-      id: 1,
-      name: "Klasik Kaşarlı Pide",
-      description: "Taze kaşar peyniri ile hazırlanan geleneksel pidemizdeki lezzet.",
-      price: "45₺",
-      image: "/assets/images/pide1.jpg"
-    },
-    {
-      id: 2,
-      name: "Kıymalı Pide",
-      description: "Özel baharatlarla marine edilmiş taze kıyma ile hazırlanan pide.",
-      price: "55₺",
-      image: "/assets/images/pide2.jpg"
-    },
-    {
-      id: 3,
-      name: "Karışık Pide",
-      description: "Kaşar, kıyma, sucuk ve yumurta ile zengin karışım.",
-      price: "65₺",
-      image: "/assets/images/pide3.jpg"
-    },
-    {
-      id: 4,
-      name: "Sucuklu Pide",
-      description: "Özel dana sucuğu ve kaşar peyniri ile lezzet şöleni.",
-      price: "50₺",
-      image: "/assets/images/web_pide-05.jpg"
-    },
-    {
-      id: 5,
-      name: "Sebzeli Pide",
-      description: "Taze sebzeler, domates, biber ve kaşar peyniri ile sağlıklı lezzet.",
-      price: "40₺",
-      image: "/assets/images/pide1.jpg"
-    },
-    {
-      id: 6,
-      name: "Mantarlı Pide",
-      description: "Taze mantar, kaşar peyniri ile doğal tatlar.",
-      price: "45₺",
-      image: "/assets/images/pide2.jpg"
-    }
-  ];
+// SEO Metadata
+export const metadata: Metadata = {
+  title: "Ürünler - Pide By Pide",
+  description: "Patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide ve daha birçok lezzet Pide By Pide'de.",
+  keywords: "Lezzetler, ürünler, patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, künefe, by bomba",
+};
 
-  const icecekler = [
-    { name: "Ayran", price: "8₺" },
-    { name: "Kola", price: "10₺" },
-    { name: "Fanta", price: "10₺" },
-    { name: "Su", price: "5₺" },
-    { name: "Çay", price: "6₺" },
-    { name: "Türk Kahvesi", price: "15₺" }
-  ];
+// Ürün Kartı Bileşeni
+interface ProductCardProps {
+  title: string;
+  image: string;
+  description: string;
+  imageAlt?: string;
+}
+
+function ProductCard({ title, image, description, imageAlt = title }: ProductCardProps) {
+  return (
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+      <div className="relative aspect-[4/3] w-full">
+        <Image
+          src={image || "https://via.placeholder.com/360x280?text=Pide+By+Pide"}
+          alt={`${imageAlt} - Pide By Pide`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      </div>
+      <div className="p-5 sm:p-6">
+        <h3 className="text-xl sm:text-2xl font-bold font-header text-[#14543c] mb-3">{title}</h3>
+        <p className="text-responsive-sm text-[#7b7934] leading-relaxed">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+// Kategori Başlık Bileşeni
+function CategoryTitle({ title }: { title: string }) {
+  return (
+    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-header text-[#14543c] mb-8 pb-2 relative">
+      <span className="relative inline-block">
+        {title}
+        <span className="absolute -bottom-2 left-0 w-1/2 h-1 bg-[#f29b24]"></span>
+      </span>
+    </h2>
+  );
+}
+
+// Ürün Verileri
+const pideProducts = [
+  {
+    title: "Patatesli",
+    image: "/assets/images/pide1.jpg",
+    description: "İştah kabartan patatesli pidemiz damaklarda iz bırakıyor. Doyurucu menüsüyle öne çıkan patatesli pideyi tatmanın tam zamanı!"
+  },
+  {
+    title: "Ispanaklı",
+    image: "/assets/images/pide2.jpg",
+    description: "Hafızalara kazınacak tadı ve doyurucu menüsüyle Ispanaklı pide keyfini tam anlamıyla yaşatıyor."
+  },
+  {
+    title: "Peynirli",
+    image: "/assets/images/pide3.jpg",
+    description: "Pide lezzeti peynirle birleşiyor. Deneyimli ustaların hazırladığı peynirli pideler, tadıyla akıllarda yer ediyor."
+  },
+  {
+    title: "Tavuklu",
+    image: "/assets/images/web_pide-05.jpg",
+    description: "Tavuktan vazgeçemeyenlerin tercihi tavuklu pide, benzersiz tadıyla rakip tanımıyor. Özel baharatlarla hazırlanıyor, lezzet keyfi doruğa çıkıyor."
+  },
+  {
+    title: "Kıymalı",
+    image: "/assets/images/pide1.jpg",
+    description: "Türk mutfağının klasiği kıymalı pide, PidebyPide'nin maharetli ustalarının ellerinde benzersiz bir lezzete dönüşüyor. PidebyPide, doyurucu kıymalı pidesiyle misafirlerini lezzet dolu bir deneyime davet ediyor!"
+  },
+  {
+    title: "Kuşbaşılı",
+    image: "/assets/images/pide2.jpg",
+    description: "Tadına doyum olmayan kuşbaşılı pide, kendine has tadıyla rakip tanımıyor. Kuşbaşılı pide lezzeti akıllardan silinmiyor!"
+  }
+];
+
+const dessertProducts = [
+  {
+    title: "By Bomba",
+    image: "/assets/images/pide1.jpg",
+    description: "By Bomba, eşsiz tadıyla benzersiz bir tatlı olarak damaklarda iz bırakıyor."
+  },
+  {
+    title: "Künefe",
+    image: "/assets/images/pide3.jpg",
+    description: "Geleneksel lezzet künefe, özel sunumuyla Pide By Pide'de sizi bekliyor."
+  }
+];
+
+const otherProducts = [
+  {
+    title: "Mercimek Çorba",
+    image: "/assets/images/web_pide-05.jpg",
+    description: "Çorba içmek isteyenler için akla gelen ilk lezzet mercimek çorbasının yapımında tereyağı kullanıyor, mercimeği kaynatıp çırparak tamamen katkısız bir şekilde sunuyoruz."
+  },
+  {
+    title: "Ayran",
+    image: "/assets/images/pide2.jpg",
+    description: "Yoğunluğu ayarlı, ferahlatıcı Pide By Pide özel ayranı."
+  }
+];
+
+export default function UrunlerPage() {
   return (
     <div className="layout--urunler bg-white min-h-screen">
       <OpinionBar />
       <Header />
       
-      <main className="min-h-screen py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-4xl font-bold font-header text-center mb-8 text-[#14543c]">Ürünlerimiz</h1>
-            
-            <div className="text-center mb-12">
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Geleneksel tariflerle hazırlanan taze pidelerimiz ve lezzetli içeceklerimizle 
-                size unutulmaz bir tat deneyimi sunuyoruz.
+      <main className="min-h-screen">
+        {/* Hero Bölümü */}
+        <section className="bg-gradient-to-br from-[#14543c] to-[#0f3d2a] py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto container-responsive">
+            <div className="text-center">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-header text-white margin-responsive">
+                ÜRÜNLER
+              </h1>
+              <nav className="mt-4 sm:mt-6">
+                <ol className="flex justify-center items-center space-x-2 text-sm sm:text-base text-[#f29b24]">
+                  <li>
+                    <Link href="/" className="hover:text-white transition-colors">
+                      Anasayfa
+                    </Link>
+                  </li>
+                  <li className="text-white">/</li>
+                  <li className="text-white">Ürünler</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        {/* Ana İçerik */}
+        <div className="py-8 sm:py-12 lg:py-16">
+          <div className="container mx-auto container-responsive">
+            {/* Giriş Metni */}
+            <div className="text-center mb-12 max-w-3xl mx-auto">
+              <p className="text-responsive-md text-[#7b7934] leading-relaxed">
+                PidebyPide olarak, konuklarımıza, Türk mutfağının yöresel yemeği pidenin hızlı ve doyurucu halini, enfes bir lezzetle sunuyoruz. 
+                Deneyimli ustalarımız tarafından hazırlanan günlük taze hamurdan özel olarak üretilen bol malzemeli ürünlerimizi keşfedin.
               </p>
             </div>
 
-            {/* Pide Çeşitleri */}
+            {/* Pideler Bölümü */}
             <section className="mb-16">
-              <h2 className="text-3xl font-bold font-header text-center mb-8 text-[#14543c]">Pide Çeşitlerimiz</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {pideTurleri.map((pide) => (
-                  <div key={pide.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div className="relative h-48">
-                      <Image
-                        src={pide.image}
-                        alt={pide.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold font-header mb-2 text-[#14543c]">{pide.name}</h3>
-                      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                        {pide.description}
-                      </p>                      <div className="text-center">
-                        <span className="text-2xl font-bold text-orange-600">{pide.price}</span>
-                      </div>
-                    </div>
-                  </div>
+              <CategoryTitle title="Pideler" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {pideProducts.map((product, index) => (
+                  <ProductCard 
+                    key={index}
+                    title={product.title}
+                    image={product.image}
+                    description={product.description}
+                    imageAlt={`${product.title} Pide`}
+                  />
                 ))}
               </div>
             </section>
 
-            {/* İçecekler */}
+            {/* Tatlılar Bölümü */}
             <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">İçeceklerimiz</h2>
+              <CategoryTitle title="Tatlılar" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {dessertProducts.map((product, index) => (
+                  <ProductCard 
+                    key={index}
+                    title={product.title}
+                    image={product.image}
+                    description={product.description}
+                    imageAlt={`${product.title} Tatlı`}
+                  />
+                ))}
+              </div>
+            </section>
+
+            {/* Diğer Ürünler Bölümü */}
+            <section className="mb-16">
+              <CategoryTitle title="Diğer Ürünler" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {otherProducts.map((product, index) => (
+                  <ProductCard 
+                    key={index}
+                    title={product.title}
+                    image={product.image}
+                    description={product.description}
+                    imageAlt={product.title}
+                  />
+                ))}
+              </div>
+            </section>
+
+            {/* Kalite Bilgilendirme Bölümü */}
+            <section className="bg-gradient-to-r from-[#14543c]/10 to-[#f29b24]/10 rounded-lg p-6 sm:p-8 lg:p-10">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl sm:text-3xl font-bold font-header text-[#14543c] mb-4">Kalite Taahhüdümüz</h2>
+                <p className="text-responsive-md text-[#7b7934] max-w-2xl mx-auto">
+                  Pide By Pide olarak, her ürünümüzde en taze malzemeleri kullanıyoruz ve geleneksel tariflerimize sadık kalıyoruz.
+                </p>
+              </div>
               
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                  {icecekler.map((icecek, index) => (
-                    <div key={index} className="text-center p-4 rounded-lg bg-gray-50 hover:bg-orange-50 transition-colors">
-                      <div className="text-2xl mb-2">🥤</div>
-                      <h3 className="font-bold text-gray-800 mb-1">{icecek.name}</h3>
-                      <p className="text-orange-600 font-bold">{icecek.price}</p>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white rounded-lg p-5 text-center shadow-md">
+                  <div className="w-16 h-16 bg-[#14543c] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold font-header text-[#14543c] mb-2">Taze Malzemeler</h3>
+                  <p className="text-sm text-[#7b7934]">Her gün taze malzemelerle hazırlanan lezzetler</p>
+                </div>
+                
+                <div className="bg-white rounded-lg p-5 text-center shadow-md">
+                  <div className="w-16 h-16 bg-[#f29b24] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold font-header text-[#14543c] mb-2">Özel Tarifler</h3>
+                  <p className="text-sm text-[#7b7934]">Geleneksel tariflerimizle eşsiz lezzetler</p>
+                </div>
+                
+                <div className="bg-white rounded-lg p-5 text-center shadow-md">
+                  <div className="w-16 h-16 bg-[#14543c] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0M8 11h8m-4-5v10"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold font-header text-[#14543c] mb-2">Hijyenik Ortam</h3>
+                  <p className="text-sm text-[#7b7934]">Sağlık ve hijyen standartlarına tam uyum</p>
                 </div>
               </div>
             </section>
 
-            {/* Özel Menüler */}
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">Özel Menülerimiz</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Aile Menüsü */}
-                <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-lg p-8 shadow-lg">
-                  <h3 className="text-2xl font-bold mb-4 text-orange-700">👨‍👩‍👧‍👦 Aile Menüsü</h3>
-                  <ul className="space-y-2 text-gray-700 mb-6">
-                    <li>• 2 Büyük Karışık Pide</li>
-                    <li>• 4 Ayran</li>
-                    <li>• Turşu ve Salata</li>
-                    <li>• Çay İkramı</li>
-                  </ul>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 line-through">Normal Fiyat: 160₺</span>
-                    <span className="text-2xl font-bold text-orange-600">120₺</span>
-                  </div>
-                </div>
-
-                {/* İkili Menü */}
-                <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg p-8 shadow-lg">
-                  <h3 className="text-2xl font-bold mb-4 text-blue-700">❤️ İkili Menü</h3>
-                  <ul className="space-y-2 text-gray-700 mb-6">
-                    <li>• 2 Orta Boy Pide (Seçiminize Göre)</li>
-                    <li>• 2 İçecek</li>
-                    <li>• Salata</li>
-                    <li>• Tatlı İkramı</li>
-                  </ul>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 line-through">Normal Fiyat: 90₺</span>
-                    <span className="text-2xl font-bold text-blue-600">75₺</span>
-                  </div>
-                </div>
-              </div>
+            {/* CTA Bölümü */}
+            <section className="text-center mt-12 mb-8">
+              <Link 
+                href="/subeler" 
+                className="inline-block bg-[#14543c] hover:bg-[#0f3d2a] text-white py-3 px-8 rounded-lg font-bold transition-colors btn-touch text-responsive-md"
+              >
+                En Yakın Şubeyi Bul
+              </Link>
             </section>
-
-            {/* Özel Bilgiler */}
-            <div className="bg-orange-50 rounded-lg p-8 text-center">
-              <h2 className="text-2xl font-bold mb-4 text-orange-600">Özel Notlar</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700">
-                <div>
-                  <div className="text-2xl mb-2">🥖</div>
-                  <p><strong>Taze Hamur:</strong> Pidelerimiz günlük taze hamurla hazırlanır</p>
-                </div>
-                <div>
-                  <div className="text-2xl mb-2">🧀</div>
-                  <p><strong>Kaliteli Malzemeler:</strong> Sadece premium kalite malzemeler kullanırız</p>
-                </div>
-                <div>
-                  <div className="text-2xl mb-2">🚚</div>
-                  <p><strong>Paket Servis:</strong> Tüm ürünlerimiz paket servis olarak da mevcuttur</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>  );
 }

@@ -1,6 +1,13 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from 'next/                <Image 
+                  src="/assets/images/web_pide-05.jpg"
+                  alt="Pide By Pide Hakkımızda"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>mport Link from 'next/link';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
@@ -54,7 +61,7 @@ export default function HakkimizdaPage() {
         <section className="py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto container-responsive">
             {/* Hero Görsel */}
-            {/* <div className="mb-8 sm:mb-12 lg:mb-16">
+            <div className="mb-8 sm:mb-12 lg:mb-16">
               <div className="relative w-full h-64 sm:h-80 lg:h-96 rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src="/assets/images/web_pide-05.jpg"
@@ -65,7 +72,7 @@ export default function HakkimizdaPage() {
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-20"></div>
               </div>
-            </div> */}
+            </div>
 
             {/* İçerik Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
@@ -85,11 +92,12 @@ export default function HakkimizdaPage() {
                 </div>
               </div>
 
-              {/* Sağ Taraf - Görsel ve İstatistikler */}              <div className="space-y-6 lg:space-y-8">
+              {/* Sağ Taraf - Görsel ve İstatistikler */}
+              <div className="space-y-6 lg:space-y-8">
                 <div className="relative">
                   <Image
-                    src="/assets/images/hakkimizda.png"
-                    alt="Pide By Pide Hakkımızda"
+                    src="/assets/images/pide1.jpg"
+                    alt="Pide Hazırlama Süreci"
                     width={600}
                     height={400}
                     className="w-full h-auto rounded-lg shadow-lg object-cover"

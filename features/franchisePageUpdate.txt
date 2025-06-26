@@ -1,0 +1,554 @@
+# Prompt: PideByPide "Franchise" Sayfası Revizyonu
+
+```markdown
+# PideByPide "Franchise" Sayfası Revizyonu
+
+## Görev Tanımı
+Mevcut `temp copy\franchise.html` dosyasını içerik ve tasarım unsurlarını koruyarak Next.js yapısına uygun şekilde revize et. Anasayfada kullanılan tasarım standartları ve responsive design prensiplerini "Franchise" sayfasına da uygulamalısın.
+
+## Sayfa Yapısı
+Yeni dosya yolu: `src/app/franchise/page.tsx`
+URL: `/franchise`
+
+## Mevcut Durum ve Kaynaklar
+1. `temp copy\franchise.html`: Eski web sitesinden alınan, korunacak içerik ve tasarım elementlerini içeren HTML
+2. Anasayfadaki (`src/app/page.tsx`) tasarım standartları referans alınacak
+3. Meta verileri: Başlık ve açıklama mevcut HTML'den alınmalı
+
+## Sayfa Yapısı Analizi
+Mevcut HTML sayfasında 2 ana bölüm bulunmaktadır:
+1. **Franchise Bilgileri**: Şirket tanıtımı, franchise modeli açıklaması ve görsel içerik
+2. **Franchise Başvuru Formu**: Franchising ile ilgilenenler için başvuru formu
+
+Form özellikleri:
+- Ad Soyad (text input)
+- E-posta (email input)
+- Telefon (text input)
+- Şu An Yaptığınız İş (text input)
+- Franchise Açmak İstediğiniz Şehir (text input)
+- Lokasyon (Bölge/AVM/Cadde) (text input)
+- Kişisel Verilerin Korunması onay kutusu (checkbox)
+- reCAPTCHA
+- Gönder butonu
+
+## Teknik İyileştirme Gereksinimleri
+
+### 1. Metadata Optimizasyonu
+```tsx
+export const metadata = {
+  title: 'Franchise - Pide By Pide',
+  description: 'PidebyPide franchise modeli ile kendi işinizi kurun. Apaz Holding güvencesiyle karlı yatırım fırsatları.',
+  keywords: 'Franchise, PidebyPide franchise, iş fırsatı, yatırım, Apaz Holding, kendi işini kurma'
+};
+```
+
+### 2. Hero Banner İyileştirmesi
+```tsx
+<section className="relative w-full mb-8">
+  <div className="aspect-w-16 aspect-h-7 w-full">
+    <Image 
+      src="/images/franchise/pidebypide_franchise.jpg" 
+      alt="PidebyPide Franchise" 
+      fill
+      className="object-cover rounded-lg shadow-md"
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+      priority={true}
+    />
+  </div>
+</section>
+```
+
+### 3. İçerik Bölümü Stilize Edilmesi
+```tsx
+<div className="prose prose-lg max-w-none">
+  <p className="text-base md:text-lg text-gray-700 mb-4">
+    PidebyPide olarak, konuklarımıza, Türk mutfağının yöresel yemeği pidenin hızlı ve doyurucu halini, enfes bir lezzet ve uygun fiyatlarla sunuyoruz. Her öğün, herkes tarafından tercih edilebilecek bir alternatif olabilmek için çalışıyoruz.
+  </p>
+  
+  <p className="text-xl font-bold text-primary-800 my-6">
+    "İşin hamurunda kazanç var"
+  </p>
+  
+  <p className="text-base md:text-lg text-gray-700 mb-4">
+    Kendi işini kurmak isteyen, kısa sürede karlı bir yatırım fırsatı arayan, gelişimin bir parçası olmak isteyen girişimciler için PidebyPide Franchise Modeli'ni oluşturduk.
+  </p>
+  
+  <p className="text-base md:text-lg text-gray-700 mb-6">
+    PidebyPide Franchise Modeli, Baydöner ve Bursa İshakbey markalarının da sahibi olan Apaz Holding güvencesiyle girişimcilere karlı bir yatırım ve kazanç imkanı sunuyor.
+  </p>
+  
+  <p className="text-base md:text-lg text-gray-700 mb-4">
+    Kiralama, inşaat (dekorasyon), lojistik, tedarik, insan kaynakları, bilgi-işlem ve diğer operasyonel konularda tecrübeli ve bilgili profesyonel bir kadronun tam desteğini kapsayan bir franchise modeli sunuyoruz.
+  </p>
+  
+  <p className="text-base md:text-lg text-gray-700">
+    Eğer sizde PidebyPide ailesine franchise alarak katılmak istiyorsanız
+    <a href="mailto:franchise@pidebypide.com" className="text-primary-600 hover:text-primary-800 mx-1">
+      franchise@pidebypide.com
+    </a>
+    adresinden bizimle iletişime geçebilirsiniz.
+  </p>
+</div>
+```
+
+### 4. Franchise Başvuru Formu Bileşeni
+Franchise başvuru formu client-side bir bileşen olmalıdır:
+
+```tsx
+'use client';
+
+import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function FranchiseForm() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    fullname: '',
+    email: '',
+    phone: '',
+    work: '',
+    city: '',
+    location: '',
+    privacyPolicy: false
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null);
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+  
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitResult(null);
+    
+    try {
+      // Form gönderim API'si
+      const response = await fetch('/api/franchise-basvuru', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSubmitResult({
+          success: true,
+          message: 'Başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.'
+        });
+        // Formu sıfırla
+        setFormData({
+          fullname: '',
+          email: '',
+          phone: '',
+          work: '',
+          city: '',
+          location: '',
+          privacyPolicy: false
+        });
+      } else {
+        setSubmitResult({
+          success: false,
+          message: data.message || 'Bir hata oluştu. Lütfen tekrar deneyiniz.'
+        });
+      }
+    } catch (error) {
+      setSubmitResult({
+        success: false,
+        message: 'Bağlantı hatası. Lütfen internet bağlantınızı kontrol edip tekrar deneyiniz.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
+      <h3 className="text-2xl font-bold text-primary-800 mb-6">Franchise Formu</h3>
+      
+      {submitResult && (
+        <div className={`mb-6 p-4 rounded-md ${submitResult.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+          {submitResult.message}
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid grid-cols-1 gap-y-4">
+          <div className="flex flex-col md:flex-row md:items-center">
+            <label htmlFor="fullname" className="md:w-1/3 text-gray-700 font-medium mb-1 md:mb-0">
+              Ad Soyad
+            </label>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                value={formData.fullname}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row md:items-center">
+            <label htmlFor="email" className="md:w-1/3 text-gray-700 font-medium mb-1 md:mb-0">
+              E-posta
+            </label>
+            <div className="md:w-2/3">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row md:items-center">
+            <label htmlFor="phone" className="md:w-1/3 text-gray-700 font-medium mb-1 md:mb-0">
+              Telefon
+            </label>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="5XXXXXXXXX"
+                maxLength={11}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row md:items-center">
+            <label htmlFor="work" className="md:w-1/3 text-gray-700 font-medium mb-1 md:mb-0">
+              Şu An Yaptığınız İş
+            </label>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                id="work"
+                name="work"
+                value={formData.work}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row md:items-center">
+            <label htmlFor="city" className="md:w-1/3 text-gray-700 font-medium mb-1 md:mb-0">
+              Franchise Açmak İstediğiniz Şehir
+            </label>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                id="city"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row md:items-center">
+            <label htmlFor="location" className="md:w-1/3 text-gray-700 font-medium mb-1 md:mb-0">
+              Lokasyon (Bölge/AVM/Cadde)
+            </label>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <label className="flex items-start">
+                <input
+                  type="checkbox"
+                  name="privacyPolicy"
+                  checked={formData.privacyPolicy}
+                  onChange={handleInputChange}
+                  className="mt-1 h-4 w-4 text-primary-600"
+                  required
+                />
+                <span className="ml-2 text-sm text-gray-700">
+                  <a 
+                    href="/kisisel-verilerin-korunmasi" 
+                    target="_blank"
+                    className="text-primary-600 hover:text-primary-800"
+                  >
+                    Kişisel Verilerin Korunması Gizlilik Politikası
+                  </a>'nı okudum ve kabul ediyorum.
+                </span>
+              </label>
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <div className="g-recaptcha" data-sitekey="6LdnK4IaAAAAAF8dCYxS9oMNMEq5jjHxZOB--4-k"></div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row mt-6">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <button
+                type="submit"
+                className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded-md transition duration-200"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'GÖNDERİLİYOR...' : 'GÖNDER'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+}
+```
+
+### 5. reCAPTCHA Script Entegrasyonu
+`layout.tsx` dosyasında veya sayfa içerisinde script eklemek için:
+
+```tsx
+// src/app/franchise/layout.tsx
+export default function FranchiseLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      {children}
+      {/* reCAPTCHA Script */}
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </>
+  );
+}
+```
+
+## Ana Sayfa Bileşeni
+```tsx
+// src/app/franchise/page.tsx
+import { Metadata } from 'next';
+import Image from 'next/image';
+import FranchiseForm from '@/components/FranchiseForm';
+
+export const metadata: Metadata = {
+  title: 'Franchise - Pide By Pide',
+  description: 'PidebyPide franchise modeli ile kendi işinizi kurun. Apaz Holding güvencesiyle karlı yatırım fırsatları.',
+  keywords: 'Franchise, PidebyPide franchise, iş fırsatı, yatırım, Apaz Holding, kendi işini kurma',
+};
+
+export default function FranchisePage() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Hero Bölümü */}
+      <section className="bg-primary-50 py-12 md:py-20">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary-800 text-center mb-4">
+            FRANCHISE
+          </h1>
+          <nav className="flex justify-center" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500">
+              <li>
+                <a href="/" className="hover:text-primary-700">Anasayfa</a>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="font-medium text-gray-700">Franchise</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      {/* İçerik Bölümü */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="p-6 md:p-8">
+            {/* Franchise Banner */}
+            <div className="relative w-full mb-8">
+              <div className="aspect-w-16 aspect-h-7 w-full">
+                <Image 
+                  src="/images/franchise/pidebypide_franchise.jpg" 
+                  alt="PidebyPide Franchise" 
+                  fill
+                  className="object-cover rounded-lg shadow-md"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+                  priority={true}
+                />
+              </div>
+            </div>
+            
+            {/* Franchise İçeriği */}
+            <div className="prose prose-lg max-w-none">
+              <p className="text-base md:text-lg text-gray-700 mb-4">
+                PidebyPide olarak, konuklarımıza, Türk mutfağının yöresel yemeği pidenin hızlı ve doyurucu halini, enfes bir lezzet ve uygun fiyatlarla sunuyoruz. Her öğün, herkes tarafından tercih edilebilecek bir alternatif olabilmek için çalışıyoruz.
+              </p>
+              
+              <p className="text-xl font-bold text-primary-800 my-6">
+                "İşin hamurunda kazanç var"
+              </p>
+              
+              <p className="text-base md:text-lg text-gray-700 mb-4">
+                Kendi işini kurmak isteyen, kısa sürede karlı bir yatırım fırsatı arayan, gelişimin bir parçası olmak isteyen girişimciler için PidebyPide Franchise Modeli'ni oluşturduk.
+              </p>
+              
+              <p className="text-base md:text-lg text-gray-700 mb-6">
+                PidebyPide Franchise Modeli, Baydöner ve Bursa İshakbey markalarının da sahibi olan Apaz Holding güvencesiyle girişimcilere karlı bir yatırım ve kazanç imkanı sunuyor.
+              </p>
+              
+              <p className="text-base md:text-lg text-gray-700 mb-4">
+                Kiralama, inşaat (dekorasyon), lojistik, tedarik, insan kaynakları, bilgi-işlem ve diğer operasyonel konularda tecrübeli ve bilgili profesyonel bir kadronun tam desteğini kapsayan bir franchise modeli sunuyoruz.
+              </p>
+              
+              <p className="text-base md:text-lg text-gray-700">
+                Eğer sizde PidebyPide ailesine franchise alarak katılmak istiyorsanız
+                <a href="mailto:franchise@pidebypide.com" className="text-primary-600 hover:text-primary-800 mx-1">
+                  franchise@pidebypide.com
+                </a>
+                adresinden bizimle iletişime geçebilirsiniz.
+              </p>
+            </div>
+            
+            {/* Franchise Form */}
+            <div className="mt-12">
+              <div className="max-w-3xl mx-auto">
+                <FranchiseForm />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+## API Endpoint (Form Gönderimi için)
+
+Form gönderimi için bir API endpoint'i oluşturulmalıdır:
+
+```tsx
+// src/app/api/franchise-basvuru/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: NextRequest) {
+  try {
+    const data = await req.json();
+    
+    // Form verilerini al
+    const { fullname, email, phone, work, city, location, privacyPolicy } = data;
+    
+    // Zorunlu alanları kontrol et
+    if (!fullname || !email || !phone || !work || !city || !location || !privacyPolicy) {
+      return NextResponse.json({ success: false, message: 'Tüm zorunlu alanları doldurunuz.' }, { status: 400 });
+    }
+    
+    // E-posta formatını kontrol et
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ success: false, message: 'Geçerli bir e-posta adresi giriniz.' }, { status: 400 });
+    }
+    
+    // Telefon formatını kontrol et - Başında 5 olan 10 karakter
+    const phoneRegex = /^5\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+      return NextResponse.json({ success: false, message: 'Geçerli bir telefon numarası giriniz (5XXXXXXXXX formatında).' }, { status: 400 });
+    }
+    
+    // reCAPTCHA doğrulaması (gerçek uygulamada Google reCAPTCHA API'si kullanılmalı)
+    
+    // Burada form verisini e-posta gönderme veya veritabanına kaydetme işlemleri yapılacak
+    
+    // Başarı cevabı
+    return NextResponse.json({ success: true, message: 'Franchise başvurunuz başarıyla alındı. En kısa sürede sizinle iletişime geçeceğiz.' }, { status: 200 });
+  } catch (error) {
+    console.error('Form gönderimi hatası:', error);
+    return NextResponse.json({ success: false, message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.' }, { status: 500 });
+  }
+}
+```
+
+## Önemli Notlar ve Talimatlar
+
+1. **Form İşlemleri**
+   - Franchise başvuru formu client-side bir bileşen olmalıdır
+   - Form validasyonu client-side olarak yapılmalıdır
+   - Form gönderimi için API endpoint'i oluşturulmalıdır
+   - reCAPTCHA entegrasyonu yapılmalıdır
+
+2. **Responsive Tasarım**
+   - Mobil görünümde form elemanları tam genişlikte olmalıdır
+   - Form etiketleri mobilde elemanların üzerinde, masaüstünde yanında olmalıdır
+   - Görsel banner'lar boyut oranlarını korumalıdır
+
+3. **Görsel İyileştirmeler**
+   - Banner görselini next/image ile optimize et
+   - Metinleri okunabilir boyutlarda ve responsive olarak ayarla
+   - Vurgu metinleri (örn: "İşin hamurunda kazanç var") için özel stil kullan
+
+4. **Erişilebilirlik**
+   - Form elemanlarına uygun label'lar ekle
+   - Zorunlu alanlar için uygun bildirimler yap
+   - Hata mesajları kullanıcıya anlaşılır şekilde göster
+
+5. **Validasyon**
+   - Ad Soyad: Boş olmamalı
+   - E-posta: Geçerli bir e-posta formatında olmalı
+   - Telefon: 5 ile başlayan 10 haneli bir numara olmalı (5XXXXXXXXX formatında)
+   - Diğer alanlar: Boş olmamalı
+   - Gizlilik Politikası: İşaretlenmeli
+
+6. **Güvenlik**
+   - Form gönderimi sırasında CSRF koruması sağla
+   - reCAPTCHA ile bot koruması yap
+
+7. **Next.js 15 App Router Özellikleri**
+   - Sayfa Server Component olarak oluşturulmalı
+   - Form bileşeni Client Component olarak işaretlenmeli
+   - API Route kullanılarak form verilerinin işlenmesi sağlanmalı
+
+8. **İçerik Yapısı**
+   - Banner görseli
+   - Tanıtım metinleri
+   - Franchise modeli açıklaması
+   - İletişim bilgileri
+   - Başvuru formu
+
+Bu prompt ile "Franchise" sayfasını orijinal içeriğini ve tasarım unsurlarını koruyarak Next.js yapısına uyarlamalı ve responsive tasarım prensiplerini uygulamalısın.

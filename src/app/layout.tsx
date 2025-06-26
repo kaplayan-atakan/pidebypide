@@ -22,16 +22,16 @@ export const metadata: Metadata = {
     shortcut: [],
     apple: [
       {
-        url: "/assets/images/favicon/apple-touch-icon.png",
-        sizes: "180x180",
-        type: "image/png",
+        url: "/favicons/favicon-active.ico",
+        sizes: "48x48",
+        type: "image/x-icon",
       },
     ],
     other: [
       {
         rel: "mask-icon",
-        url: "/assets/images/favicon/safari-pinned-tab.svg",
-        color: "#5bbad5",
+        url: "/favicons/favicon-active.ico",
+        color: "#14543c",
       },
     ],
   },

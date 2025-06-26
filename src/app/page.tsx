@@ -18,7 +18,8 @@ export default function Home() {
       <OpinionBar />
 
       {/* Header */}
-      <Header />      {/* Slider Bölümü */}
+      <Header />      
+      {/* Slider Bölümü */}
       <Slider images={sliderImages} />
 
       {/* Şube Bulucu */}

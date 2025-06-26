@@ -1,0 +1,5 @@
+<!-- Bu bir 180x180 pixel basit placeholder favicon için SVG kod örneğidir -->
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+  <rect width="180" height="180" fill="#14543c"/>
+  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="50" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">PBP</text>
+</svg>

@@ -1,215 +1,133 @@
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { openPositions } from '@/data/positions';
+import JobApplicationForm from '@/components/JobApplicationForm';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
 
-export default function Kariyer() {
+export const metadata: Metadata = {
+  title: 'Kariyer - Pide By Pide',
+  description: 'Pide By Pide ile kariyer yapmak için başvuru formu.',
+  keywords: 'Kariyer, iş başvurusu, Pide By Pide kariyer, iş imkanları',
+  openGraph: {
+    title: 'Kariyer - Pide By Pide',
+    description: 'Pide By Pide ile kariyer yapmak için başvuru formu.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/kariyer'
+  }
+};
+
+// Pozisyon Kartı Bileşeni
+function PositionCard({ title, description, requirements }: {
+  title: string;
+  description: string;
+  requirements: string[];
+}) {
   return (
-    <div className="layout--kariyer bg-white min-h-screen">
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-5 mb-4">
+      <h3 className="text-lg md:text-xl font-bold font-header text-[#14543c] mb-2">{title}</h3>
+      <p className="text-responsive-sm text-[#7b7934] leading-relaxed mb-3">{description}</p>
+      <ul className="list-disc list-inside space-y-1 text-gray-600">
+        {requirements.map((requirement, index) => (
+          <li key={index} className="text-responsive-sm">{requirement}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default function KariyerPage() {
+  return (
+    <div className="layout--career bg-white min-h-screen">
+      {/* Görüş ve Öneri Bar */}
       <OpinionBar />
+
+      {/* Header */}
       <Header />
-      
-      <main className="min-h-screen py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Kariyer</h1>
-            
-            <div className="text-center mb-12">
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Pide By Pide ailesine katılmak istiyorsunuz? Bizimle birlikte büyüyen, 
-                gelişen ve başarıya ulaşan bir kariyere başlayın!
-              </p>
-            </div>
 
-            {/* Neden Biz? */}
-            <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-6 text-orange-600">Neden Pide By Pide?</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-start space-x-3">
-                  <div className="text-orange-500 text-xl">🚀</div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 mb-2">Hızlı Büyüyen Şirket</h3>
-                    <p className="text-gray-600 text-sm">Sürekli büyüyen organizasyonumuzda kariyer fırsatları</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="text-orange-500 text-xl">📚</div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 mb-2">Eğitim ve Gelişim</h3>
-                    <p className="text-gray-600 text-sm">Sürekli eğitim ve kişisel gelişim programları</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="text-orange-500 text-xl">👥</div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 mb-2">Takım Ruhu</h3>
-                    <p className="text-gray-600 text-sm">Pozitif çalışma ortamı ve güçlü takım kültürü</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="text-orange-500 text-xl">💰</div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 mb-2">Rekabetçi Maaş</h3>
-                    <p className="text-gray-600 text-sm">Adil ve rekabetçi ücret politikası</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Açık Pozisyonlar */}
-            <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-6 text-orange-600">Açık Pozisyonlar</h2>
-              
-              <div className="space-y-6">
-                {/* Şef Pozisyonu */}
-                <div className="border-l-4 border-orange-500 pl-6 py-4 bg-gray-50 rounded-r-lg">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Pide Şefi</h3>
-                  <p className="text-gray-600 mb-2">📍 Ankara, İstanbul, İzmir</p>
-                  <p className="text-gray-600 mb-4">
-                    Geleneksel pide yapımında deneyimli, kalite odaklı şef arayışımız devam ediyor.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Tam Zamanlı</span>
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Deneyimli</span>
-                  </div>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Minimum 3 yıl pide yapım deneyimi</li>
-                    <li>• Hijyen kurallarına uyum</li>
-                    <li>• Takım çalışmasına yatkınlık</li>
-                  </ul>
-                </div>
-
-                {/* Garson Pozisyonu */}
-                <div className="border-l-4 border-orange-500 pl-6 py-4 bg-gray-50 rounded-r-lg">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Garson</h3>
-                  <p className="text-gray-600 mb-2">📍 Tüm Şubeler</p>
-                  <p className="text-gray-600 mb-4">
-                    Müşteri odaklı, enerjik ve güler yüzlü garson arkadaşlar arıyoruz.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Tam/Yarı Zamanlı</span>
-                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Giriş Seviyesi</span>
-                  </div>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• İyi iletişim becerileri</li>
-                    <li>• Müşteri odaklı yaklaşım</li>
-                    <li>• Vardiyalı çalışmaya uyum</li>
-                  </ul>
-                </div>
-
-                {/* Kasiyer Pozisyonu */}
-                <div className="border-l-4 border-orange-500 pl-6 py-4 bg-gray-50 rounded-r-lg">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Kasiyer</h3>
-                  <p className="text-gray-600 mb-2">📍 Tüm Şubeler</p>
-                  <p className="text-gray-600 mb-4">
-                    Dikkatli, güvenilir ve sayısal beceriler güçlü kasiyer arayışımız.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Tam Zamanlı</span>
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">1-2 Yıl Deneyim</span>
-                  </div>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• POS sistemleri deneyimi</li>
-                    <li>• Matematik becerisi</li>
-                    <li>• Dikkat ve hassasiyet</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Başvuru Formu */}
-            <div className="bg-orange-50 rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-6 text-orange-600 text-center">Başvuru Yapın</h2>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Ad Soyad *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
-                      placeholder="Adınız ve soyadınız"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      E-posta *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
-                      placeholder="e-posta@ornek.com"
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Telefon *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
-                      placeholder="0xxx xxx xx xx"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      İlgilendiğiniz Pozisyon *
-                    </label>
-                    <select
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
-                    >
-                      <option value="">Pozisyon seçin</option>
-                      <option value="pide-sefi">Pide Şefi</option>
-                      <option value="garson">Garson</option>
-                      <option value="kasiyer">Kasiyer</option>
-                      <option value="diger">Diğer</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Şehir Tercihi
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
-                    placeholder="Çalışmak istediğiniz şehir"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Deneyimleriniz ve Mesajınız
-                  </label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
-                    placeholder="Deneyimlerinizden bahsedin ve neden bizimle çalışmak istediğinizi yazın..."
-                  ></textarea>
-                </div>
-
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors font-bold"
-                  >
-                    Başvuruyu Gönder
-                  </button>
-                </div>
-              </form>
+      <main className="min-h-screen">
+        {/* Hero Bölümü */}
+        <section className="bg-gradient-to-br from-[#14543c] to-[#0f3d2a] py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto container-responsive">
+            <div className="text-center">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-header text-white margin-responsive">
+                Kariyer
+              </h1>
+              <nav className="mt-4 sm:mt-6">
+                <ol className="flex justify-center items-center space-x-2 text-sm sm:text-base text-[#f29b24]">
+                  <li>
+                    <Link href="/" className="hover:text-white transition-colors">
+                      Anasayfa
+                    </Link>
+                  </li>
+                  <li className="text-white">/</li>
+                  <li className="text-white">Kariyer</li>
+                </ol>
+              </nav>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Ana İçerik */}
+        <section className="py-8 sm:py-12 lg:py-16">
+          <div className="container mx-auto container-responsive">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Kariyer Bilgileri ve Açık Pozisyonlar */}
+              <div className="lg:col-span-2 order-2 lg:order-1">
+                <div className="bg-white rounded-lg shadow p-6 md:p-8 mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold font-header text-[#14543c] mb-4">
+                    Pide By Pide Ailesi
+                  </h2>
+                  
+                  <p className="text-responsive-md text-[#7b7934] leading-relaxed mb-6">
+                    Pide By Pide ailesi olarak, dinamik ve gelişime açık ekip arkadaşları arıyoruz. 
+                    Misafirlerimize en kaliteli hizmeti sunmak için tutkulu ve deneyimli profesyonelleri 
+                    takımımıza katmaktan mutluluk duyarız.
+                  </p>
+                  
+                  <div className="mb-8">
+                    <h3 className="text-xl md:text-2xl font-bold font-header text-[#14543c] mb-3">
+                      Neden Pide By Pide?
+                    </h3>
+                    <ul className="list-disc list-inside space-y-2 text-responsive-sm text-[#7b7934]">
+                      <li>Gelişen ve büyüyen bir marka</li>
+                      <li>Profesyonel çalışma ortamı</li>
+                      <li>Kariyer gelişim fırsatları</li>
+                      <li>Eğitim ve gelişim programları</li>
+                      <li>Rekabetçi maaş ve yan haklar</li>
+                    </ul>
+                  </div>
+                  
+                  <h3 className="text-xl md:text-2xl font-bold font-header text-[#14543c] mb-4">
+                    Açık Pozisyonlar
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {openPositions.map((position, index) => (
+                      <PositionCard
+                        key={index}
+                        title={position.title}
+                        description={position.description}
+                        requirements={position.requirements}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Başvuru Formu */}
+              <div className="lg:col-span-1 order-1 lg:order-2">
+                <JobApplicationForm />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-      
+
+      {/* Footer */}
       <Footer />
     </div>
   );

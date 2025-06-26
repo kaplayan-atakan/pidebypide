@@ -1,0 +1,19 @@
+{
+  "name": "Pide By Pide",
+  "short_name": "PideByPide",
+  "icons": [
+    {
+      "src": "/favicons/favicon-active.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicons/favicon-active.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#14543c",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

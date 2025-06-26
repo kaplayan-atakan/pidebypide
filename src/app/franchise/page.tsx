@@ -1,237 +1,157 @@
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import FranchiseForm from '@/components/FranchiseForm';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { getAssetPath } from '@/utils/assetPath';
 import OpinionBar from '@/components/UI/OpinionBar';
 
+export const metadata: Metadata = {
+  title: 'Franchise - Pide By Pide',
+  description: 'PidebyPide franchise modeli ile kendi işinizi kurun. Apaz Holding güvencesiyle karlı yatırım fırsatları.',
+  keywords: 'Franchise, PidebyPide franchise, iş fırsatı, yatırım, Apaz Holding, kendi işini kurma',
+};
+
 export default function FranchisePage() {
-  const franchiseAvantajlari = [
-    {
-      icon: "🏪",
-      title: "Güçlü Marka",
-      description: "Türkiye'nin sevilen pide markası olarak güçlü bir marka imajı"
-    },
-    {
-      icon: "📈",
-      title: "Kanıtlanmış İş Modeli",
-      description: "Yıllardır test edilmiş ve başarısı kanıtlanmış iş modeli"
-    },
-    {
-      icon: "🎯",
-      title: "Kapsamlı Eğitim",
-      description: "İşletme yönetimi, ürün hazırlama ve müşteri hizmetleri eğitimleri"
-    },
-    {
-      icon: "🛠️",
-      title: "Teknik Destek",
-      description: "7/24 teknik destek ve sürekli operasyonel yardım"
-    },
-    {
-      icon: "📊",
-      title: "Pazarlama Desteği",
-      description: "Ulusal ve yerel pazarlama kampanyaları desteği"
-    },
-    {
-      icon: "🚚",
-      title: "Tedarik Zinciri",
-      description: "Güvenilir tedarikçi ağı ve kaliteli hammadde temini"
-    }
-  ];
-
-  const franchiseKosullari = [
-    {
-      title: "Minimum Yatırım",
-      value: "150.000 ₺",
-      description: "Franchise ücreti ve başlangıç yatırımı dahil"
-    },
-    {
-      title: "Mekan Büyüklüğü",
-      value: "80-120 m²",
-      description: "Minimum mekan büyüklüğü gereksinimi"
-    },
-    {
-      title: "Lokasyon",
-      value: "Ana Cadde/AVM",
-      description: "Yoğun trafiğe sahip ticari alanlar tercih edilir"
-    },
-    {
-      title: "Deneyim",
-      value: "Zorunlu Değil",
-      description: "Restoran deneyimi şart değil, eğitim verilir"
-    }
-  ];
-
   return (
     <div className="layout--franchise bg-white min-h-screen">
+      {/* Görüş ve Öneri Bar */}
       <OpinionBar />
+      
+      {/* Header */}
       <Header />
       
-      <main className="min-h-screen py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            
-            {/* Hero Section */}
-            <div className="text-center mb-16">
-              <h1 className="text-4xl font-bold mb-6 text-gray-800">
-                Franchise Fırsatı
-              </h1>              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Türkiye&apos;nin sevilen pide markası ile iş ortağı olun. Kanıtlanmış iş modelimiz ve 
-                güçlü marka değerimizle kendi işinizi kurmanın keyfini çıkarın.
-              </p>
+      {/* Hero Bölümü - Kariyer sayfasıyla aynı tasarım */}
+      <section className="bg-gradient-to-br from-[#14543c] to-[#0f3d2a] py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto container-responsive">
+          <div className="text-center">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-header text-white margin-responsive">
+              Franchise
+            </h1>
+            <nav className="mt-4 sm:mt-6">
+              <ol className="flex justify-center items-center space-x-2 text-sm sm:text-base text-[#f29b24]">
+                <li>
+                  <Link href="/" className="hover:text-white transition-colors">
+                    Anasayfa
+                  </Link>
+                </li>
+                <li className="text-white">/</li>
+                <li className="text-white">Franchise</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <main className="py-8 sm:py-12 md:py-16">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 max-w-7xl">
+          {/* İki Bölümlü İçerik: Üstte Görsel ve Metin, Altta Form */}
+          <div className="bg-white rounded-lg shadow-lg mb-16">
+            <div className="flex flex-col md:flex-row md:items-start">
+              {/* Sol Sütun: Ana Görsel - Başlıkla Aynı Hizada */}
+              <div className="md:w-1/2 flex flex-col items-start p-4 sm:p-6 md:p-8 lg:p-10 bg-white">
+                <div className="w-full md:pt-5">
+                  <Image 
+                    src={getAssetPath("assets/images/PİDEBYPİDE_WEBSİTE_FR.jpg")} 
+                    alt="PidebyPide Franchise"
+                    width={1000}
+                    height={750}
+                    style={{
+                      maxWidth: "100%",
+                      height: "auto",
+                      display: "block"
+                    }}
+                    className="rounded-lg shadow-sm"
+                    priority={true}
+                    quality={100}
+                    unoptimized={false}
+                  />
+                  
+                  {/* Franchise İçerik Kutuları - Mobil dışında sol sütunda görünecek */}
+                  <div className="hidden md:grid grid-cols-1 gap-6 mt-8">
+                    <div className="bg-[#f8f9fa] p-5 rounded-lg border-l-4 border-[#14543c] shadow-sm hover:shadow-md transition-all duration-300">
+                      <h3 className="font-bold text-[#14543c] text-lg mb-2">Neden PidebyPide?</h3>
+                      <p className="text-gray-700">Güçlü marka değeri, özgün ürün çeşitliliği ve karlı yatırım fırsatı</p>
+                    </div>
+                    
+                    <div className="bg-[#f8f9fa] p-5 rounded-lg border-l-4 border-[#14543c] shadow-sm hover:shadow-md transition-all duration-300">
+                      <h3 className="font-bold text-[#14543c] text-lg mb-2">Holding Güvencesi</h3>
+                      <p className="text-gray-700">Apaz Holding güvencesiyle profesyonel destek ve yönetim</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Sağ Sütun: Franchise İçeriği */}
+              <div className="md:w-1/2 p-5 sm:p-6 md:p-8 lg:p-10 bg-white rounded-b-lg md:rounded-b-none md:rounded-r-lg md:pt-10">
+                <div className="prose prose-lg max-w-none">
+                  {/* İçerik Başlığı */}
+                  <div className="border-l-4 border-[#14543c] pl-4 mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#14543c] mb-0">
+                      PidebyPide Franchise Fırsatı
+                    </h2>
+                    <p className="text-[#f29b24] font-semibold mt-1">İşin hamurunda kazanç var</p>
+                  </div>
+                
+                  <p className="text-base md:text-lg text-gray-700 mb-6">
+                    PidebyPide olarak, konuklarımıza, Türk mutfağının yöresel yemeği pidenin hızlı ve doyurucu halini, enfes bir lezzet ve uygun fiyatlarla sunuyoruz. Her öğün, herkes tarafından tercih edilebilecek bir alternatif olabilmek için çalışıyoruz.
+                  </p>
+                  
+                  <p className="text-base md:text-lg text-gray-700 mb-6">
+                    Kendi işini kurmak isteyen, kısa sürede karlı bir yatırım fırsatı arayan, gelişimin bir parçası olmak isteyen girişimciler için PidebyPide Franchise Modeli&apos;ni oluşturduk.
+                  </p>
+                  
+                  <p className="text-base md:text-lg text-gray-700 mb-6">
+                    PidebyPide Franchise Modeli, Baydöner ve Bursa İshakbey markalarının da sahibi olan Apaz Holding güvencesiyle girişimcilere karlı bir yatırım ve kazanç imkanı sunuyor.
+                  </p>
+                  
+                  <p className="text-base md:text-lg text-gray-700 mb-6">
+                    Kiralama, inşaat (dekorasyon), lojistik, tedarik, insan kaynakları, bilgi-işlem ve diğer operasyonel konularda tecrübeli ve bilgili profesyonel bir kadronun tam desteğini kapsayan bir franchise modeli sunuyoruz.
+                  </p>
+                  
+                  <p className="text-base md:text-lg text-gray-700 mb-8">
+                    Eğer sizde PidebyPide ailesine franchise alarak katılmak istiyorsanız
+                    <a href="mailto:franchise@pidebypide.com" className="text-[#14543c] hover:text-[#f29b24] mx-1 font-semibold">
+                      franchise@pidebypide.com
+                    </a>
+                    adresinden bizimle iletişime geçebilirsiniz.
+                  </p>
+                  
+                  {/* Franchise İçerik Kutuları - Sadece Mobil Ekranda Görünecek */}
+                  <div className="md:hidden grid grid-cols-1 gap-6 mt-10">
+                    <div className="bg-[#f8f9fa] p-5 rounded-lg border-l-4 border-[#14543c] shadow-sm hover:shadow-md transition-all duration-300">
+                      <h3 className="font-bold text-[#14543c] text-lg mb-2">Neden PidebyPide?</h3>
+                      <p className="text-gray-700">Güçlü marka değeri, özgün ürün çeşitliliği ve karlı yatırım fırsatı</p>
+                    </div>
+                    
+                    <div className="bg-[#f8f9fa] p-5 rounded-lg border-l-4 border-[#14543c] shadow-sm hover:shadow-md transition-all duration-300">
+                      <h3 className="font-bold text-[#14543c] text-lg mb-2">Holding Güvencesi</h3>
+                      <p className="text-gray-700">Apaz Holding güvencesiyle profesyonel destek ve yönetim</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            {/* Franchise Avantajları */}
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">
-                Franchise Avantajları
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {franchiseAvantajlari.map((avantaj, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-                    <div className="text-4xl mb-4">{avantaj.icon}</div>
-                    <h3 className="text-xl font-bold mb-3 text-gray-800">{avantaj.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{avantaj.description}</p>
-                  </div>
-                ))}
+          </div>
+          
+          {/* Alt Bölüm: Franchise Başvuru Formu (Ortada) */}
+          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-[#14543c] mb-2">Franchise Başvuru Formu</h3>
+                <p className="text-gray-600">PidebyPide ailesine katılmak için aşağıdaki formu doldurun</p>
+                <div className="w-20 h-1 bg-[#14543c] mx-auto mt-4"></div>
               </div>
-            </section>
-
-            {/* Franchise Koşulları */}
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">
-                Franchise Koşulları
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {franchiseKosullari.map((kosul, index) => (
-                  <div key={index} className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6 text-center">
-                    <h3 className="text-lg font-bold mb-2 text-orange-700">{kosul.title}</h3>
-                    <div className="text-2xl font-bold text-orange-600 mb-2">{kosul.value}</div>
-                    <p className="text-sm text-gray-600">{kosul.description}</p>
-                  </div>
-                ))}
+              <div className="bg-gray-50 rounded-lg p-6 border border-gray-100">
+                <FranchiseForm />
               </div>
-            </section>
-
-            {/* Süreç Adımları */}
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">
-                Franchise Süreci
-              </h2>
-              
-              <div className="relative">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                  <div className="text-center">
-                    <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                      1
-                    </div>
-                    <h3 className="font-bold mb-2 text-gray-800">Başvuru</h3>
-                    <p className="text-sm text-gray-600">Online başvuru formunu doldurun ve bizimle iletişime geçin</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                      2
-                    </div>
-                    <h3 className="font-bold mb-2 text-gray-800">Değerlendirme</h3>
-                    <p className="text-sm text-gray-600">Başvurunuz değerlendirilir ve lokasyon analizi yapılır</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                      3
-                    </div>
-                    <h3 className="font-bold mb-2 text-gray-800">Sözleşme</h3>
-                    <p className="text-sm text-gray-600">Franchise sözleşmesi imzalanır ve ödeme planı belirlenir</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                      4
-                    </div>
-                    <h3 className="font-bold mb-2 text-gray-800">Açılış</h3>
-                    <p className="text-sm text-gray-600">Eğitim, kurulum ve grand opening ile işiniz başlar</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Destek Hizmetleri */}
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">
-                Sürekli Destek Hizmetlerimiz
-              </h2>
-              
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="text-xl font-bold mb-4 text-gray-800">Operasyonel Destek</h3>
-                    <ul className="space-y-2 text-gray-600">
-                      <li>• Günlük operasyon yönetimi rehberliği</li>
-                      <li>• Kalite kontrol ve standart takibi</li>
-                      <li>• Müşteri hizmetleri eğitimleri</li>
-                      <li>• Performans analizi ve raporlama</li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-xl font-bold mb-4 text-gray-800">Pazarlama Desteği</h3>
-                    <ul className="space-y-2 text-gray-600">
-                      <li>• Ulusal reklam kampanyaları</li>
-                      <li>• Yerel pazarlama materyalleri</li>
-                      <li>• Sosyal medya yönetimi desteği</li>
-                      <li>• Promosyon ve etkinlik planlaması</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* İletişim Formu */}
-            <section className="mb-16">
-              <div className="bg-orange-500 text-white rounded-lg p-8 text-center">
-                <h2 className="text-3xl font-bold mb-4">Hemen Başvurun!</h2>
-                <p className="text-lg mb-6 opacity-90">
-                  Franchise fırsatı hakkında detaylı bilgi almak için bizimle iletişime geçin.
-                </p>
-                <div className="space-y-4 max-w-md mx-auto">
-                  <div className="text-left">
-                    <p className="font-bold">Franchise Koordinatörü:</p>
-                    <p>Mehmet Yılmaz</p>
-                    <p>📞 0532 123 45 67</p>
-                    <p>✉️ franchise@pidebypide.com</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* SSS */}
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">
-                Sıkça Sorulan Sorular
-              </h2>
-              
-              <div className="space-y-6">
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="font-bold text-gray-800 mb-2">Franchise ücreti ne kadar?</h3>
-                  <p className="text-gray-600">Franchise ücreti 50.000 ₺ olup, toplam yatırım tutarı lokasyon ve büyüklüğe göre 150.000-200.000 ₺ arasında değişmektedir.</p>
-                </div>
-                
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="font-bold text-gray-800 mb-2">Eğitim süreci nasıl işliyor?</h3>
-                  <p className="text-gray-600">2 haftalık teorik eğitim merkezimizde, 1 haftalık praktik eğitim mevcut şubelerimizde verilmektedir. Eğitim ücretsizdir.</p>
-                </div>
-                
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="font-bold text-gray-800 mb-2">Geri ödeme süresi ne kadar?</h3>
-                  <p className="text-gray-600">Ortalama geri ödeme süresi 18-24 ay arasında değişmektedir. Bu süre lokasyon ve işletme verimliliğine bağlıdır.</p>
-                </div>
-              </div>
-            </section>
-
+            </div>
           </div>
         </div>
       </main>
-      
+
+      {/* Footer */}
       <Footer />
     </div>
   );
