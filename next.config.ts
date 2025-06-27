@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   distDir: 'out',
   images: {
     unoptimized: true
+  },
+  // Statik varlıkları düzgün işlemek için
+  webpack: (config) => {
+    return config;
   }
 };
 

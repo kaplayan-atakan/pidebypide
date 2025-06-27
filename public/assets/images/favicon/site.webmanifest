@@ -3,13 +3,18 @@
   "short_name": "PideByPide",
   "icons": [
     {
-      "src": "/favicons/favicon-active.ico",
+      "src": "/pidebypide/assets/images/favicon/favicon.ico",
       "sizes": "48x48",
       "type": "image/x-icon"
     },
     {
-      "src": "/favicons/favicon-active.png",
+      "src": "/pidebypide/assets/images/favicon/android-chrome-192x192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pidebypide/assets/images/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],

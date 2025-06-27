@@ -3,6 +3,9 @@ import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import FaviconProvider from "@/components/FaviconProvider";
 
+// RSC Prefetch hatalarını çözmek için
+export const dynamic = 'force-static';
+
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
   subsets: ["latin"],
@@ -17,25 +20,37 @@ export const metadata: Metadata = {
   robots: "index, follow",
   viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   icons: {
-    // Dinamik favicon kullanacağımız için metadata favicon'ları devre dışı bırakıyoruz
-    icon: [], 
-    shortcut: [],
-    apple: [
+    // GitHub Pages için düzenlenmiş favicon yolları
+    icon: [
       {
-        url: "/favicons/favicon-active.ico",
+        url: "/pidebypide/assets/images/favicon/favicon.ico",
         sizes: "48x48",
         type: "image/x-icon",
+      }
+    ], 
+    shortcut: [
+      {
+        url: "/pidebypide/assets/images/favicon/favicon.ico",
+        sizes: "48x48",
+        type: "image/x-icon",
+      }
+    ],
+    apple: [
+      {
+        url: "/pidebypide/assets/images/favicon/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
       },
     ],
     other: [
       {
         rel: "mask-icon",
-        url: "/favicons/favicon-active.ico",
+        url: "/pidebypide/assets/images/favicon/safari-pinned-tab.svg",
         color: "#14543c",
       },
     ],
   },
-  manifest: "/assets/images/favicon/site.webmanifest",
+  manifest: "/pidebypide/assets/images/favicon/site.webmanifest",
   openGraph: {
     title: "Ana Sayfa - Pide By Pide",
     description: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide ve daha bir çok pide çeşidi Pide By Pide'de. 365 gün, 1 pide alana 1 pide bedava.",

@@ -1,0 +1,102 @@
+<!-- Bu dosya favicon test sayfasıdır -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favicon Test Sayfası</title>
+  
+  <!-- Düzeltilmiş favicon referansları -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/pidebypide/assets/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/pidebypide/assets/images/favicon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/pidebypide/assets/images/favicon/android-chrome-512x512.png">
+  <link rel="manifest" href="/pidebypide/assets/images/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/pidebypide/assets/images/favicon/safari-pinned-tab.svg" color="#14543c">
+  
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+    
+    h1 {
+      color: #14543c;
+      border-bottom: 2px solid #14543c;
+      padding-bottom: 10px;
+    }
+    
+    pre {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    
+    .test-row {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .test-row img, .test-row svg {
+      margin-right: 20px;
+    }
+    
+    .icon-size {
+      font-size: 0.85em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>Favicon Test Sayfası</h1>
+  <p>Bu sayfa, GitHub Pages dağıtımında favicon entegrasyonunun düzgün çalıştığını test etmek için hazırlanmıştır.</p>
+  
+  <h2>Favicon Test Sonuçları</h2>
+  
+  <div class="test-row">
+    <img src="/pidebypide/assets/images/favicon/favicon.ico" alt="Favicon ICO" width="48" height="48">
+    <div>
+      <strong>favicon.ico</strong><br>
+      <span class="icon-size">48x48 piksel, ICO formatı</span><br>
+      <code>/pidebypide/assets/images/favicon/favicon.ico</code>
+    </div>
+  </div>
+  
+  <div class="test-row">
+    <img src="/pidebypide/assets/images/favicon/android-chrome-192x192.png" alt="Chrome Icon" width="48" height="48">
+    <div>
+      <strong>android-chrome-192x192.png</strong><br>
+      <span class="icon-size">192x192 piksel, PNG formatı</span><br>
+      <code>/pidebypide/assets/images/favicon/android-chrome-192x192.png</code>
+    </div>
+  </div>
+  
+  <div class="test-row">
+    <img src="/pidebypide/assets/images/favicon/apple-touch-icon.png" alt="Apple Touch Icon" width="48" height="48">
+    <div>
+      <strong>apple-touch-icon.png</strong><br>
+      <span class="icon-size">180x180 piksel, PNG formatı</span><br>
+      <code>/pidebypide/assets/images/favicon/apple-touch-icon.png</code>
+    </div>
+  </div>
+  
+  <h2>Favicon Sorun Giderme</h2>
+  <p>Eğer hala favicon sorunları yaşıyorsanız:</p>
+  <ol>
+    <li>Tarayıcı önbelleğini temizleyin</li>
+    <li>Favicon dosyalarının doğru konumda olduğunu kontrol edin</li>
+    <li>Chrome DevTools ile ağ isteklerini kontrol edin</li>
+    <li>HTML başlığındaki link etiketlerini kontrol edin</li>
+    <li>Tüm favicon dosyalarının <code>/pidebypide/assets/images/favicon/</code> yolunda olduğundan emin olun</li>
+  </ol>
+  
+</body>
+</html>

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
-/* NEXA HEAVY font for headers */
+/* NEXA HEAVY font for headers - GitHub Pages ile uyumlu yüklenme */
 @font-face {
   font-family: 'NEXA HEAVY';
-  src: url('/assets/fonts/NexaHeavy.woff2') format('woff2'),
-       url('/assets/fonts/NexaHeavy.woff') format('woff'),
-       url('/assets/fonts/NexaHeavy.ttf') format('truetype');
+  src: url('/pidebypide/assets/fonts/NexaHeavy.woff2') format('woff2'),
+       url('/pidebypide/assets/fonts/NexaHeavy.woff') format('woff'),
+       url('/pidebypide/assets/fonts/NexaHeavy.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
