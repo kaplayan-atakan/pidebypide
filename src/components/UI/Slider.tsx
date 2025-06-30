@@ -24,11 +24,13 @@ export default function Slider({
   // Sonraki slide'a geç
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % images.length);
+    // Yönlendirme dışındaki console.log kaldırıldı
   }, [images.length]);
 
   // Önceki slide'a geç
   const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    // Yönlendirme dışındaki console.log kaldırıldı
   }, [images.length]);
 
   // Otomatik slider - hover durumunda durur
@@ -71,12 +73,23 @@ export default function Slider({
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
+              index === currentSlide ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
           >
             <Link 
-              href={item.url} 
+              href={index === 0 ? "/subeler" : "/urunler"}
               className="block w-full h-full cursor-pointer"
+              onClick={(e) => {
+                // Yönlendirme mantığı test için: 
+                // Sadece mevcut gösterilen slide için yönlendirmeye izin ver
+                if (index !== currentSlide) {
+                  e.preventDefault();
+                  console.log(`YÖNLENDİRME TESTİ: Görünmez slide ${index} tıklandı -> önce görünür hale getiriliyor`);
+                  setCurrentSlide(index);
+                  return;
+                }
+                console.log(`YÖNLENDİRME TESTİ: Slide ${index} tıklandı -> ${index === 0 ? "/subeler" : "/urunler"} sayfasına yönlendiriliyor`);
+              }}
               aria-label={`Slider ${index + 1} - Detayları görüntüle`}
             >
               <div className="relative w-full h-full flex items-center justify-center">
@@ -122,7 +135,10 @@ export default function Slider({
         {sliderItems.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentSlide(index)}
+            onClick={() => {
+              setCurrentSlide(index);
+              // Yönlendirme dışındaki console.log'lar kaldırıldı
+            }}
             className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all shadow-md btn-touch ${
               index === currentSlide 
                 ? 'bg-white scale-110' 
