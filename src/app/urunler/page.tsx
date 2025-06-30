@@ -133,7 +133,7 @@ const dessertProducts = [
   },
   {
     title: "KÜNEFE",
-    image: "/assets/images/pide3.jpg", // Künefe resmi henüz eklenmediğinden alternatif bir görsel kullanıyoruz
+    image: "/assets/images/newImages/kunefeYeniGörsel.png", // Yeni künefe görseli
     description: "Özel peyniri ile yemek sonrası vazgeçilmeyecek ayrı bir keyif! Yiyen bir daha yemek istiyor, eşsiz künefe lezzetine doyum olmuyor."
   },
   {
@@ -146,7 +146,7 @@ const dessertProducts = [
 const otherProducts = [
   {
     title: "MERCİMEK ÇORBASI",
-    image: "/assets/images/web_pide-05.jpg", // Bu resim ana klasörde mevcut
+    image: "/assets/images/newImages/corbaYeniGörsel.png", // Yeni çorba görseli
     description: "Çorba içmek isteyenler için akla gelen ilk lezzet mercimek çorbasının yapımında tereyağı kullanıyor, mercimeği kaynatıp çırparak tamamen katkısız bir şekilde hazırlıyoruz."
   },
   {
@@ -164,7 +164,7 @@ const salatalarProducts = [
   },
   {
     title: "MAYDANOZ SALATASI",
-    image: "/assets/images/pidePhotos/salata.jpg",
+    image: "/assets/images/newImages/maydanozSalatasıYeniGörsel.png", // Yeni maydanoz salatası görseli
     description: "Taze maydanoz, domates, salatalık ve özel sosumuzla hazırlanmış enfes bir salata."
   }
 ];
@@ -213,9 +213,9 @@ export default function UrunlerPage() {
             <section className="mb-16">
               <CategoryTitle title="DIŞI ÇITIR İÇİ BOL MALZEMELİ PİDELER" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                {pideProducts.map((product, index) => (
+                {pideProducts.map((product) => (
                   <ProductCard 
-                    key={index}
+                    key={product.title}
                     title={product.title}
                     image={product.image}
                     description={product.description}
@@ -229,9 +229,9 @@ export default function UrunlerPage() {
             <section className="mb-16">
               <CategoryTitle title="SALATALAR" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                {salatalarProducts.map((product, index) => (
+                {salatalarProducts.map((product) => (
                   <ProductCard 
-                    key={index}
+                    key={product.title}
                     title={product.title}
                     image={product.image}
                     description={product.description}
@@ -247,9 +247,9 @@ export default function UrunlerPage() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold font-['NEXA_BOLD'] text-[#7b7934] mb-4 pl-4 border-l-4 border-[#f29b24]">Tatlılar</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10">
-                  {dessertProducts.map((product, index) => (
+                  {dessertProducts.map((product) => (
                     <ProductCard 
-                      key={index}
+                      key={product.title}
                       title={product.title}
                       image={product.image}
                       description={product.description}
@@ -262,13 +262,13 @@ export default function UrunlerPage() {
               <div>
                 <h3 className="text-xl font-bold font-['NEXA_BOLD'] text-[#7b7934] mb-4 pl-4 border-l-4 border-[#f29b24]">Diğer Ürünler</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                  {otherProducts.map((product, index) => (
+                  {otherProducts.map((product) => (
                     <ProductCard 
-                      key={index}
+                      key={product.title}
                       title={product.title}
                       image={product.image}
                       description={product.description}
-                      imageAlt={product.title}
+                      imageAlt={`${product.title}`}
                     />
                   ))}
                 </div>

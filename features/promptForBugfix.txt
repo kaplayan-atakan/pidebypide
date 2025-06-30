@@ -1,0 +1,112 @@
+# Next.js Hydration Mismatch Bug Fix Prompt
+
+## Hata Özeti
+React hydration sırasında şu sorun ortaya çıkıyor:
+```
+Uncaught TypeError: Cannot read properties of null (reading 'removeChild')
+```
+
+Bu hata, React'ın bir DOM node'unu silmeye çalışırken o node'un `null` olması veya DOM'da bulunamaması durumunda meydana gelir. Hatanın temel sebebi, server tarafından render edilen HTML ile client tarafında beklenen HTML'in uyuşmamasıdır (Hydration Mismatch).
+
+## Çözüm Adımları
+
+### 1. **Key Kullanımı**
+- Tüm `.map` veya liste render eden component'lerde benzersiz `key` değerleri kullanıldığından emin ol.
+- Aynı `key` değerinin birden fazla elementte kullanılması hydration sorunlarına yol açabilir.
+
+```tsx
+{items.map((item) => (
+  <div key={item.id}>{item.name}</div>
+))}
+```
+
+### 2. **Client-Only Data**
+- SSR sırasında `window`, `document`, `Math.random`, `Date.now`, `navigator`, veya değişken içerik gibi sadece client'ta mevcut olan veriler render ediliyorsa, bunları `useEffect` içerisine taşı.
+
+```tsx
+import { useEffect, useState } from 'react';
+
+const ClientComponent = () => {
+  const [randomValue, setRandomValue] = useState(0);
+
+  useEffect(() => {
+    setRandomValue(Math.random());
+  }, []);
+
+  return <div>{randomValue}</div>;
+};
+```
+
+### 3. **Dinamik Import ile Client-Only Component'ler**
+- SSR ile uyumlu olmayan veya sadece client tarafında çalışması gereken component'leri `next/dynamic` kullanarak yükle.
+- Örneğin, `reCAPTCHA` gibi 3rd party component'leri şu şekilde yükle:
+
+```tsx
+import dynamic from 'next/dynamic';
+
+const NoSSRReCAPTCHA = dynamic(() => import('react-google-recaptcha'), { ssr: false });
+
+export default function Form() {
+  return (
+    <form>
+      <NoSSRReCAPTCHA sitekey="your-site-key" />
+    </form>
+  );
+}
+```
+
+### 4. **HTML Tag Yapısı**
+- HTML tag yapısında uygun olmayan hiyerarşi veya nesting varsa düzelt.
+- Örneğin, `<a>` içinde `<div>` kullanımı gibi hatalar sorun yaratabilir. Bu tür durumlarda uygun yapıyı kullan:
+
+```tsx
+// Yanlış
+<a>
+  <div>Link Text</div>
+</a>
+
+// Doğru
+<a>
+  <span>Link Text</span>
+</a>
+```
+
+### 5. **dangerouslySetInnerHTML**
+- Eğer `dangerouslySetInnerHTML` kullanılıyorsa, SSR ile client tarafında üretilen içeriklerin aynı olduğundan emin ol.
+- Değişken içerik varsa, sabit bir snapshot gönder.
+
+```tsx
+const HtmlContent = ({ content }) => (
+  <div dangerouslySetInnerHTML={{ __html: content }} />
+);
+```
+
+### 6. **Portal ve Modal Yönetimi**
+- Portal veya modal bileşenleri kullanıyorsan, elementlerin unmount işlemleri sırasında parent-child ilişkisini doğru şekilde yönet.
+- React Portal kullanımı için:
+
+```tsx
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+
+const Modal = () => {
+  const [modalNode] = useState(() => document.createElement('div'));
+  useEffect(() => {
+    document.body.appendChild(modalNode);
+    return () => {
+      document.body.removeChild(modalNode);
+    };
+  }, [modalNode]);
+
+  return createPortal(<div>Modal Content</div>, modalNode);
+};
+```
+
+### 7. **Browser Extension Testi**
+- Kullanıcıda yüklü olan tarayıcı uzantıları (browser extensions) DOM'u değiştirebilir. Bu tür bir etkiyi izole etmek için:
+  - Gizli sekmede veya uzantısız bir tarayıcıda test yap.
+  - Özellikle adblocker veya DOM'a müdahale eden uzantılar sorun yaratabilir.
+
+### 8. **React ve Next.js Güncellemeleri**
+- React ve Next.js'in güncel sürümünü kullan.
+- Bazı eski sürümlerde hydration ile ilgili sorunlar daha sık görülür.
