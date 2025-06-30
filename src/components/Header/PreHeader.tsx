@@ -11,7 +11,7 @@ function PreHeader() {
         <div className="flex flex-col sm:flex-row sm:justify-end items-center">
           <ul className="flex items-center gap-2 sm:gap-4">
             <li className="hidden md:block font-bold">
-              <a href="/gorus-ve-onerileriniz" className="text-[#14543c] hover:text-[#f29b24] flex items-center h-6 font-header text-responsive-sm text-sm">
+              <a href={getAssetPath('/gorus-ve-onerileriniz')} className="text-[#14543c] hover:text-[#f29b24] flex items-center h-6 font-header text-responsive-sm text-sm">
                 <span className="mr-1">✏️</span> Görüş ve Önerileriniz
               </a>
             </li>

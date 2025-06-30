@@ -39,7 +39,7 @@ export default function Home() {
     <>
       {/* Görüş ve Öneri Bar */}
       <Link 
-        href="/gorus-ve-onerileriniz" 
+        href={getAssetPath('/gorus-ve-onerileriniz')}
         className="fixed top-0 right-0 bg-orange-500 text-white px-4 py-2 text-sm font-bold z-[9999] hover:bg-orange-600 transition-colors"
         style={{ zIndex: 9999 }}
       >
@@ -57,7 +57,7 @@ export default function Home() {
                 <div className="text-right">
                   <ul className="flex items-center space-x-4 text-sm">
                     <li className="font-bold hidden lg:block px-5">
-                      <Link href="/gorus-ve-onerileriniz" className="flex items-center hover:text-orange-500">
+                      <Link href={getAssetPath('/gorus-ve-onerileriniz')} className="flex items-center hover:text-orange-500">
                         <i className="fa fa-edit mr-2"></i> Görüş ve Önerileriniz
                       </Link>
                     </li>

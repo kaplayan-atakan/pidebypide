@@ -1,3 +1,5 @@
+import { getAssetPath } from '@/utils/assetHelpers';
+
 interface OpinionBarProps {
   text?: string;
   href?: string;
@@ -6,7 +8,7 @@ interface OpinionBarProps {
 
 export default function OpinionBar({ 
   text = "Görüş ve Öneri", 
-  href = "/gorus-ve-onerileriniz",
+  href = getAssetPath('/gorus-ve-onerileriniz'),
   className = ""
 }: OpinionBarProps) {
   return (
