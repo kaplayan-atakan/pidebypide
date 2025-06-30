@@ -10,7 +10,7 @@ import { getAssetPath } from "@/utils/assetHelpers";
 export const metadata: Metadata = {
   title: "Ürünler - Pide By Pide",
   description: "Patatesli pide, ıspanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, 3'lü karışık, sucuklu, kaşarlı, lahmacun ve daha birçok lezzet Pide By Pide'de.",
-  keywords: "Lezzetler, ürünler, patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, 3'lü karışık, sucuklu pide, kaşarlı pide, kıymalı patatesli, tavuk patatesli, lahmacun, künefe, by bomba, sufle, turşu, salata",
+  keywords: "Lezzetler, ürünler, patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, 3'lü karışık, sucuklu pide, kaşarlı pide, kıymalı patatesli, tavuk patatesli, lahmacun, künefe, bomba kurabiye, sufle, turşu, salata",
 };
 
 // Ürün Kartı Bileşeni
@@ -122,9 +122,9 @@ const pideProducts = [
 
 const dessertProducts = [
   {
-    title: "BY BOMBA",
+    title: "BOMBA KURABİYE",
     image: "/assets/images/pidePhotos/bomba_kurabiye.jpg",
-    description: "By Bomba, eşsiz tadıyla benzersiz bir tatlı olarak damaklarda iz bırakıyor. Üzerinde pudra şekeri ile süslenmiş çikolatalı lezzet bombası."
+    description: "BOMBA KURABİYE, eşsiz tadıyla benzersiz bir tatlı olarak damaklarda iz bırakıyor. Üzerinde pudra şekeri ile süslenmiş çikolatalı lezzet bombası."
   },
   {
     title: "KÜNEFE",
