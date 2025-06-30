@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import FaviconProvider from "@/components/FaviconProvider";
+import { getFontStylesForHTML } from "@/utils/fontHelpers";
 
 // RSC Prefetch hatalarını çözmek için
 export const dynamic = 'force-static';
@@ -20,21 +21,8 @@ export const metadata: Metadata = {
   robots: "index, follow",
   viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   icons: {
-    // GitHub Pages için düzenlenmiş favicon yolları
-    icon: [
-      {
-        url: "/pidebypide/assets/images/favicon/favicon.ico",
-        sizes: "48x48",
-        type: "image/x-icon",
-      }
-    ], 
-    shortcut: [
-      {
-        url: "/pidebypide/assets/images/favicon/favicon.ico",
-        sizes: "48x48",
-        type: "image/x-icon",
-      }
-    ],
+    // Favicon başlatma için apple ve other iconları kullanıyoruz
+    // Not: Icon ve shortcut favicons, useFavicon hook'u tarafından dinamik olarak yönetilir
     apple: [
       {
         url: "/pidebypide/assets/images/favicon/apple-touch-icon.png",
@@ -84,8 +72,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Font stillerini oluştur
+  const fontStyles = getFontStylesForHTML();
+  
   return (
     <html lang="tr">
+      <head>
+        {/* Yerel ve harici fontları yönetmek için dinamik stil ekleyelim */}
+        <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
+      </head>
       <body
         className={`${redHatDisplay.variable} antialiased`}
       >

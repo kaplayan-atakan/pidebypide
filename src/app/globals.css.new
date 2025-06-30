@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* NEXA HEAVY font for headers - GitHub Pages ile uyumlu yüklenme */
+@font-face {
+  font-family: 'NEXA HEAVY';
+  src: url('/pidebypide/assets/fonts/NexaHeavy.woff2') format('woff2'),
+       url('/pidebypide/assets/fonts/NexaHeavy.woff') format('woff'),
+       url('/pidebypide/assets/fonts/NexaHeavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* NEXA BOLD font for category titles */
+@font-face {
+  font-family: 'NEXA BOLD';
+  src: url('/pidebypide/assets/fonts/NexaBold.woff2') format('woff2'),
+       url('/pidebypide/assets/fonts/NexaBold.woff') format('woff'),
+       url('/pidebypide/assets/fonts/NexaBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* Kurumsal Renk Paleti */
+  --corporate-main: #14543c;     /* Ana yeşil - butonlar, başlıklar, anahtar eylemler */
+  --corporate-accent: #f29b24;   /* Turuncu - hover efektleri, CTA'lar, ikonlar */
+  --corporate-secondary: #7b7934; /* Zeytin yeşili - arka planlar, kenarlıklar, ikincil öğeler */
+  
+  /* Açık tonları */
+  --corporate-main-light: #1a654a;
+  --corporate-accent-light: #f5ad42;
+  --corporate-secondary-light: #8b8642;
+  
+  /* Koyu tonları */
+  --corporate-main-dark: #0f3d2a;
+  --corporate-accent-dark: #d4821a;

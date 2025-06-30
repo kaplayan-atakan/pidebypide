@@ -258,7 +258,7 @@ export default function ContactForm() {
         />
         <label htmlFor="kvkkOnay" className="text-sm text-gray-700">
           <span className="text-red-500">*</span> 
-          <a href="/kvkk" target="_blank" className="text-[#14543c] hover:text-[#f29b24] underline ml-1">
+          <a href="/kisisel-verilerin-korunmasi" target="_blank" className="text-[#14543c] hover:text-[#f29b24] underline ml-1">
             KVKK Aydınlatma Metni
           </a>
           &apos;ni okudum ve kişisel verilerimin işlenmesine onay veriyorum.

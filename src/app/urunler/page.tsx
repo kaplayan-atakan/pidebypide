@@ -4,12 +4,13 @@ import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
+import { getAssetPath } from "@/utils/assetHelpers";
 
 // SEO Metadata
 export const metadata: Metadata = {
   title: "Ürünler - Pide By Pide",
-  description: "Patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide ve daha birçok lezzet Pide By Pide'de.",
-  keywords: "Lezzetler, ürünler, patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, künefe, by bomba",
+  description: "Patatesli pide, ıspanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, 3'lü karışık, sucuklu, kaşarlı, lahmacun ve daha birçok lezzet Pide By Pide'de.",
+  keywords: "Lezzetler, ürünler, patatesli pide, ispanaklı pide, peynirli pide, tavuklu pide, kıymalı pide, kuşbaşılı pide, 3'lü karışık, sucuklu pide, kaşarlı pide, kıymalı patatesli, tavuk patatesli, lahmacun, künefe, by bomba, sufle, turşu, salata",
 };
 
 // Ürün Kartı Bileşeni
@@ -21,11 +22,14 @@ interface ProductCardProps {
 }
 
 function ProductCard({ title, image, description, imageAlt = title }: ProductCardProps) {
+  // Resim yolunu getAssetPath ile düzelt
+  const imageSrc = getAssetPath(image) || "https://via.placeholder.com/360x280?text=Pide+By+Pide";
+  
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
       <div className="relative aspect-[4/3] w-full">
         <Image
-          src={image || "https://via.placeholder.com/360x280?text=Pide+By+Pide"}
+          src={imageSrc}
           alt={`${imageAlt} - Pide By Pide`}
           fill
           className="object-cover"
@@ -33,8 +37,8 @@ function ProductCard({ title, image, description, imageAlt = title }: ProductCar
         />
       </div>
       <div className="p-5 sm:p-6">
-        <h3 className="text-xl sm:text-2xl font-bold font-header text-[#14543c] mb-3">{title}</h3>
-        <p className="text-responsive-sm text-[#7b7934] leading-relaxed">{description}</p>
+        <h3 className="text-xl sm:text-2xl font-bold font-['NEXA_BOLD'] text-[#14543c] mb-3">{title}</h3>
+        <p className="text-responsive-sm text-[#7b7934] leading-relaxed font-['Red_Hat_Display']">{description}</p>
       </div>
     </div>
   );
@@ -43,7 +47,7 @@ function ProductCard({ title, image, description, imageAlt = title }: ProductCar
 // Kategori Başlık Bileşeni
 function CategoryTitle({ title }: { title: string }) {
   return (
-    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-header text-[#14543c] mb-8 pb-2 relative">
+    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-['NEXA_BOLD'] text-[#14543c] mb-8 pb-2 relative">
       <span className="relative inline-block">
         {title}
         <span className="absolute -bottom-2 left-0 w-1/2 h-1 bg-[#f29b24]"></span>
@@ -55,60 +59,113 @@ function CategoryTitle({ title }: { title: string }) {
 // Ürün Verileri
 const pideProducts = [
   {
-    title: "Patatesli",
-    image: "/assets/images/pide1.jpg",
+    title: "PATATESLİ",
+    image: "/assets/images/pidePhotos/patatesli_pide.jpg",
     description: "İştah kabartan patatesli pidemiz damaklarda iz bırakıyor. Doyurucu menüsüyle öne çıkan patatesli pideyi tatmanın tam zamanı!"
   },
   {
-    title: "Ispanaklı",
-    image: "/assets/images/pide2.jpg",
+    title: "ISPANAKLI",
+    image: "/assets/images/pidePhotos/ispanakli_pide.png",
     description: "Hafızalara kazınacak tadı ve doyurucu menüsüyle Ispanaklı pide keyfini tam anlamıyla yaşatıyor."
   },
   {
-    title: "Peynirli",
-    image: "/assets/images/pide3.jpg",
+    title: "PEYNİRLİ",
+    image: "/assets/images/pidePhotos/kasarli_pide.png",
     description: "Pide lezzeti peynirle birleşiyor. Deneyimli ustaların hazırladığı peynirli pideler, tadıyla akıllarda yer ediyor."
   },
   {
-    title: "Tavuklu",
-    image: "/assets/images/web_pide-05.jpg",
+    title: "TAVUKLU",
+    image: "/assets/images/pidePhotos/tavuklu_pide.jpg",
     description: "Tavuktan vazgeçemeyenlerin tercihi tavuklu pide, benzersiz tadıyla rakip tanımıyor. Özel baharatlarla hazırlanıyor, lezzet keyfi doruğa çıkıyor."
   },
   {
-    title: "Kıymalı",
-    image: "/assets/images/pide1.jpg",
+    title: "KIYMALI",
+    image: "/assets/images/pidePhotos/kiymali_pide.jpg",
     description: "Türk mutfağının klasiği kıymalı pide, PidebyPide'nin maharetli ustalarının ellerinde benzersiz bir lezzete dönüşüyor. PidebyPide, doyurucu kıymalı pidesiyle misafirlerini lezzet dolu bir deneyime davet ediyor!"
   },
   {
-    title: "Kuşbaşılı",
-    image: "/assets/images/pide2.jpg",
+    title: "KUŞBAŞILI",
+    image: "/assets/images/pidePhotos/kusbasili_pide.jpg",
     description: "Tadına doyum olmayan kuşbaşılı pide, kendine has tadıyla rakip tanımıyor. Kuşbaşılı pide lezzeti akıllardan silinmiyor!"
+  },
+  {
+    title: "3'LÜ KARIŞIK",
+    image: "/assets/images/pidePhotos/3lu_karisik_pide.jpg",
+    description: "Birden fazla lezzeti aynı anda tatmak isteyenlere nefis bir alternatif! Pide müdavimleri, 3'lü karışık ile lezzet keyfini doya doya yaşıyor!"
+  },
+  {
+    title: "SUCUKLU",
+    image: "/assets/images/pidePhotos/sucuklu_pide.jpg",
+    description: "Yumuşacık hamuru, bolca erimiş kaşar peyniri ve nefis küp sucuklarla harmanlanan pide, her lokmada damakları şenlendiriyor. Sıcacık fırından çıkmış, dışı hafifçe çıtır, içi ise yumuşacık olan bu pide, sucuğun baharatlı ve leziz tadı ile kaşarın mükemmel uyumunu sunuyor."
+  },
+  {
+    title: "SUCUKLU KARIŞIK",
+    image: "/assets/images/pidePhotos/sucuklu_karisik.jpg",
+    description: "Fırından yeni çıkmış, dışı çıtır çıtır, içi yumuşacık hamuru üzerine özenle yerleştirilen küp sucuklar, rengarenk karışık biberlerle buluşuyor. Sucukların baharatlı lezzeti, biberler ve kaşar ile mükemmel bir uyum içinde, her ısırıkta damağınızda bir şölen yaratıyor."
+  },
+  {
+    title: "KAŞARLI",
+    image: "/assets/images/pidePhotos/kasarli_pide.png",
+    description: "Fırından yeni çıkmış, altın sarısı renginde, yumuşacık ve çıtır çıtır hamuru ile kaşarlı pide, her lokmada sıcak ve erimiş peynirin enfes lezzetini sunuyor."
+  },
+  {
+    title: "KIYMALI PATATESLİ",
+    image: "/assets/images/pidePhotos/kiymali_patatesli_pide.jpg",
+    description: "Sıcacık çıtır hamurun üzerinde, baharatlarla harmanlanmış nefis kıyma veya yumuşacık patates harcı… Her lokmada damakları şenlendiren bu pide, 2'li lezzeti ile bambaşka bir deneyime davet ediyor!"
+  },
+  {
+    title: "TAVUK PATATESLİ",
+    image: "/assets/images/pidePhotos/tavuklu_patatesli_pide.jpg",
+    description: "Sıcacık çıtır hamurun üzerinde, baharatlarla harmanlanmış nefis tavuk parçaları ve yumuşacık patates harcı… Her lokmada damakları şenlendiren bu pide, 2'li lezzeti ile bambaşka bir deneyime davet ediyor!"
+  },
+  {
+    title: "LAHMACUN",
+    image: "/assets/images/pidePhotos/lahmacun.jpg",
+    description: "Türk mutfağının vazgeçilmez klasiği lahmacun! İncecik çıtır hamuru, bol malzemeli ve baharatlı harcıyla fırından çıkar çıkmaz lezzet şöleni başlıyor. Geleneksel tat, değişmeyen lezzet!"
   }
 ];
 
 const dessertProducts = [
   {
-    title: "By Bomba",
-    image: "/assets/images/pide1.jpg",
-    description: "By Bomba, eşsiz tadıyla benzersiz bir tatlı olarak damaklarda iz bırakıyor."
+    title: "BY BOMBA",
+    image: "/assets/images/pidePhotos/bomba_kurabiye.jpg",
+    description: "By Bomba, eşsiz tadıyla benzersiz bir tatlı olarak damaklarda iz bırakıyor. Üzerinde pudra şekeri ile süslenmiş çikolatalı lezzet bombası."
   },
   {
-    title: "Künefe",
-    image: "/assets/images/pide3.jpg",
-    description: "Geleneksel lezzet künefe, özel sunumuyla Pide By Pide'de sizi bekliyor."
+    title: "KÜNEFE",
+    image: "/assets/images/pide3.jpg", // Künefe resmi henüz eklenmediğinden alternatif bir görsel kullanıyoruz
+    description: "Özel peyniri ile yemek sonrası vazgeçilmeyecek ayrı bir keyif! Yiyen bir daha yemek istiyor, eşsiz künefe lezzetine doyum olmuyor."
+  },
+  {
+    title: "SUFLE",
+    image: "/assets/images/pidePhotos/sufle.jpg",
+    description: "Dışı hafif kıtır, içi akışkan çikolata şöleni… Her kaşıkta yoğun kakao aromasıyla tatlı krizlerinize en lezzetli çözüm! Yanında dondurma ile servis edilebilir."
   }
 ];
 
 const otherProducts = [
   {
-    title: "Mercimek Çorba",
-    image: "/assets/images/web_pide-05.jpg",
-    description: "Çorba içmek isteyenler için akla gelen ilk lezzet mercimek çorbasının yapımında tereyağı kullanıyor, mercimeği kaynatıp çırparak tamamen katkısız bir şekilde sunuyoruz."
+    title: "MERCİMEK ÇORBASI",
+    image: "/assets/images/web_pide-05.jpg", // Bu resim ana klasörde mevcut
+    description: "Çorba içmek isteyenler için akla gelen ilk lezzet mercimek çorbasının yapımında tereyağı kullanıyor, mercimeği kaynatıp çırparak tamamen katkısız bir şekilde hazırlıyoruz."
   },
   {
-    title: "Ayran",
-    image: "/assets/images/pide2.jpg",
-    description: "Yoğunluğu ayarlı, ferahlatıcı Pide By Pide özel ayranı."
+    title: "TURŞU",
+    image: "/assets/images/pidePhotos/tursu.jpg",
+    description: "Lezzetiyle parmak ısırtan PidebyPide turşuları, pide lezzetini ikiye katlıyor. Özel salamurada bekletilen taze ve çıtır biber ve salatalıklar sunumlarımızı tamamlıyor."
+  }
+];
+
+const salatalarProducts = [
+  {
+    title: "ROKA SALATASI",
+    image: "/assets/images/pidePhotos/salata.jpg",
+    description: "Roka salatası, taze ve canlı roka yapraklarının kendine has hafif acılığı ile ferah bir lezzet sunar. Yanında domates ve limon dilimiyle sunulur."
+  },
+  {
+    title: "MAYDANOZ SALATASI",
+    image: "/assets/images/pidePhotos/salata.jpg",
+    description: "Taze maydanoz, domates, salatalık ve özel sosumuzla hazırlanmış enfes bir salata."
   }
 ];
 
@@ -154,7 +211,7 @@ export default function UrunlerPage() {
 
             {/* Pideler Bölümü */}
             <section className="mb-16">
-              <CategoryTitle title="Pideler" />
+              <CategoryTitle title="DIŞI ÇITIR İÇİ BOL MALZEMELİ PİDELER" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {pideProducts.map((product, index) => (
                   <ProductCard 
@@ -168,35 +225,53 @@ export default function UrunlerPage() {
               </div>
             </section>
 
-            {/* Tatlılar Bölümü */}
+            {/* Salatalar Bölümü */}
             <section className="mb-16">
-              <CategoryTitle title="Tatlılar" />
+              <CategoryTitle title="SALATALAR" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                {dessertProducts.map((product, index) => (
+                {salatalarProducts.map((product, index) => (
                   <ProductCard 
                     key={index}
                     title={product.title}
                     image={product.image}
                     description={product.description}
-                    imageAlt={`${product.title} Tatlı`}
+                    imageAlt={`${product.title}`}
                   />
                 ))}
               </div>
             </section>
 
-            {/* Diğer Ürünler Bölümü */}
+            {/* Yancı Lezzetler Bölümü */}
             <section className="mb-16">
-              <CategoryTitle title="Diğer Ürünler" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                {otherProducts.map((product, index) => (
-                  <ProductCard 
-                    key={index}
-                    title={product.title}
-                    image={product.image}
-                    description={product.description}
-                    imageAlt={product.title}
-                  />
-                ))}
+              <CategoryTitle title="YANCI LEZZETLER" />
+              <div className="mb-8">
+                <h3 className="text-xl font-bold font-['NEXA_BOLD'] text-[#7b7934] mb-4 pl-4 border-l-4 border-[#f29b24]">Tatlılar</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10">
+                  {dessertProducts.map((product, index) => (
+                    <ProductCard 
+                      key={index}
+                      title={product.title}
+                      image={product.image}
+                      description={product.description}
+                      imageAlt={`${product.title} Tatlı`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-bold font-['NEXA_BOLD'] text-[#7b7934] mb-4 pl-4 border-l-4 border-[#f29b24]">Diğer Ürünler</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                  {otherProducts.map((product, index) => (
+                    <ProductCard 
+                      key={index}
+                      title={product.title}
+                      image={product.image}
+                      description={product.description}
+                      imageAlt={product.title}
+                    />
+                  ))}
+                </div>
               </div>
             </section>
 

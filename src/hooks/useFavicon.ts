@@ -52,8 +52,11 @@ export function useFavicon(config: FaviconConfig) {
    * Favicon elementlerini bulur veya oluşturur
    */
   const initializeFaviconElements = (): FaviconElements => {
+    console.log('Favicon elementleri başlatılıyor...'); // Debug log ekledim
+    
     // Mevcut favicon elementlerini kaldır (çakışmaları önlemek için)
     const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+    console.log(`Mevcut favicon elementleri: ${existingFavicons.length}`); // Debug log
     existingFavicons.forEach(favicon => {
       if (favicon.getAttribute('rel') === 'icon' || favicon.getAttribute('rel') === 'shortcut icon') {
         favicon.remove();
@@ -78,13 +81,25 @@ export function useFavicon(config: FaviconConfig) {
    * Favicon'u değiştirir
    */
   const changeFavicon = (iconPath: string) => {
-    // Mevcut favicon'ları kaldır
-    const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
-    existingFavicons.forEach(favicon => {
-      if (favicon.getAttribute('rel') === 'icon' || favicon.getAttribute('rel') === 'shortcut icon') {
-        favicon.remove();
-      }
-    });
+    console.log(`Favicon değiştiriliyor: ${iconPath}`); // Debug log ekledim
+    
+    try {
+      // Mevcut favicon'ları kaldır
+      const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+      console.log(`Mevcut favicon elementleri (değiştirme öncesi): ${existingFavicons.length}`); 
+      
+      existingFavicons.forEach(favicon => {
+        const rel = favicon.getAttribute('rel');
+        const href = favicon.getAttribute('href');
+        
+        if (rel === 'icon' || rel === 'shortcut icon') {
+          console.log(`Favicon kaldırılıyor: ${rel} - ${href}`);
+          favicon.remove();
+        }
+      });
+    } catch (error) {
+      console.error('Favicon değiştirme hatası:', error);
+    }
 
     // Yeni favicon'ları ekle
     const iconLink = document.createElement('link');
@@ -122,6 +137,9 @@ export function useFavicon(config: FaviconConfig) {
 
     // Sadece bir kere initialize et
     if (!isInitializedRef.current) {
+      console.log('useFavicon hook ilk kez çalıştırılıyor'); // Debug log
+      console.log('Favicon konfigürasyonu:', config); // Debug log
+      
       // Favicon elementlerini initialize et
       faviconElementsRef.current = initializeFaviconElements();
       
@@ -130,6 +148,16 @@ export function useFavicon(config: FaviconConfig) {
       
       // İlk favicon'u aktif olarak ayarla
       changeFavicon(config.active);
+      
+      // Her şeyi bir kez daha kontrol et
+      setTimeout(() => {
+        console.log('5 saniye sonra favicon durumu kontrol ediliyor');
+        const currentFavicons = document.querySelectorAll('link[rel*="icon"]');
+        console.log(`Mevcut favicon elementleri: ${currentFavicons.length}`);
+        currentFavicons.forEach(favicon => {
+          console.log(`- ${favicon.getAttribute('rel')}: ${favicon.getAttribute('href')}`);
+        });
+      }, 5000);
       
       isInitializedRef.current = true;
     }
@@ -152,7 +180,7 @@ export function useFavicon(config: FaviconConfig) {
       window.removeEventListener('focus', () => changeFavicon(config.active));
       window.removeEventListener('blur', () => changeFavicon(config.inactive));
     };
-  }, [config.active, config.inactive]);
+  }, [config]);
 
   return {
     changeFavicon,
@@ -163,7 +191,13 @@ export function useFavicon(config: FaviconConfig) {
 /**
  * Default favicon konfigürasyonu
  */
+// basePath'i ekleyerek doğru favicon yollarını oluşturuyoruz
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
+// Konsol çıktılarından yol sorununu belirleme
+console.log('Favicon için basePath değeri:', basePath);
+
 export const DEFAULT_FAVICON_CONFIG: FaviconConfig = {
-  active: '/favicons/favicon-active.ico',
-  inactive: '/favicons/favicon-inactive.ico'
+  active: `${basePath}/assets/images/favicon/favicon.ico`,
+  inactive: `${basePath}/assets/images/favicon/favicon-inactive.ico`
 };

@@ -1,0 +1,335 @@
+# PideByPide "Kişisel Verilerin Korunması" Sayfası Revizyonu
+
+## Görev Tanımı
+Mevcut `temp copy\kisisel-verilerin-korunmasi-kanunu-aydinlatma-metni.html` dosyasını içerik ve tasarım unsurlarını koruyarak Next.js yapısına uygun şekilde revize et. Anasayfada kullanılan tasarım standartları ve responsive design prensiplerini "Kişisel Verilerin Korunması" sayfasına da uygulamalısın.
+
+## Sayfa Yapısı
+Yeni dosya yolu: `src/app/kisisel-verilerin-korunmasi/page.tsx`
+URL: `/kisisel-verilerin-korunmasi`
+
+## Mevcut Durum ve Kaynaklar
+1. `temp copy\kisisel-verilerin-korunmasi-kanunu-aydinlatma-metni.html`: Eski web sitesinden alınan, korunacak içerik ve tasarım elementlerini içeren HTML
+2. Anasayfadaki (`src/app/page.tsx`) tasarım standartları referans alınacak
+3. Meta verileri: Başlık ve açıklama mevcut HTML'den alınmalı
+
+## Sayfa Yapısı Analizi
+Mevcut HTML sayfası bir yasal bildirim metni içermektedir:
+1. **KVKK Aydınlatma Metni**: Yasal bilgilendirme içeriği ve detayları
+2. **PDF Belge Linkleri**: İndirilebilir politika ve form belgeleri
+3. **Haklar ve Bilgilendirmeler**: KVKK kapsamındaki haklar ve yükümlülükler
+
+## Teknik İyileştirme Gereksinimleri
+
+### 1. Metadata Optimizasyonu
+```tsx
+export const metadata = {
+  title: 'Kişisel Verilerin Korunması Kanunu Aydınlatma Metni - Pide By Pide',
+  description: 'Pide By Pide KVKK aydınlatma metni ve kişisel verilerin korunması hakkında bilgiler.',
+  keywords: 'KVKK, kişisel veriler, gizlilik, aydınlatma metni'
+};
+```
+
+### 2. PDF Dosya Linkleri için Bileşen
+```tsx
+interface DocumentLinkProps {
+  href: string;
+  title: string;
+}
+
+function DocumentLink({ href, title }: DocumentLinkProps) {
+  return (
+    <a 
+      href={href}
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="text-primary-600 hover:text-primary-800 text-center block mb-4 font-bold underline"
+    >
+      {title}
+    </a>
+  );
+}
+```
+
+### 3. Aydınlatma Metni Bölümleri için Stil
+```tsx
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="text-xl md:text-2xl font-bold text-primary-800 mt-8 mb-4">
+      {children}
+    </h3>
+  );
+}
+
+function SectionList({ items }: { items: string[] }) {
+  return (
+    <ul className="list-disc pl-6 mb-6 space-y-2">
+      {items.map((item, index) => (
+        <li key={index} className="text-gray-700">{item}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## Ana Sayfa Bileşeni
+```tsx
+// src/app/kisisel-verilerin-korunmasi/page.tsx
+import { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Kişisel Verilerin Korunması Kanunu Aydınlatma Metni - Pide By Pide',
+  description: 'Pide By Pide KVKK aydınlatma metni ve kişisel verilerin korunması hakkında bilgiler.',
+  keywords: 'KVKK, kişisel veriler, gizlilik, aydınlatma metni'
+};
+
+// PDF Belge Linki Bileşeni
+function DocumentLink({ href, title }: { href: string; title: string }) {
+  return (
+    <a 
+      href={href}
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="text-primary-600 hover:text-primary-800 text-center block mb-4 font-bold underline"
+    >
+      {title}
+    </a>
+  );
+}
+
+export default function KVKKPage() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Hero Bölümü */}
+      <section className="bg-primary-50 py-12 md:py-20">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary-800 text-center mb-4">
+            KİŞİSEL VERİLERİN KORUNMASI KANUNU AYDINLATMA METNİ
+          </h1>
+          <nav className="flex justify-center" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500">
+              <li>
+                <Link href="/" className="hover:text-primary-700">Anasayfa</Link>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="font-medium text-gray-700">Kişisel Verilerin Korunması</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      {/* İçerik Bölümü */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
+          
+          {/* Belge Linkleri */}
+          <div className="mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-primary-800 mb-6">
+              KİŞİSEL VERİLERİN KORUNMASI KANUNU
+            </h2>
+            
+            <div className="max-w-xl mx-auto">
+              <DocumentLink 
+                href="/documents/pide-by-pide_kisisel_verilerin_korunmasi_gizlilik-politikasi.pdf" 
+                title="KİŞİSEL VERİLERİN KORUNMASI VE GİZLİLİK POLİTİKASI" 
+              />
+              
+              <DocumentLink 
+                href="/documents/pide-by-pide_aday-muvafakatnamesi.pdf" 
+                title="KİŞİSEL VERİLERİN KORUNMASI - ADAY MUVAFAKATNAMESİ" 
+              />
+              
+              <DocumentLink 
+                href="/documents/pide-by-pide_basvuru-formu.pdf" 
+                title="KVKK UYARICA İLGİLİ KİŞİ BAŞVURU FORMU" 
+              />
+            </div>
+          </div>
+          
+          {/* Aydınlatma Metni */}
+          <div className="prose prose-lg max-w-none">
+            <p className="mb-4">
+              PİDE BY PİDE olarak kişisel verilerinizin güvenliği hususuna azami hassasiyet göstermekteyiz. Bu bilinçle, Şirket olarak, Şirkete ilişkin tüm şahıslara ait her türlü kişisel verinin 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK")'na uygun olarak işlenerek, muhafaza edilmesine büyük önem atfetmekteyiz. Bu sorumluluğumuzun tam idraki ile KVKK kapsamında tanımlı "Veri Sorumlusu" sıfatıyla, kişisel verilerinizi aşağıda izah edildiği surette ve mevzuat tarafından emredilen sınırlar çerçevesinde işlemekteyiz.
+            </p>
+            
+            <p className="mb-6">İşbu aydınlatma metninde geçen;</p>
+            
+            <ul className="list-disc pl-6 mb-6 space-y-2">
+              <li>
+                <strong>Kişisel Veri:</strong> Kimliği belirli veya belirlenebilir gerçek kişiye ilişkin her türlü bilgiyi,
+              </li>
+              <li>
+                <strong>Kişisel Verilerin Korunması Kanunu ("KVKK"):</strong> 7.4.2016 tarihinde Resmî Gazete'de yayımlanan ve yürürlüğe giren 6698 Sayılı Kişisel Verilerin Korunması Kanunu'nu,
+              </li>
+              <li>
+                <strong>Veri Sorumlusu:</strong> Kişisel verilerin işleme amaçlarını ve vasıtalarını belirleyen, veri kayıt sisteminin kurulmasından ve yönetilmesinden sorunlu olan tüzel kişiyi,
+              </li>
+              <li>
+                <strong>Veri İşleyen:</strong> Veri Sorumlusunun verdiği yetkiye dayanarak onun adına Kişisel verileri işleyen gerçek veya tüzel kişiyi ifade eder.
+              </li>
+            </ul>
+            
+            <div className="mt-8 mb-6">
+              <p className="font-bold mb-2">Veri Sorumlusu:</p>
+              <p>
+                KVKK uyarınca muhatap, tedarikçi, müşteri, çalışan, stajyer, ziyaretçi vb. sıfatları ile paylaştığınız kişisel verileriniz, veri sorumlusu olarak belirlenen PİDE BY PİDE tarafından aşağıda belirtilen kapsamda değerlendirilecektir.
+              </p>
+            </div>
+            
+            <h3 className="text-xl md:text-2xl font-bold text-primary-800 mt-8 mb-4">
+              1. Kişisel Verilerin Toplanması, İşlenmesi ve İşletme Amaçları
+            </h3>
+            
+            <p className="mb-4">
+              Kişisel verileriniz, Şirketimiz ile aranızdaki ilişkiye bağlı olarak değişkenlik gösterebilmekle birlikte; otomatik ya da otomatik olmayan yöntemlerle, Şirketimiz birimleri, internet sitesi, sosyal medya mecraları, mobil uygulamalar ve benzeri vasıtalarla sözlü, yazılı ya da elektronik olarak toplanabilecektir.
+            </p>
+            
+            <p className="mb-6">
+              Toplanan kişisel verileriniz, Şirketimiz hizmetlerinden faydalanmanız için gerekli çalışmaların ilgili iş birimleri tarafından yapılması, Şirketimizin ve Şirketimizle iş ilişkisi içerisinde olan kişilerin hukuki ve ticari güvenliğinin temini, Şirketimizin ticari ve iş stratejilerinin belirlenmesi ve uygulanması ile Şirketimizin insan kaynakları politikalarının yürütülmesinin temini amaçlarıyla KVKK'nın 5. ve 6. maddelerinde belirtilen kişisel veri işleme şartları ve amaçları dahilinde işlenecektir.
+            </p>
+            
+            <p className="mb-4">Kişisel verileriniz;</p>
+            
+            <ul className="list-disc pl-6 mb-6 space-y-2">
+              <li>Hukuka ve dürüstlük kurallarına uygun,</li>
+              <li>Doğru ve gerektiğinde güncel,</li>
+              <li>Belirli, açık ve meşru amaçlar için,</li>
+              <li>İşlendikleri amaçla bağlantılı, sınırlı ve ölçülü,</li>
+              <li>İlgili mevzuatta öngörülen veya işlendikleri amaç için gerekli olan süre kadar muhafaza edilme,</li>
+            </ul>
+            
+            <p className="mb-8">kurallarına uygun bir şekilde işlenecektir.</p>
+            
+            <h3 className="text-xl md:text-2xl font-bold text-primary-800 mb-4">
+              2. İşlenen Kişisel Verilerin Kimlere ve Hangi Amaçla Aktarılabileceği
+            </h3>
+            
+            <p className="mb-6">
+              Toplanan kişisel verileriniz; Şirketimiz hizmetlerinden faydalanmanız için gerekli çalışmaların ilgili iş birimleri tarafından yapılması, Şirketimizin ve Şirketimizle iş ilişkisi içerisinde olan kişilerin hukuki ve ticari güvenliğinin temini, Şirketimizin ticari ve iş stratejilerinin belirlenmesi ve uygulanması ile Şirketimizin insan kaynakları politikalarının yürütülmesinin temini amaçlarıyla iş ortaklarımıza, tedarikçilerimize, kanunen yetkili kamu kurumları ve özel kişilere, KVKK'nın 8. ve 9. maddelerinde belirtilen kişisel veri işleme şartları ve amaçları çerçevesinde aktarılabilecektir.
+            </p>
+            
+            <h3 className="text-xl md:text-2xl font-bold text-primary-800 mb-4">
+              3. Kişisel Veri Toplamanın Yöntemi ve Hukuki Sebebi
+            </h3>
+            
+            <p className="mb-6">
+              Kişisel verileriniz, her türlü sözlü, yazılı ya da elektronik ortamda, yukarıda yer verilen amaçlar doğrultusunda hizmetlerimizin sunulabilmesi ve bu kapsamda Şirketimizin sözleşme ve yasadan doğan mesuliyetlerini eksiksiz ve doğru bir şekilde yerine getirebilmesi gayesi ile edinilir. Bu hukuki sebeple toplanan kişisel verileriniz KVKK'nın 5. ve 6. maddelerinde belirtilen kişisel veri işleme şartları ve amaçları kapsamında bu metnin (1) ve (2) numaralı maddelerinde belirtilen amaçlarla da işlenebilmekte ve aktarılabilmektedir.
+            </p>
+            
+            <h3 className="text-xl md:text-2xl font-bold text-primary-800 mb-4">
+              4. Kişisel Veri Sahibinin KVKK'nın 11. Maddesinde Sayılan Hakları
+            </h3>
+            
+            <p className="mb-4">
+              Kişisel veri sahipleri olarak, haklarınıza ilişkin taleplerinizi, aşağıda düzenlenen yöntemlerle Şirketimize iletmeniz durumunda Şirketimiz talebin niteliğine göre en geç otuz gün içinde ücretsiz olarak sonuçlandıracaktır. Ancak, Kişisel Verileri Koruma Kurulunca bir ücret öngörülmesi halinde, Şirketimiz tarafından belirlenen tarifedeki ücret alınacaktır. Bu kapsamda kişisel veri sahipleri;
+            </p>
+            
+            <ul className="list-disc pl-6 mb-6 space-y-2">
+              <li>Kişisel veri işlenip işlenmediğini öğrenme,</li>
+              <li>Kişisel veri işlenmişse buna ilişkin bilgi talep etme,</li>
+              <li>Kişisel verilerin işlenme amacı ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+              <li>Yurt içinde ve yurt dışında kişisel verilerin aktarıldığı üçüncü kişileri bilme,</li>
+              <li>Kişisel verilerin eksik veya yanlış işlenmiş olması halinde bunların düzeltilmesini isteme,</li>
+              <li>KVKK 7. Maddesinde öngörülen şartlar çerçevesinde kişisel verilerin silinmesi veya yok edilmesini isteme,</li>
+              <li>(e) ve (f) bentleri uyarınca yapılan işlemlerin, kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,</li>
+              <li>İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle kişinin kendisi aleyhine bir sonucun ortaya çıkmasına itiraz etme,</li>
+              <li>Kişisel verilerin kanuna aykırı olarak işlenmesi sebebiyle zarara uğraması halinde zararın giderilmesini talep etme haklarına sahiptir.</li>
+            </ul>
+            
+            <p className="mb-4">
+              KVKK'nın 13. Maddesinin 1. Fıkrası gereğince, yukarıda belirtilen haklarınızı kullanmak ile ilgili talebinizi, yazılı veya kişisel verileri Koruma Kurulu'nun belirlediği diğer yöntemlerle Şirketimize iletebilirsiniz.
+            </p>
+            
+            <p className="mb-6">
+              Yukarıda belirtilen haklarınızı kullanmak ve kimliğinizi tespit edici gerekli bilgiler ile KVKK'nın 11. Maddesinde belirtilen haklardan kullanmayı talep ettiğiniz hakkınıza yönelik açıklamalarınızı içeren talebinizi;
+              <a href="mailto:kvk@apazgroup.com" className="text-primary-600 hover:text-primary-800 mx-1">kvk@apazgroup.com</a>
+              adresine elektronik posta göndererek veya
+              <span className="font-semibold ml-1">Adalet Mah. Anadolu Cd. No:41 Kat:20 Megapol Tower / İZMİR</span>
+              adresine ulaştırmanız gerekmektedir.
+            </p>
+            
+            <p className="text-right italic font-bold mt-10">
+              Saygılarımızla
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+## Önemli Notlar ve Talimatlar
+
+1. **Belge Linkleri**:
+   - PDF belge linkleri için static dosyaları `/public/documents/` dizinine yerleştirilmeli
+   - Link renklerinin şirket marka renklerine uygun olması sağlanmalı
+   - Tıklanabilir alanlar erişilebilirlik standartlarına uygun olmalı
+
+2. **Metin Formatlaması**:
+   - Uzun metin içeriği okunabilirlik için düzgün paragraflar ve liste öğeleri halinde formatlı
+   - Başlıklar ve alt başlıklar hiyerarşik yapıda ve tutarlı stillerle belirtilmeli
+   - Önemli terimler ve tanımlar vurgulanmalı
+
+3. **Responsive Davranış**:
+   - Metin içeriği küçük ekranlarda da okunabilir olacak şekilde ayarlanmalı
+   - Belge linkleri mobil cihazlarda kolayca erişilebilir ve tıklanabilir olmalı
+   - Yazı boyutu ve boşluk kullanımı farklı ekran boyutlarına uyarlanmalı
+
+4. **SEO Optimizasyonu**:
+   - Sayfa başlığı ve meta açıklaması KVKK terimlerini içermeli
+   - Uygun heading yapısı (h1, h2, h3) kullanılmalı
+   - İlişkili keywords doğru şekilde yerleştirilmeli
+
+5. **Erişilebilirlik**:
+   - PDF belgeleri için alternatif açıklamalar sağlanmalı
+   - Renk kontrastı WCAG standartlarına uygun olmalı
+   - Semantik HTML yapısı korunmalı
+
+Bu prompt ile "Kişisel Verilerin Korunması" sayfasını orijinal içeriğini ve tasarım unsurlarını koruyarak Next.js yapısına uyarlamalı ve responsive tasarım prensiplerini uygulamalısın.
+
+### Form Kontrolleri İçin Not
+KVKK sayfasına formlardan yapılan yönlendirmelerin doğru çalışması için aşağıdakileri kontrol etmelisin:
+
+1. Tüm form sayfalarında (`/kariyer`, `/iletisim`, `/franchise` vb.) KVKK onay kutularının doğru URL'ye yönlendiğinden emin ol:
+
+```tsx
+// Örnek: Kariyer Formu içindeki KVKK linki
+<label className="flex items-start">
+  <input
+    type="checkbox"
+    name="kvkk"
+    checked={formData.kvkk}
+    onChange={handleInputChange}
+    className="mt-1 h-4 w-4 text-primary-600"
+    required
+  />
+  <span className="ml-2 text-sm text-gray-700">
+    <Link 
+      href="/kisisel-verilerin-korunmasi" 
+      target="_blank"
+      className="text-primary-600 hover:text-primary-800"
+    >
+      KVKK Aydınlatma Metni
+    </Link>'ni okudum ve kabul ediyorum.
+  </span>
+</label>
+```
+
+2. Eski URL'lerden yeni URL'lere yönlendirme yapılandırması oluştur:
+
+```tsx
+// src/app/kisisel-verilerin-korunmasi-kanunu-aydinlatma-metni/route.ts
+import { redirect } from 'next/navigation';
+
+export async function GET() {
+  return redirect('/kisisel-verilerin-korunmasi');
+}
+```
+```
+
+Bu prompt, KVKK aydınlatma metni sayfasını Next.js yapısına uygun şekilde dönüştürmek için kapsamlı bir rehber sunuyor. Uzun yasal metinlerin daha okunabilir bir formatta düzenlenmesine, PDF belge linklerinin doğru şekilde yerleştirilmesine ve tüm içeriğin responsive tasarım ilkelerine uygun olarak sunulmasına odaklanıyor.
+
+Ayrıca, diğer sayfalardaki formlardan KVKK sayfasına yapılabilecek yönlendirmelerin doğru çalışması için linkler ve URL yönlendirmeleri için talimatlar içeriyor.
