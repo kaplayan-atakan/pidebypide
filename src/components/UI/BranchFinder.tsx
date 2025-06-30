@@ -74,7 +74,9 @@ export default function BranchFinder() {
   // Şehir seçildiğinde veya haritada tıklandığında doğrudan şubeler sayfasındaki ilgili anchor'a yönlendir
   const goToBranchSection = (city: typeof cities[number]) => {
     const anchor = city.value || city.name.toLowerCase();
-    window.location.href = `/subeler#${anchor}`;
+    // Ortama göre basePath ekle
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+    window.location.href = `${basePath}/subeler/#${anchor}`;
   };
 
   // Event handlers

@@ -71,7 +71,7 @@ const pideProducts = [
   {
     title: "PEYNİRLİ",
     image: "/assets/images/pidePhotos/kasarli_pide.png",
-    description: "Pide lezzeti peynirle birleşiyor. Deneyimli ustaların hazırladığı peynirli pideler, tadıyla akıllarda yer ediyor."
+    description: "Fırından yeni çıkmış, altın sarısı renginde, yumuşacık ve çıtır çıtır hamuru ile peynirli pide, her lokmada sıcak ve erimiş peynirin enfes lezzetini sunuyor."
   },
   {
     title: "TAVUKLU",
@@ -96,17 +96,17 @@ const pideProducts = [
   {
     title: "SUCUKLU",
     image: "/assets/images/pidePhotos/sucuklu_pide.jpg",
-    description: "Yumuşacık hamuru, bolca erimiş kaşar peyniri ve nefis küp sucuklarla harmanlanan pide, her lokmada damakları şenlendiriyor. Sıcacık fırından çıkmış, dışı hafifçe çıtır, içi ise yumuşacık olan bu pide, sucuğun baharatlı ve leziz tadı ile kaşarın mükemmel uyumunu sunuyor."
+    description: "Yumuşacık hamuru, bolca erimiş peynir ve nefis küp sucuklarla harmanlanan pide, her lokmada damakları şenlendiriyor. Sıcacık fırından çıkmış, dışı hafifçe çıtır, içi ise yumuşacık olan bu pide, sucuğun baharatlı ve leziz tadı ile peynirin mükemmel uyumunu sunuyor."
   },
   {
     title: "SUCUKLU KARIŞIK",
     image: "/assets/images/pidePhotos/sucuklu_karisik.jpg",
-    description: "Fırından yeni çıkmış, dışı çıtır çıtır, içi yumuşacık hamuru üzerine özenle yerleştirilen küp sucuklar, rengarenk karışık biberlerle buluşuyor. Sucukların baharatlı lezzeti, biberler ve kaşar ile mükemmel bir uyum içinde, her ısırıkta damağınızda bir şölen yaratıyor."
+    description: "Fırından yeni çıkmış, dışı çıtır çıtır, içi yumuşacık hamuru üzerine özenle yerleştirilen küp sucuklar, rengarenk karışık biberlerle buluşuyor. Sucukların baharatlı lezzeti, biberler ve peynir ile mükemmel bir uyum içinde, her ısırıkta damağınızda bir şölen yaratıyor."
   },
   {
     title: "KAŞARLI",
     image: "/assets/images/pidePhotos/kasarli_pide.png",
-    description: "Fırından yeni çıkmış, altın sarısı renginde, yumuşacık ve çıtır çıtır hamuru ile kaşarlı pide, her lokmada sıcak ve erimiş peynirin enfes lezzetini sunuyor."
+    description: "Fırından yeni çıkmış, altın sarısı renginde, yumuşacık ve çıtır çıtır hamuru ile peynirli pide, her lokmada sıcak ve erimiş peynirin enfes lezzetini sunuyor."
   },
   {
     title: "KIYMALI PATATESLİ",
