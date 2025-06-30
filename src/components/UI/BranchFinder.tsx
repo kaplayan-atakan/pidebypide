@@ -107,7 +107,8 @@ export default function BranchFinder() {
 
   const handleSearch = () => {
     if (selectedCity) {
-      window.location.href = `/subeler#${selectedCity}`;
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+      window.location.href = `${basePath}/subeler/#${selectedCity}`;
     }
   };
 
