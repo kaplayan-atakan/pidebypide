@@ -104,11 +104,6 @@ const pideProducts = [
     description: "Fırından yeni çıkmış, dışı çıtır çıtır, içi yumuşacık hamuru üzerine özenle yerleştirilen küp sucuklar, rengarenk karışık biberlerle buluşuyor. Sucukların baharatlı lezzeti, biberler ve peynir ile mükemmel bir uyum içinde, her ısırıkta damağınızda bir şölen yaratıyor."
   },
   {
-    title: "KAŞARLI",
-    image: "/assets/images/pidePhotos/kasarli_pide.png",
-    description: "Fırından yeni çıkmış, altın sarısı renginde, yumuşacık ve çıtır çıtır hamuru ile peynirli pide, her lokmada sıcak ve erimiş peynirin enfes lezzetini sunuyor."
-  },
-  {
     title: "KIYMALI PATATESLİ",
     image: "/assets/images/pidePhotos/kiymali_patatesli_pide.jpg",
     description: "Sıcacık çıtır hamurun üzerinde, baharatlarla harmanlanmış nefis kıyma veya yumuşacık patates harcı… Her lokmada damakları şenlendiren bu pide, 2'li lezzeti ile bambaşka bir deneyime davet ediyor!"
