@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { getAssetPath } from '@/utils/assetHelpers';
 
 export const metadata: Metadata = {
   title: 'Pide By Pide',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     siteName: 'Pide By Pide',
     images: [
       {
-        url: '/upload/files/files_2019-05-15_13-09-07.png',
+        url: getAssetPath('/upload/files/files_2019-05-15_13-09-07.png'),
       },
     ],
     locale: 'tr',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Ana Sayfa - Pide By Pide',
     description: 'Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide ve daha bir çok pide çeşidi Pide By Pide\'de. 365 gün, 1 pide alana 1 pide bedava.',
-    images: ['/upload/files/files_2019-05-15_13-09-07.png'],
+    images: [getAssetPath('/upload/files/files_2019-05-15_13-09-07.png')],
     creator: '@ajansup',
     site: '@ajansup',
   },
@@ -63,7 +64,7 @@ export default function Home() {
                     <li>
                       <Link href="https://www.facebook.com/pidebypide/" target="_blank">
                         <Image 
-                          src="/assets/images/social/facebook.png" 
+                          src={getAssetPath('/assets/images/social/facebook.png')} 
                           alt="icon-facebook" 
                           width={40} 
                           height={40}
@@ -74,7 +75,7 @@ export default function Home() {
                     <li>
                       <Link href="https://www.instagram.com/pidebypide/" target="_blank">
                         <Image 
-                          src="/assets/images/social/instagram.png" 
+                          src={getAssetPath('/assets/images/social/instagram.png')} 
                           alt="icon-instagram" 
                           width={40} 
                           height={40}
@@ -85,7 +86,7 @@ export default function Home() {
                     <li>
                       <Link href="https://x.com/pidebypide" target="_blank">
                         <Image 
-                          src="/assets/images/social/x.png" 
+                          src={getAssetPath('/assets/images/social/x.png')} 
                           alt="icon-x" 
                           width={40} 
                           height={40}
@@ -96,7 +97,7 @@ export default function Home() {
                     <li>
                       <Link href="https://tr.linkedin.com/company/pidebypide" target="_blank">
                         <Image 
-                          src="/assets/images/social/linkedin.png" 
+                          src={getAssetPath('/assets/images/social/linkedin.png')} 
                           alt="icon-linkedin" 
                           width={40} 
                           height={40}

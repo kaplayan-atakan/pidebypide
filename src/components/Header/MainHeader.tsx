@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getAssetPath } from "@/utils/assetPath";
+import { getAssetPath } from "@/utils/assetHelpers";
 
 // Açık bir şekilde component function'u tanımlıyoruz
 function MainHeader() {

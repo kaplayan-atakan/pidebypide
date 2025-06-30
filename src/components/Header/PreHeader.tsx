@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { getAssetPath } from "@/utils/assetPath";
+import { getAssetPath } from "@/utils/assetHelpers";
 
 // Açık bir şekilde component function'u tanımlıyoruz
 function PreHeader() {

@@ -84,11 +84,11 @@ export default function Slider({
                 // Sadece mevcut gösterilen slide için yönlendirmeye izin ver
                 if (index !== currentSlide) {
                   e.preventDefault();
-                  console.log(`YÖNLENDİRME TESTİ: Görünmez slide ${index} tıklandı -> önce görünür hale getiriliyor`);
+                  // console.log(`YÖNLENDİRME TESTİ: Görünmez slide ${index} tıklandı -> önce görünür hale getiriliyor`);
                   setCurrentSlide(index);
                   return;
                 }
-                console.log(`YÖNLENDİRME TESTİ: Slide ${index} tıklandı -> ${index === 0 ? "/subeler" : "/urunler"} sayfasına yönlendiriliyor`);
+                // console.log(`YÖNLENDİRME TESTİ: Slide ${index} tıklandı -> ${index === 0 ? "/subeler" : "/urunler"} sayfasına yönlendiriliyor`);
               }}
               aria-label={`Slider ${index + 1} - Detayları görüntüle`}
             >

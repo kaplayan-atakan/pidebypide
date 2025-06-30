@@ -25,6 +25,7 @@ This is a Next.js 15 project with TypeScript, Tailwind CSS, and ESLint configura
 - Implement proper TypeScript types for components and functions
 - Use server components by default, client components when needed
 - Follow Next.js performance best practices
+- Yeni asset eklerken veya mevcutları güncellerken sadece `getAssetPath` (veya ilgili helper) kullanılmalı. Tüm görsel, font, favicon, PDF, video ve diğer statik varlık yolları ortamdan bağımsız olarak bu yardımcı fonksiyon ile yönetilmelidir.
 
 ## Coding Standards
 - Use functional components with TypeScript

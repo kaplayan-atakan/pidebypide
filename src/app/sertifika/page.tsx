@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
+import { getAssetPath } from '@/utils/assetHelpers';
 
 export const metadata: Metadata = {
   title: 'Sertifikalarımız - Pide By Pide',
@@ -11,10 +12,8 @@ export const metadata: Metadata = {
   keywords: 'Sertifika, kalite belgesi, Pide By Pide sertifikaları',
 };
 
-// GitHub Pages için URL düzeltmesi
-const assetPrefix = process.env.NODE_ENV === 'production' ? '/pidebypide' : '';
-const sertifikaImg = `${assetPrefix}/assets/images/sertifika.jpg`;
-const sertifikaPdf = `${assetPrefix}/assets/documents/sertifika.pdf`;
+const sertifikaImg = getAssetPath('/assets/images/sertifika.jpg');
+const sertifikaPdf = getAssetPath('/assets/documents/sertifika.pdf');
 
 export default function SertifikaPage() {
   return (

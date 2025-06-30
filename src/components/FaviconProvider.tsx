@@ -13,16 +13,16 @@ export default function FaviconProvider() {
 
   // Debug amaçlı, komponent mount olduğunda log oluştur
   useEffect(() => {
-    console.log('FaviconProvider mount edildi');
+    // console.log('FaviconProvider mount edildi');
     
     // Mevcut favicon durumunu kontrol et
     setTimeout(() => {
-      console.log('FaviconProvider setTimeout çalıştı');
-      console.log('Favicon başlatıldı mı?', isInitialized);
+      // console.log('FaviconProvider setTimeout çalıştı');
+      // console.log('Favicon başlatıldı mı?', isInitialized);
       
       try {
         const icons = document.querySelectorAll('link[rel*="icon"]');
-        console.log('Mevcut favicon sayısı:', icons.length);
+        // console.log('Mevcut favicon sayısı:', icons.length);
         icons.forEach(icon => {
           console.log(`- ${icon.getAttribute('rel')}: ${icon.getAttribute('href')}`);
         });

@@ -5,6 +5,7 @@ import ContactForm from "@/components/ContactForm";
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from "@/components/Icons/ContactIcons";
 import Link from "next/link";
 import Image from "next/image";
+import { getAssetPath } from '@/utils/assetHelpers';
 
 export const metadata: Metadata = {
   title: 'İletişim - Pide By Pide',
@@ -148,7 +149,7 @@ export default function IletisimPage() {
                         <Link href="https://www.facebook.com/pidebypide/" target="_blank" rel="noopener noreferrer" 
                               className="hover:scale-110 transition-transform" aria-label="Facebook">
                           <Image 
-                            src="/assets/images/social/facebook.png" 
+                            src={getAssetPath('/assets/images/social/facebook.png')} 
                             alt="Facebook" 
                             width={40} 
                             height={40} 
@@ -158,7 +159,7 @@ export default function IletisimPage() {
                         <Link href="https://www.instagram.com/pidebypide/" target="_blank" rel="noopener noreferrer" 
                               className="hover:scale-110 transition-transform" aria-label="Instagram">
                           <Image 
-                            src="/assets/images/social/instagram.png" 
+                            src={getAssetPath('/assets/images/social/instagram.png')} 
                             alt="Instagram" 
                             width={40} 
                             height={40} 
@@ -168,7 +169,7 @@ export default function IletisimPage() {
                         <Link href="https://x.com/pidebypide" target="_blank" rel="noopener noreferrer" 
                               className="hover:scale-110 transition-transform" aria-label="X">
                           <Image 
-                            src="/assets/images/social/x.png" 
+                            src={getAssetPath('/assets/images/social/x.png')} 
                             alt="X" 
                             width={40} 
                             height={40} 
@@ -178,7 +179,7 @@ export default function IletisimPage() {
                         <Link href="https://tr.linkedin.com/company/pidebypide" target="_blank" rel="noopener noreferrer" 
                               className="hover:scale-110 transition-transform" aria-label="LinkedIn">
                           <Image 
-                            src="/assets/images/social/linkedin.png" 
+                            src={getAssetPath('/assets/images/social/linkedin.png')} 
                             alt="LinkedIn" 
                             width={40} 
                             height={40} 

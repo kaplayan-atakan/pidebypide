@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
+import { getAssetPath } from '@/utils/assetHelpers';
 
 export const metadata: Metadata = {
   title: 'Kişisel Verilerin Korunması Kanunu Aydınlatma Metni - Pide By Pide',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 function DocumentLink({ href, title }: { href: string; title: string }) {
   return (
     <a 
-      href={href}
+      href={getAssetPath(href)}
       target="_blank" 
       rel="noopener noreferrer" 
       className="text-[#14543c] hover:text-[#f29b24] transition-colors text-center block mb-4 font-bold underline"

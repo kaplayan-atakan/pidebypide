@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAssetPath } from "@/utils/assetPath";
+import { getAssetPath } from "@/utils/assetHelpers";
 
 export default function Footer() {
   return (    <div className="section-footer section-footer-new section-footer-home bg-white border-t border-[#7b7934] spacing-md">

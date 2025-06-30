@@ -1,20 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import TurkeyMap from './TurkeyMap';
-import ResponsiveModal from './ResponsiveModal';
 
-export default function BranchFinder() {  const [selectedCity, setSelectedCity] = useState('');
+export default function BranchFinder() {
   const [hoveredCity, setHoveredCity] = useState('');
-  const [showCityInfo, setShowCityInfo] = useState(false);
-  const [selectedCityData, setSelectedCityData] = useState<{
-    name: string;
-    hasBranch: boolean;
-    branchCount: number;
-    svgId?: string;
-    value?: string;  } | null>(null);
-
+  const [selectedCity, setSelectedCity] = useState(''); // selectedCity state'ini geri ekle
+  
   // Şehir verileri - SVG ID'leri ile eşleştirilmiş
   const cities = [
     { value: 'istanbul', name: 'İstanbul', svgId: 'TR34', hasBranch: true, branchCount: 8 },
@@ -37,37 +29,6 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
     { value: 'mersin', name: 'Mersin', svgId: 'TR33', hasBranch: true, branchCount: 1 },
     { value: 'sanliurfa', name: 'Şanlıurfa', svgId: 'TR63', hasBranch: true, branchCount: 1 },
     { value: 'sivas', name: 'Sivas', svgId: 'TR58', hasBranch: true, branchCount: 1 }
-  ];
-
-  // Tüm Türkiye şehirleri (SVG'de olan tüm şehirler)
-  const allTurkishCities = [
-    { svgId: 'TR01', name: 'Adana' }, { svgId: 'TR02', name: 'Adıyaman' }, { svgId: 'TR03', name: 'Afyonkarahisar' },
-    { svgId: 'TR04', name: 'Ağrı' }, { svgId: 'TR05', name: 'Amasya' }, { svgId: 'TR06', name: 'Ankara' },
-    { svgId: 'TR07', name: 'Antalya' }, { svgId: 'TR08', name: 'Artvin' }, { svgId: 'TR09', name: 'Aydın' },
-    { svgId: 'TR10', name: 'Balıkesir' }, { svgId: 'TR11', name: 'Bilecik' }, { svgId: 'TR12', name: 'Bingöl' },
-    { svgId: 'TR13', name: 'Bitlis' }, { svgId: 'TR14', name: 'Bolu' }, { svgId: 'TR15', name: 'Burdur' },
-    { svgId: 'TR16', name: 'Bursa' }, { svgId: 'TR17', name: 'Çanakkale' }, { svgId: 'TR18', name: 'Çankırı' },
-    { svgId: 'TR19', name: 'Çorum' }, { svgId: 'TR20', name: 'Denizli' }, { svgId: 'TR21', name: 'Diyarbakır' },
-    { svgId: 'TR22', name: 'Edirne' }, { svgId: 'TR23', name: 'Elazığ' }, { svgId: 'TR24', name: 'Erzincan' },
-    { svgId: 'TR25', name: 'Erzurum' }, { svgId: 'TR26', name: 'Eskişehir' }, { svgId: 'TR27', name: 'Gaziantep' },
-    { svgId: 'TR28', name: 'Giresun' }, { svgId: 'TR29', name: 'Gümüşhane' }, { svgId: 'TR30', name: 'Hakkari' },
-    { svgId: 'TR31', name: 'Hatay' }, { svgId: 'TR32', name: 'Isparta' }, { svgId: 'TR33', name: 'Mersin' },
-    { svgId: 'TR34', name: 'İstanbul' }, { svgId: 'TR35', name: 'İzmir' }, { svgId: 'TR36', name: 'Kars' },
-    { svgId: 'TR37', name: 'Kastamonu' }, { svgId: 'TR38', name: 'Kayseri' }, { svgId: 'TR39', name: 'Kırklareli' },
-    { svgId: 'TR40', name: 'Kırşehir' }, { svgId: 'TR41', name: 'Kocaeli' }, { svgId: 'TR42', name: 'Konya' },
-    { svgId: 'TR43', name: 'Kütahya' }, { svgId: 'TR44', name: 'Malatya' }, { svgId: 'TR45', name: 'Manisa' },
-    { svgId: 'TR46', name: 'Kahramanmaraş' }, { svgId: 'TR47', name: 'Mardin' }, { svgId: 'TR48', name: 'Muğla' },
-    { svgId: 'TR49', name: 'Muş' }, { svgId: 'TR50', name: 'Nevşehir' }, { svgId: 'TR51', name: 'Niğde' },
-    { svgId: 'TR52', name: 'Ordu' }, { svgId: 'TR53', name: 'Rize' }, { svgId: 'TR54', name: 'Sakarya' },
-    { svgId: 'TR55', name: 'Samsun' }, { svgId: 'TR56', name: 'Siirt' }, { svgId: 'TR57', name: 'Sinop' },
-    { svgId: 'TR58', name: 'Sivas' }, { svgId: 'TR59', name: 'Tekirdağ' }, { svgId: 'TR60', name: 'Tokat' },
-    { svgId: 'TR61', name: 'Trabzon' }, { svgId: 'TR62', name: 'Tunceli' }, { svgId: 'TR63', name: 'Şanlıurfa' },
-    { svgId: 'TR64', name: 'Uşak' }, { svgId: 'TR65', name: 'Van' }, { svgId: 'TR66', name: 'Yozgat' },
-    { svgId: 'TR67', name: 'Zonguldak' }, { svgId: 'TR68', name: 'Aksaray' }, { svgId: 'TR69', name: 'Bayburt' },
-    { svgId: 'TR70', name: 'Karaman' }, { svgId: 'TR71', name: 'Kırıkkale' }, { svgId: 'TR72', name: 'Batman' },
-    { svgId: 'TR73', name: 'Şırnak' }, { svgId: 'TR74', name: 'Bartın' }, { svgId: 'TR75', name: 'Ardahan' },
-    { svgId: 'TR76', name: 'Iğdır' }, { svgId: 'TR77', name: 'Yalova' }, { svgId: 'TR78', name: 'Karabük' },
-    { svgId: 'TR79', name: 'Kilis' }, { svgId: 'TR80', name: 'Osmaniye' }, { svgId: 'TR81', name: 'Düzce' }
   ];
 
   // Yardımcı fonksiyonlar
@@ -110,31 +71,27 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
     return baseStyle;
   };
 
+  // Şehir seçildiğinde veya haritada tıklandığında doğrudan şubeler sayfasındaki ilgili anchor'a yönlendir
+  const goToBranchSection = (city: typeof cities[number]) => {
+    const anchor = city.value || city.name.toLowerCase();
+    window.location.href = `/subeler#${anchor}`;
+  };
+
   // Event handlers
-  const handleCitySelect = (cityValue: string) => {
-    setSelectedCity(cityValue);
-    const cityData = getCityById(cityValue);
-    if (cityData) {
-      setSelectedCityData(cityData);
-      setShowCityInfo(true);
+  // Harita şehir tıklama fonksiyonu
+  const handleSvgCityClick = (svgId: string) => {
+    const city = getCityBySvgId(svgId);
+    if (city) {
+      goToBranchSection(city);
     }
   };
 
-  const handleSvgCityClick = (svgId: string) => {
-    const cityData = getCityBySvgId(svgId);
-    if (cityData) {
-      handleCitySelect(cityData.value);
-    } else {
-      const allCityData = allTurkishCities.find(city => city.svgId === svgId);
-      if (allCityData) {
-        setSelectedCityData({
-          name: allCityData.name,
-          hasBranch: false,
-          branchCount: 0,
-          svgId: svgId
-        });
-        setShowCityInfo(true);
-      }
+  // Arama veya şehir seçimi fonksiyonu (örnek: bir select veya arama inputu varsa)
+  const handleCitySelect = (cityValue: string) => {
+    setSelectedCity(cityValue);
+    const city = getCityById(cityValue);
+    if (city) {
+      goToBranchSection(city);
     }
   };
 
@@ -150,11 +107,6 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
     if (selectedCity) {
       window.location.href = `/subeler#${selectedCity}`;
     }
-  };
-
-  const closeModal = () => {
-    setShowCityInfo(false);
-    setSelectedCityData(null);
   };
 
   return (
@@ -200,6 +152,7 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                 <h3 className="text-lg sm:text-xl font-bold font-header text-[#14543c] margin-responsive text-center">
                   Türkiye Genelinde Hizmet Veriyoruz
                 </h3>
+                {/* Harita üzerinde şehir hover edildiğinde şehir ismini göster */}
                 <div className="relative bg-gray-100 rounded-lg overflow-hidden">
                   <TurkeyMap 
                     getPathStyle={getPathStyle}
@@ -207,6 +160,13 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
                     handleMouseLeave={handleMouseLeave}
                     handleSvgCityClick={handleSvgCityClick}
                   />
+                  {hoveredCity && cities.find(c => c.svgId === hoveredCity) && (
+                    <div
+                      className="absolute left-1/2 top-2 z-20 -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded shadow text-[#14543c] font-bold text-lg border border-[#f29b24] pointer-events-none select-none animate-fade-in"
+                    >
+                      {cities.find(c => c.svgId === hoveredCity)?.name}
+                    </div>
+                  )}
                 </div>
               </div>
               
@@ -228,51 +188,6 @@ export default function BranchFinder() {  const [selectedCity, setSelectedCity] 
             </div>
           </div>
         </div>
-      </div>      {/* Şehir Bilgi Modal */}
-      <ResponsiveModal
-        isOpen={showCityInfo}
-        onClose={closeModal}
-        title={selectedCityData?.name || ''}
-      >
-        {selectedCityData && (
-          <div className="text-center">
-            {selectedCityData.hasBranch ? (
-              <div>
-                <div className="text-[#14543c] text-4xl mb-2">✓</div>
-                <p className="text-lg font-semibold text-[#14543c] mb-2">
-                  Şubemiz Bulunuyor!
-                </p>
-                <p className="text-[#7b7934] mb-4">
-                  {selectedCityData.branchCount} şubemizle hizmet veriyoruz.
-                </p>
-                <Link
-                  href={`/subeler#${selectedCityData.value || selectedCityData.name.toLowerCase()}`}
-                  className="inline-block bg-[#f29b24] text-white px-6 py-2 rounded-lg hover:bg-[#d4821a] transition-colors btn-touch"
-                  onClick={closeModal}
-                >
-                  Şube Detaylarını Görüntüle
-                </Link>
-              </div>
-            ) : (
-              <div>
-                <div className="text-[#7b7934] text-4xl mb-2">ⓘ</div>
-                <p className="text-lg font-semibold text-[#7b7934] mb-2">
-                  Henüz Şubemiz Yok
-                </p>
-                <p className="text-[#7b7934] mb-4 opacity-75">
-                  Bu şehirde henüz şubemiz bulunmamaktadır. Yakında geliyoruz!
-                </p>
-                <button
-                  onClick={closeModal}
-                  className="bg-[#7b7934] text-white px-6 py-2 rounded-lg hover:bg-[#5d5c26] transition-colors btn-touch"
-                >
-                  Tamam
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </ResponsiveModal>
-    </>
+      </div>    </>
   );
 }

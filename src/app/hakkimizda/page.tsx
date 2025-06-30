@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
+import { getAssetPath } from '@/utils/assetHelpers';
 
 export const metadata: Metadata = {
   title: 'Hakkımızda - Pide By Pide',
@@ -57,7 +58,7 @@ export default function HakkimizdaPage() {
             {/* <div className="mb-8 sm:mb-12 lg:mb-16">
               <div className="relative w-full h-64 sm:h-80 lg:h-96 rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="/assets/images/web_pide-05.jpg"
+                  src={getAssetPath('/assets/images/web_pide-05.jpg')}
                   alt="Pide By Pide Hakkımızda"
                   fill
                   className="object-cover"
@@ -88,7 +89,7 @@ export default function HakkimizdaPage() {
               {/* Sağ Taraf - Görsel ve İstatistikler */}              <div className="space-y-6 lg:space-y-8">
                 <div className="relative">
                   <Image
-                    src="/assets/images/hakkimizda.png"
+                    src={getAssetPath('/assets/images/hakkimizda.png')}
                     alt="Pide By Pide Hakkımızda"
                     width={600}
                     height={400}
