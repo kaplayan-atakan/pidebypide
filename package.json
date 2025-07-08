@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && node scripts/fix-asset-paths.mjs",
+    "build": "next build",
+    "build:iis": "next build",
     "start": "next start",
+    "start:iis": "node server.js",
     "lint": "next lint",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d out -t true"

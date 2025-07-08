@@ -1,17 +1,18 @@
 import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === 'production';
-const basePath = isProd ? '/pidebypide' : '';
+const basePath = ''; // IIS için base path boş bırakıyoruz
 
 const nextConfig: NextConfig = {
-  output: 'export', // GitHub Pages için statik dışa aktarım
+  // IIS için export modunu kapatıyoruz - dynamic server kullanacağız
+  // output: 'export', // Bu satırı kapatıyoruz
   basePath: basePath,
-  assetPrefix: isProd ? '/pidebypide/' : '',
+  assetPrefix: '', // IIS için prefix boş
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
-  distDir: 'out',
+  distDir: '.next', // Standard Next.js build directory
   images: {
-    unoptimized: true
+    unoptimized: true // IIS için gerekli
   },
   // Statik varlıkları düzgün işlemek için
   webpack: (config) => {
