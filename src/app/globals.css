@@ -219,10 +219,16 @@ h1.font-bold, h2.font-bold, h3.font-bold, h4.font-bold, h5.font-bold, h6.font-bo
   font-weight: 900;
 }
 
+
 /* Button text should be medium weight */
 button, .btn, input[type="submit"] {
   font-family: var(--font-body);
   font-weight: 600;
+}
+
+/* Tüm formlardaki input, textarea ve select için varsayılan yazı rengi siyah */
+input, textarea, select {
+  color: #000;
 }
 
 /* Türkçe karakter desteği */

@@ -49,7 +49,8 @@ function MainHeader() {
               <li className="relative group">
                 <button 
                   onClick={toggleKurumsal}
-                  className="hover:text-[#f29b24] transition-colors btn-touch bg-transparent border-none font-bold font-header text-sm text-[#14543c] cursor-pointer"
+                  className="hover:text-[#f29b24] transition-colors btn-touch bg-transparent border-none font-bold font-header text-sm text-[#14543c] cursor-pointer uppercase"
+                  style={{ fontSize: 'inherit', lineHeight: 'inherit', padding: 0 }}
                 >
                   KURUMSAL
                 </button>

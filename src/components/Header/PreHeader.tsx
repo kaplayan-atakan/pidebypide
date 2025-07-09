@@ -1,7 +1,9 @@
 'use client';
 
-import Image from "next/image";
-import { getAssetPath } from "@/utils/assetHelpers";
+import { getAssetPath } from "@/utils/assetPath";
+// import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { faXTwitter, faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Açık bir şekilde component function'u tanımlıyoruz
 function PreHeader() {
@@ -15,53 +17,25 @@ function PreHeader() {
                 <span className="mr-1">✏️</span> Görüş ve Önerileriniz
               </a>
             </li>
-            {/* Sosyal Medya İkonları */}
+            {/* Sosyal Medya İkonları (react-icons ile) */}
             <li>
               <a href="https://www.facebook.com/pidebypide/" target="_blank" rel="noopener noreferrer" className="btn-touch">
-                <Image 
-                  src={getAssetPath("assets/images/social/facebook.png")} 
-                  alt="Facebook" 
-                  width={40} 
-                  height={40}
-                  sizes="40px"
-                  className="hover:opacity-80 transition-opacity sm:w-6 sm:h-6"
-                />
+                <FontAwesomeIcon icon={faFacebook} color="#4267B2" className="hover:opacity-80 transition-opacity sm:w-6 sm:h-6" />
               </a>
             </li>
             <li>
               <a href="https://www.instagram.com/pidebypide/" target="_blank" rel="noopener noreferrer" className="btn-touch">
-                <Image 
-                  src={getAssetPath("assets/images/social/instagram.png")} 
-                  alt="Instagram" 
-                  width={40} 
-                  height={40}
-                  sizes="40px"
-                  className="hover:opacity-80 transition-opacity sm:w-6 sm:h-6"
-                />
+                <FontAwesomeIcon icon={faInstagram} color="#C13584" className="hover:opacity-80 transition-opacity sm:w-6 sm:h-6" />
               </a>
             </li>
             <li>
               <a href="https://x.com/pidebypide" target="_blank" rel="noopener noreferrer" className="btn-touch">
-                <Image 
-                  src={getAssetPath("assets/images/social/x.png")} 
-                  alt="X (Twitter)" 
-                  width={40} 
-                  height={40}
-                  sizes="40px"
-                  className="object-contain hover:opacity-80 transition-opacity sm:w-6 sm:h-6"
-                />
+                <FontAwesomeIcon icon={faXTwitter} color="#000" className="hover:opacity-80 transition-opacity sm:w-6 sm:h-6" />
               </a>
             </li>
             <li>
               <a href="https://tr.linkedin.com/company/pidebypide" target="_blank" rel="noopener noreferrer" className="btn-touch">
-                <Image 
-                  src={getAssetPath("assets/images/social/linkedin.png")} 
-                  alt="LinkedIn" 
-                  width={40} 
-                  height={40}
-                  sizes="40px"
-                  className="object-contain hover:opacity-80 transition-opacity sm:w-6 sm:h-6"
-                />
+                <FontAwesomeIcon icon={faLinkedin} color="#0077B5" className="hover:opacity-80 transition-opacity sm:w-6 sm:h-6" />
               </a>
             </li>
           </ul>

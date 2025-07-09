@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import OpinionBar from "@/components/UI/OpinionBar";
@@ -41,28 +40,6 @@ export default function KVKKPage() {
       <Header />
       
       <main className="min-h-screen">
-        {/* Hero Bölümü */}
-        <section className="bg-gradient-to-br from-[#14543c] to-[#0f3d2a] py-12 sm:py-16 lg:py-20">
-          <div className="container mx-auto container-responsive">
-            <div className="text-center">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-header text-white margin-responsive">
-                KİŞİSEL VERİLERİN KORUNMASI
-              </h1>
-              <nav className="mt-4 sm:mt-6">
-                <ol className="flex justify-center items-center space-x-2 text-sm sm:text-base text-[#f29b24]">
-                  <li>
-                    <Link href="/" className="hover:text-white transition-colors">
-                      Anasayfa
-                    </Link>
-                  </li>
-                  <li className="text-white">/</li>
-                  <li className="text-white">Kişisel Verilerin Korunması</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </section>
-
         {/* İçerik Bölümü */}
         <div className="py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto container-responsive">

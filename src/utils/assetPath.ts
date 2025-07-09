@@ -4,7 +4,8 @@
  * @returns The complete asset path
  */
 export function getAssetPath(path: string): string {
-  const basePath = process.env.NODE_ENV === 'production' ? '/pidebypide' : '';
+  // const basePath = process.env.NODE_ENV === 'production' ? '/pidebypide' : '';
+  const basePath = '';
   // Ensure path doesn't start with a slash to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.substring(1) : path;
   return `${basePath}/${cleanPath}`;

@@ -82,26 +82,6 @@ export default function GorusVeOnerileriniz() {
       <Header />
       
       <main className="min-h-screen bg-gray-50">
-        {/* Hero Bölümü */}
-        <section className="bg-primary-50 py-12 md:py-20">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#14543c] text-center mb-4">
-              GÖRÜŞ VE ÖNERİLERİNİZ
-            </h1>
-            <nav className="flex justify-center" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-2 text-sm text-gray-500">
-                <li>
-                  <Link href="/" className="hover:text-[#f29b24]">Anasayfa</Link>
-                </li>
-                <li>
-                  <span className="mx-2">/</span>
-                </li>
-                <li className="font-medium text-gray-700">Görüş ve Önerileriniz</li>
-              </ol>
-            </nav>
-          </div>
-        </section>
-
         {/* İçerik Bölümü */}
         <div className="container mx-auto px-4 py-12">
           {submitSuccess ? (

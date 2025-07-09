@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     // Not: Icon ve shortcut favicons, useFavicon hook'u tarafından dinamik olarak yönetilir
     apple: [
       {
-        url: "/pidebypide/assets/images/favicon/apple-touch-icon.png",
+        url: "/assets/images/favicon/apple-touch-icon.png",
         sizes: "180x180",
         type: "image/png",
       },
@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     other: [
       {
         rel: "mask-icon",
-        url: "/pidebypide/assets/images/favicon/safari-pinned-tab.svg",
+        url: "/assets/images/favicon/safari-pinned-tab.svg",
         color: "#14543c",
       },
     ],
   },
-  manifest: "/pidebypide/assets/images/favicon/site.webmanifest",
+  manifest: "/assets/images/favicon/site.webmanifest",
   openGraph: {
     title: "Ana Sayfa - Pide By Pide",
     description: "Kuşbaşılı pide, kıymalı pide, peynirli pide, patatesli pide, tavuklu pide, Kilis pide ve daha bir çok pide çeşidi Pide By Pide'de. 365 gün, 1 pide alana 1 pide bedava.",

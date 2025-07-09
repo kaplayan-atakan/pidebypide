@@ -1,6 +1,6 @@
 // Bu script, build işleminden sonra out/ klasöründeki tüm HTML dosyalarında
 // statik varlık yollarını GitHub Pages için düzeltir
-// Örnek: /assets/ -> /pidebypide/assets/
+// Örnek: /assets/ -> /assets/
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -28,25 +28,25 @@ function processHtmlFiles(directory) {
       
       // Bu ifadeler yerel geliştirme ortamında çalışıyor
       // ancak GitHub Pages'te düzeltme gerekiyor
-      content = content.replace(/src="\/assets\//g, 'src="/pidebypide/assets/');
-      content = content.replace(/href="\/assets\//g, 'href="/pidebypide/assets/');
-      content = content.replace(/url\(\/assets\//g, 'url(/pidebypide/assets/');
+      content = content.replace(/src="\/assets\//g, 'src="/assets/');
+      content = content.replace(/href="\/assets\//g, 'href="/assets/');
+      content = content.replace(/url\(\/assets\//g, 'url(/assets/');
       
       // Favicon yollarını düzelt
-      content = content.replace(/src="\/favicons\//g, 'src="/pidebypide/favicons/');
-      content = content.replace(/href="\/favicons\//g, 'href="/pidebypide/favicons/');
+      content = content.replace(/src="\/favicons\//g, 'src="/favicons/');
+      content = content.replace(/href="\/favicons\//g, 'href="/favicons/');
       
       // Font yollarını düzelt
-      content = content.replace(/src="\/fonts\//g, 'src="/pidebypide/fonts/');
-      content = content.replace(/href="\/fonts\//g, 'href="/pidebypide/fonts/');
+      content = content.replace(/src="\/fonts\//g, 'src="/fonts/');
+      content = content.replace(/href="\/fonts\//g, 'href="/fonts/');
       
       // Diğer statik dosya türleri için de benzer şekilde düzelt
-      content = content.replace(/src="\/_next\//g, 'src="/pidebypide/_next/');
-      content = content.replace(/href="\/_next\//g, 'href="/pidebypide/_next/');
+      content = content.replace(/src="\/_next\//g, 'src="/_next/');
+      content = content.replace(/href="\/_next\//g, 'href="/_next/');
       
       // Upload klasörü için
-      content = content.replace(/src="\/upload\//g, 'src="/pidebypide/upload/');
-      content = content.replace(/href="\/upload\//g, 'href="/pidebypide/upload/');
+      content = content.replace(/src="\/upload\//g, 'src="/upload/');
+      content = content.replace(/href="\/upload\//g, 'href="/upload/');
       
       fs.writeFileSync(filePath, content, 'utf-8');
     }

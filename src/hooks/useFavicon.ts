@@ -195,7 +195,7 @@ export function useFavicon(config: FaviconConfig) {
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 // Konsol çıktılarından yol sorununu belirleme
-console.log('Favicon için basePath değeri:', basePath);
+// console.log('Favicon için basePath değeri:', basePath);
 
 export const DEFAULT_FAVICON_CONFIG: FaviconConfig = {
   active: `${basePath}/assets/images/favicon/favicon.ico`,

@@ -89,13 +89,13 @@ export async function POST(request: NextRequest) {
         html: emailHtml
       });
       
-      console.log('İletişim formu e-postası gönderildi:', {
-        adSoyad,
-        email,
-        telefon,
-        konu,
-        tarih
-      });
+      // console.log('İletişim formu e-postası gönderildi:', {
+      //   adSoyad,
+      //   email,
+      //   telefon,
+      //   konu,
+      //   tarih
+      // });
     } catch (emailError) {
       console.error('E-posta gönderme hatası:', emailError);
       // E-posta gönderilemese bile işlem başarılı sayılsın

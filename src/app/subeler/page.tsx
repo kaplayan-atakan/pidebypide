@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { subeler } from '@/data/subeler';
 import BranchFinder from '@/components/UI/BranchFinder';
 import Header from "@/components/Header/Header";
@@ -71,32 +70,6 @@ export default function SubelerPage() {
       <OpinionBar />
       <Header />
       
-      {/* Hero Bölümü - Kariyer sayfasıyla aynı tasarım */}
-      <section className="bg-gradient-to-br from-[#14543c] to-[#0f3d2a] py-12 sm:py-16 lg:py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4">
-              ŞUBELER
-            </h1>
-            <nav className="flex justify-center" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-2 text-sm text-[#f29b24]">
-                <li>
-                  <Link href="/" className="hover:text-white transition-colors">
-                    Anasayfa
-                  </Link>
-                </li>
-                <li className="text-white">/</li>
-                <li className="text-white">Şubeler</li>
-              </ol>
-            </nav>
-            <p className="text-lg text-white max-w-3xl mx-auto leading-relaxed mt-6 px-4">
-              Türkiye&apos;nin farklı şehirlerinde hizmet veren şubelerimizle, 
-              lezzetli pidelerimizi daha geniş bir kitleye ulaştırıyoruz.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* İnteraktif Harita Bölümü */}
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
