@@ -1,3 +1,5 @@
+
+
 import { Metadata } from 'next';
 import Image from 'next/image';
 import FranchiseForm from '@/components/FranchiseForm';

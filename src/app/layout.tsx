@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import FaviconProvider from "@/components/FaviconProvider";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { getFontStylesForHTML } from "@/utils/fontHelpers";
 
 // RSC Prefetch hatalarını çözmek için
@@ -85,7 +86,9 @@ export default function RootLayout({
         className={`${redHatDisplay.variable} antialiased`}
       >
         <FaviconProvider />
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
       </body>
     </html>
   );

@@ -128,7 +128,7 @@ const dessertProducts = [
   },
   {
     title: "KÜNEFE",
-    image: "/assets/images/newImages/kunefeYeniGorsel.png", // Yeni künefe görseli
+    image: "/assets/images/newImages/kunefeYeniGorsel.jpg", // Yeni künefe görseli
     description: "Özel peyniri ile yemek sonrası vazgeçilmeyecek ayrı bir keyif! Yiyen bir daha yemek istiyor, eşsiz künefe lezzetine doyum olmuyor."
   },
   {
@@ -141,7 +141,7 @@ const dessertProducts = [
 const otherProducts = [
   {
     title: "MERCİMEK ÇORBASI",
-    image: "/assets/images/newImages/corbaYeniGorsel.png", // Yeni çorba görseli
+    image: "/assets/images/newImages/corbaYeniGorsel.jpg", // Yeni çorba görseli
     description: "Çorba içmek isteyenler için akla gelen ilk lezzet mercimek çorbasının yapımında tereyağı kullanıyor, mercimeği kaynatıp çırparak tamamen katkısız bir şekilde hazırlıyoruz."
   },
   {
@@ -159,7 +159,7 @@ const salatalarProducts = [
   },
   {
     title: "MAYDANOZ SALATASI",
-    image: "/assets/images/newImages/maydanozSalatasıYeniGorsel.png", // Yeni maydanoz salatası görseli
+    image: "/assets/images/newImages/maydanozSalatasıYeniGorsel.jpg", // Yeni maydanoz salatası görseli
     description: "Taze maydanoz, domates, salatalık ve özel sosumuzla hazırlanmış enfes bir salata."
   }
 ];
