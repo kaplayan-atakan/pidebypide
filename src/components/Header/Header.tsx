@@ -68,7 +68,14 @@ export default function Header() {
         <MainHeader />
       </header>
       {/* MainHeader'ın altındaki içeriğin düzgün görünmesi için dinamik boşluk */}
-      <div style={{ height: preHeaderHeight + 64 }}></div>
+      <div
+        style={{
+          height:
+            typeof window !== 'undefined' && window.innerWidth <= 650
+              ? preHeaderHeight + 4 // mobilde daha az boşluk
+              : preHeaderHeight + 64
+        }}
+      ></div>
     </>
   );
 }

@@ -1,8 +1,9 @@
-'use client';
+"use client";
+import { branches } from '@/data/branches';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import ReCAPTCHA from 'react-google-recaptcha';
+// import ReCAPTCHA from 'react-google-recaptcha';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import OpinionBar from '@/components/UI/OpinionBar';
@@ -24,7 +25,7 @@ export default function GorusVeOnerileriniz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  // const [captchaValue, setCaptchaValue] = useState<string | null>(null);
 
   const { 
     register, 
@@ -33,15 +34,15 @@ export default function GorusVeOnerileriniz() {
     formState: { errors } 
   } = useForm<FormData>();
 
-  const handleCaptchaChange = (value: string | null) => {
-    setCaptchaValue(value);
-  };
+  // const handleCaptchaChange = (value: string | null) => {
+  //   setCaptchaValue(value);
+  // };
 
   const onSubmit = async (data: FormData) => {
-    if (!captchaValue) {
-      setSubmitError('Lütfen robot olmadığınızı doğrulayın.');
-      return;
-    }
+    // if (!captchaValue) {
+    //   setSubmitError('Lütfen robot olmadığınızı doğrulayın.');
+    //   return;
+    // }
 
     setIsSubmitting(true);
     setSubmitError('');
@@ -54,7 +55,7 @@ export default function GorusVeOnerileriniz() {
         },
         body: JSON.stringify({
           ...data,
-          recaptcha: captchaValue, // API'ye recaptcha olarak gönderiyoruz
+          // recaptcha: captchaValue, // API'ye recaptcha olarak gönderiyoruz
         }),
       });
 
@@ -235,10 +236,9 @@ export default function GorusVeOnerileriniz() {
                             {...register('sube')}
                           >
                             <option value="">Şube Seçiniz</option>
-                            <option value="İzmir Bayraklı">İzmir Bayraklı</option>
-                            <option value="İzmir Edremit">İzmir Edremit</option>
-                            <option value="Ankara">Ankara</option>
-                            <option value="İstanbul">İstanbul</option>
+                            {branches.map((branch) => (
+                              <option key={branch.id} value={branch.name}>{branch.name}</option>
+                            ))}
                             <option value="Genel">Genel</option>
                           </select>
                         </div>
@@ -306,7 +306,7 @@ export default function GorusVeOnerileriniz() {
                           </div>
                         </div>
                         
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                           <ReCAPTCHA
                             sitekey="6LdnK4IaAAAAAF8dCYxS9oMNMEq5jjHxZOB--4-k"
                             onChange={handleCaptchaChange}
@@ -314,7 +314,7 @@ export default function GorusVeOnerileriniz() {
                           {submitError && submitError.includes('robot') && (
                             <p className="mt-1 text-sm text-red-600">Robot olmadığınızı doğrulayın</p>
                           )}
-                        </div>
+                        </div> */}
                         
                         <button
                           type="submit"

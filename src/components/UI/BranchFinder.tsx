@@ -1,35 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+
+import { useState, useMemo } from 'react';
 import TurkeyMap from './TurkeyMap';
+import { branches, Branch } from '@/data/branches';
+import { cityPaths } from '@/data/cityPaths';
 
 export default function BranchFinder() {
   const [hoveredCity, setHoveredCity] = useState('');
   const [selectedCity, setSelectedCity] = useState(''); // selectedCity state'ini geri ekle
   
-  // Şehir verileri - SVG ID'leri ile eşleştirilmiş
-  const cities = [
-    { value: 'istanbul', name: 'İstanbul', svgId: 'TR34', hasBranch: true, branchCount: 8 },
-    { value: 'ankara', name: 'Ankara', svgId: 'TR06', hasBranch: true, branchCount: 3 },
-    { value: 'izmir', name: 'İzmir', svgId: 'TR35', hasBranch: true, branchCount: 2 },
-    { value: 'bursa', name: 'Bursa', svgId: 'TR16', hasBranch: true, branchCount: 2 },
-    { value: 'antalya', name: 'Antalya', svgId: 'TR07', hasBranch: true, branchCount: 1 },
-    { value: 'adana', name: 'Adana', svgId: 'TR01', hasBranch: true, branchCount: 1 },
-    { value: 'adiyaman', name: 'Adıyaman', svgId: 'TR02', hasBranch: true, branchCount: 1 },
-    { value: 'afyonkarahisar', name: 'Afyonkarahisar', svgId: 'TR03', hasBranch: true, branchCount: 1 },
-    { value: 'aydin', name: 'Aydın', svgId: 'TR09', hasBranch: true, branchCount: 1 },
-    { value: 'balikesir', name: 'Balıkesir', svgId: 'TR10', hasBranch: true, branchCount: 1 },
-    { value: 'corum', name: 'Çorum', svgId: 'TR19', hasBranch: true, branchCount: 1 },
-    { value: 'denizli', name: 'Denizli', svgId: 'TR20', hasBranch: true, branchCount: 1 },
-    { value: 'isparta', name: 'Isparta', svgId: 'TR32', hasBranch: true, branchCount: 1 },
-    { value: 'kahramanmaras', name: 'Kahramanmaraş', svgId: 'TR46', hasBranch: true, branchCount: 1 },
-    { value: 'kocaeli', name: 'Kocaeli', svgId: 'TR41', hasBranch: true, branchCount: 1 },
-    { value: 'konya', name: 'Konya', svgId: 'TR42', hasBranch: true, branchCount: 1 },
-    { value: 'malatya', name: 'Malatya', svgId: 'TR44', hasBranch: true, branchCount: 1 },
-    { value: 'mersin', name: 'Mersin', svgId: 'TR33', hasBranch: true, branchCount: 1 },
-    { value: 'sanliurfa', name: 'Şanlıurfa', svgId: 'TR63', hasBranch: true, branchCount: 1 },
-    { value: 'sivas', name: 'Sivas', svgId: 'TR58', hasBranch: true, branchCount: 1 }
-  ];
+
+  // Şehir adı ile SVG id eşleştirmesini cityPaths üzerinden otomatik oluştur
+  const cityToSvgId: Record<string, string> = useMemo(() => {
+    const map: Record<string, string> = {};
+    cityPaths.forEach(city => {
+      map[city.name.trim().toLowerCase()] = city.id;
+    });
+    return map;
+  }, []);
+
+  // "Tüm Şubelerimiz" section ile tam senkronize şehir listesi
+  const cities = useMemo(() => {
+    // Şubeleri şehir bazında grupla ("Tüm Şubelerimiz" section ile aynı mantık)
+    const cityGroups: { [city: string]: Branch[] } = {};
+    branches.forEach(branch => {
+      const city = branch.city || 'Diğer';
+      if (!cityGroups[city]) cityGroups[city] = [];
+      cityGroups[city].push(branch);
+    });
+    // Şehir sırası ve isimleri "Tüm Şubelerimiz" section ile aynı olsun
+    return Object.entries(cityGroups).map(([city, branchList]) => ({
+      value: city.trim().toLowerCase(),
+      name: city,
+      svgId: cityToSvgId[city.trim().toLowerCase()] || '',
+      hasBranch: true,
+      branchCount: branchList.length
+    }));
+  }, [cityToSvgId]);
 
   // Yardımcı fonksiyonlar
   const getCityById = (id: string) => cities.find(city => city.value === id);
@@ -37,7 +45,7 @@ export default function BranchFinder() {
   const getCityHasBranch = (svgId: string) => {
     const city = getCityBySvgId(svgId);
     return city?.hasBranch || false;
-  };  // Kurumsal renk paleti ile hover stil fonksiyonu
+  };
   const getPathStyle = (svgId: string): React.CSSProperties => {
     const hasBranch = getCityHasBranch(svgId);
     const isHovered = hoveredCity === svgId;
@@ -72,9 +80,13 @@ export default function BranchFinder() {
   };
 
   // Şehir seçildiğinde veya haritada tıklandığında doğrudan şubeler sayfasındaki ilgili anchor'a yönlendir
+  // Anchor'ı şubeler section'daki id ile birebir aynı oluştur (örn. Adana → Adana)
+  function normalizeAnchor(cityName: string) {
+    // Türkçe karakterleri ve boşlukları koru, baştaki/sondaki boşlukları sil
+    return cityName.trim();
+  }
   const goToBranchSection = (city: typeof cities[number]) => {
-    const anchor = city.value || city.name.toLowerCase();
-    // Ortama göre basePath ekle
+    const anchor = normalizeAnchor(city.name);
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
     window.location.href = `${basePath}/subeler/#${anchor}`;
   };
@@ -107,8 +119,10 @@ export default function BranchFinder() {
 
   const handleSearch = () => {
     if (selectedCity) {
-      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-      window.location.href = `${basePath}/subeler/#${selectedCity}`;
+      const city = getCityById(selectedCity);
+      if (city) {
+        goToBranchSection(city);
+      }
     }
   };
 

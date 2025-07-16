@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { mailHtmlFrame } from '@/utils/mailTemplates';
 
 // export const dynamic = 'force-dynamic'; // statik dışa aktarım için devre dışı bırakıldı
 
@@ -60,14 +61,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // E-posta gönderme işlemi
-    console.log('[contact] 7- SMTP ayarları:', {
-      SMTP_HOST: process.env.SMTP_HOST,
-      SMTP_PORT: process.env.SMTP_PORT,
-      SMTP_USER: process.env.SMTP_USER,
-      SMTP_SECURE: process.env.SMTP_SECURE,
-      MAIL_TO: process.env.MAIL_TO
-    });
+    // Kurumsal kimlik renkleri
+    const brandColor = "#14543c";
+    const accentColor = "#f29b24";
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST as string,
       port: parseInt(process.env.SMTP_PORT as string),
@@ -80,35 +77,94 @@ export async function POST(request: NextRequest) {
 
     const tarih = new Date().toLocaleString('tr-TR');
 
-    // Email içeriğini hazırla
-    const emailHtml = `
-      <h2>Yeni İletişim Formu Mesajı</h2>
-      <p><strong>Ad Soyad:</strong> ${adSoyad}</p>
-      <p><strong>E-posta:</strong> ${email}</p>
-      <p><strong>Telefon:</strong> ${telefon || 'Belirtilmemiş'}</p>
-      <p><strong>Konu:</strong> ${konu}</p>
-      <p><strong>Mesaj:</strong> ${mesaj}</p>
-      <p><strong>Gönderilme Tarihi:</strong> ${tarih}</p>
-    `;
+    // Kurumsal muhatap için detaylı HTML içerik (çerçeve ve logo ile)
+    const htmlKurumsal = mailHtmlFrame({
+      title: 'Yeni İletişim Formu Mesajı',
+      content: `
+        <table style="width:100%;font-size:15px;">
+          <tr><td><b>Ad Soyad:</b></td><td>${adSoyad}</td></tr>
+          <tr><td><b>E-posta:</b></td><td>${email}</td></tr>
+          <tr><td><b>Telefon:</b></td><td>${telefon || 'Belirtilmemiş'}</td></tr>
+          <tr><td><b>Konu:</b></td><td>${konu}</td></tr>
+          <tr><td><b>Mesaj:</b></td><td>${mesaj}</td></tr>
+          <tr><td><b>Gönderilme Tarihi:</b></td><td>${tarih}</td></tr>
+        </table>
+        <div style="margin-top:24px;color:${accentColor};font-size:13px;">Bu e-posta otomatik olarak oluşturulmuştur.</div>
+      `,
+      brandColor,
+      accentColor,
+      footer: 'Pide By Pide İletişim Ekibi'
+    });
+
+    // Kullanıcıya gidecek teşekkür maili (çerçeve ve logo ile)
+    const htmlKullanici = mailHtmlFrame({
+      title: 'Mesajınız Alındı',
+      content: `
+        <p>Sayın <b>${adSoyad}</b>,</p>
+        <p>İletişim formunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.</p>
+      `,
+      brandColor,
+      accentColor,
+      footer: 'Pide By Pide İletişim Ekibi'
+    });
 
     const mailToList = [process.env.MAIL_TO, 'atakan.kaplayan@apazgroup.com'].filter((v): v is string => Boolean(v));
     console.log('[contact] 8- Mail gönderilecek adresler:', mailToList);
 
-    // E-posta gönder
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: mailToList,
-      subject: 'Yeni İletişim Formu Mesajı',
-      text: `Ad Soyad: ${adSoyad}\nE-posta: ${email}\nTelefon: ${telefon || 'Belirtilmemiş'}\nKonu: ${konu}\nMesaj: ${mesaj}\nGönderilme Tarihi: ${tarih}`,
-      html: emailHtml
-    });
-    console.log('[contact] 9- Mail gönderildi');
+    let mailKurumsal, mailKullanici;
+    let mailErrorKurumsal = null, mailErrorKullanici = null;
+    try {
+      // Önce kurumsal muhataba gönder
+      mailKurumsal = await transporter.sendMail({
+        from: `"Pide By Pide Web Sitesi" <${process.env.SMTP_USER}>`,
+        to: mailToList,
+        subject: 'Yeni İletişim Formu Mesajı',
+        text: `Ad Soyad: ${adSoyad}\nE-posta: ${email}\nTelefon: ${telefon || 'Belirtilmemiş'}\nKonu: ${konu}\nMesaj: ${mesaj}\nGönderilme Tarihi: ${tarih}`,
+        html: htmlKurumsal
+      });
+
+      // Sonra kullanıcıya teşekkür maili gönder
+      mailKullanici = await transporter.sendMail({
+        from: `Pide By Pide <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: 'Mesajınız Alındı - Pide By Pide',
+        text: `Sayın ${adSoyad},\nİletişim formunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.\nPide By Pide İletişim Ekibi`,
+        html: htmlKullanici
+      });
+
+      console.log('[contact] 9- Mail gönderildi');
+    } catch (emailError) {
+      if (!mailKurumsal) {
+        mailErrorKurumsal = emailError;
+        console.error('Kurumsal e-posta gönderme hatası:', emailError);
+      } else {
+        mailErrorKullanici = emailError;
+        console.error('Kullanıcı e-posta gönderme hatası:', emailError);
+      }
+    }
+
+    if (mailErrorKurumsal || !mailKurumsal || !mailKurumsal.accepted || mailKurumsal.accepted.length === 0) {
+      return NextResponse.json({
+        success: false,
+        message: 'Mesajınız alınamadı veya kurumsal e-posta gönderilemedi. Lütfen tekrar deneyin.',
+        error: mailErrorKurumsal ? String(mailErrorKurumsal) : undefined
+      }, { status: 500 });
+    }
+    if (mailErrorKullanici || !mailKullanici || !mailKullanici.accepted || mailKullanici.accepted.length === 0) {
+      // Kurumsal mail başarılıysa, kullanıcıya gönderilemese de mesaj alınmış olur
+      return NextResponse.json({
+        success: true,
+        message: 'Mesajınız alındı ancak bilgilendirme e-postası gönderilemedi.',
+        mailAccepted: mailKurumsal.accepted
+      });
+    }
 
     // Başarılı yanıt
     return NextResponse.json(
       { 
         success: true, 
-        message: 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.' 
+        message: 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.',
+        mailAccepted: mailKurumsal.accepted
       },
       { status: 200 }
     );

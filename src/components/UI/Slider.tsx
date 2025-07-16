@@ -4,13 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 
+// Responsive ve webp destekli slider item tipi
 interface SliderItem {
-  image: string;
+  srcSet?: {
+    650: string;
+    1300: string;
+    1920: string;
+  };
+  fallback: string;
   url: string;
 }
 
 interface SliderProps {
-  images: string[] | SliderItem[];
+  images: SliderItem[];
   autoSlideInterval?: number;
 }
 
@@ -48,19 +54,8 @@ export default function Slider({
   // kaydırma yapmak için e.stopPropagation() kullanılacak
 
   // Görüntü ve URL bilgisini alıp normalleştirir
-  const normalizeSliderItems = useCallback(() => {
-    return images.map(item => {
-      // Eğer string ise (eski format), sadece görüntü url'si olarak kabul et
-      if (typeof item === 'string') {
-        return { image: item, url: '' };
-      }
-      // SliderItem objesi olarak döndür
-      return item;
-    });
-  }, [images]);
-
-  // Normalleştirilmiş slider öğeleri
-  const sliderItems = normalizeSliderItems();
+  // Artık sadece SliderItem[] bekleniyor
+  const sliderItems = images;
   
   return (
     <div 
@@ -68,7 +63,7 @@ export default function Slider({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <div className="relative h-[250px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden mx-auto max-w-[1400px]">
+      <div className="relative w-full max-w-[650px] sm:max-w-[1200px] lg:max-w-[1400px] h-[250px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden mx-auto">
         {sliderItems.map((item, index) => (
           <div
             key={index}
@@ -93,14 +88,26 @@ export default function Slider({
               aria-label={`Slider ${index + 1} - Detayları görüntüle`}
             >
               <div className="relative w-full h-full flex items-center justify-center">
-                <Image
-                  src={item.image}
-                  alt={`Slider ${index + 1}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 85vw"
-                  className="object-contain px-4 py-2"
-                  priority={index === 0}
-                />
+                {/* Responsive WebP + fallback görsel desteği, padding kaldırıldı */}
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet={item.srcSet ? `
+                      ${item.srcSet[650]} 650w,
+                      ${item.srcSet[1300]} 1300w,
+                      ${item.srcSet[1920]} 1920w
+                    `.replace(/\s+/g, ' ') : undefined}
+                    sizes="(max-width: 900px) 100vw, (max-width: 1200px) 90vw, 1400px"
+                  />
+                  <Image
+                    src={item.fallback}
+                    alt={`Slider ${index + 1}`}
+                    fill
+                    sizes="(max-width: 900px) 100vw, (max-width: 1200px) 90vw, 1400px"
+                    className="object-contain"
+                    priority={index === 0}
+                  />
+                </picture>
               </div>
             </Link>
           </div>

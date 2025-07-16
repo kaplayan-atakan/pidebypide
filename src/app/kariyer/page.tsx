@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { openPositions } from '@/data/positions';
+// import { openPositions } from '@/data/positions';
 import JobApplicationForm from '@/components/JobApplicationForm';
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
@@ -20,23 +20,23 @@ export const metadata: Metadata = {
 };
 
 // Pozisyon Kartı Bileşeni
-function PositionCard({ title, description, requirements }: {
-  title: string;
-  description: string;
-  requirements: string[];
-}) {
-  return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-5 mb-4">
-      <h3 className="text-lg md:text-xl font-bold font-header text-[#14543c] mb-2">{title}</h3>
-      <p className="text-responsive-sm text-[#7b7934] leading-relaxed mb-3">{description}</p>
-      <ul className="list-disc list-inside space-y-1 text-gray-600">
-        {requirements.map((requirement, index) => (
-          <li key={index} className="text-responsive-sm">{requirement}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+// function PositionCard({ title, description, requirements }: {
+//   title: string;
+//   description: string;
+//   requirements: string[];
+// }) {
+//   return (
+//     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-5 mb-4">
+//       <h3 className="text-lg md:text-xl font-bold font-header text-[#14543c] mb-2">{title}</h3>
+//       <p className="text-responsive-sm text-[#7b7934] leading-relaxed mb-3">{description}</p>
+//       <ul className="list-disc list-inside space-y-1 text-gray-600">
+//         {requirements.map((requirement, index) => (
+//           <li key={index} className="text-responsive-sm">{requirement}</li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
 
 export default function KariyerPage() {
   return (
@@ -78,20 +78,7 @@ export default function KariyerPage() {
                     </ul>
                   </div>
                   
-                  <h3 className="text-xl md:text-2xl font-bold font-header text-[#14543c] mb-4">
-                    Açık Pozisyonlar
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {openPositions.map((position, index) => (
-                      <PositionCard
-                        key={index}
-                        title={position.title}
-                        description={position.description}
-                        requirements={position.requirements}
-                      />
-                    ))}
-                  </div>
+                  {/* Açık Pozisyonlar bölümü kaldırıldı */}
                 </div>
               </div>
               

@@ -1,6 +1,7 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import type { SentMessageInfo } from 'nodemailer';
+import { mailHtmlFrame } from '@/utils/mailTemplates';
 
 // export const dynamic = 'force-dynamic'; // statik dışa aktarım için devre dışı bırakıldı
 
@@ -66,6 +67,7 @@ export async function POST(req: NextRequest) {
       }
     }
     
+    /*
     // reCAPTCHA doğrulaması
     const recaptchaToken = formData.get('g-recaptcha-response') as string;
     if (!recaptchaToken) {
@@ -76,7 +78,6 @@ export async function POST(req: NextRequest) {
     }
     
     // Normalde burada reCAPTCHA doğrulaması yapılır:
-    /*
     const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: {
@@ -95,7 +96,10 @@ export async function POST(req: NextRequest) {
     }
     */
     
-    // E-posta gönderme işlemi
+    // Kurumsal kimlik renkleri
+    const brandColor = "#14543c";
+    const accentColor = "#f29b24";
+
     const tarih = new Date().toLocaleString('tr-TR');
     const basvuruVerileri = {
       ad_soyad,
@@ -108,7 +112,11 @@ export async function POST(req: NextRequest) {
       cv: cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi',
       tarih
     };
-    
+
+    let mailKurumsal: SentMessageInfo | undefined = undefined;
+    let mailKullanici: SentMessageInfo | undefined = undefined;
+    let mailErrorKurumsal = null;
+    let mailErrorKullanici = null;
     try {
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST as string,
@@ -116,46 +124,108 @@ export async function POST(req: NextRequest) {
         secure: false, // TLS için false
         auth: {
           user: process.env.SMTP_USER as string,
-          pass: process.env.SMTP_PASS as string
+          pass: process.env.SMTP_PASSWORD as string
         }
       });
-      
-      // Email içeriğini hazırla
-      const emailHtml = `
-        <h2>Yeni Kariyer Başvurusu</h2>
-        <p><strong>Ad Soyad:</strong> ${ad_soyad}</p>
-        <p><strong>E-posta:</strong> ${email}</p>
-        <p><strong>Telefon:</strong> ${telefon}</p>
-        <p><strong>Pozisyon:</strong> ${pozisyon}</p>
-        <p><strong>Şube:</strong> ${sube || 'Belirtilmedi'}</p>
-        <p><strong>Deneyim:</strong> ${deneyim || 'Belirtilmedi'}</p>
-        <p><strong>Mesaj:</strong> ${mesaj || 'Belirtilmedi'}</p>
-        <p><strong>CV:</strong> ${cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi'}</p>
-        <p><strong>Gönderilme Tarihi:</strong> ${tarih}</p>
-      `;
-      
-      // E-posta gönder
-      await transporter.sendMail({
-        from: process.env.SMTP_USER,
-        to: 'kariyer@pidebypide.com',
+
+      // Kurumsal muhatap için detaylı HTML içerik (çerçeve ve logo ile)
+      const htmlKurumsal = mailHtmlFrame({
+        title: `Yeni Kariyer Başvurusu`,
+        content: `
+          <table style="width:100%;font-size:15px;">
+            <tr><td><b>Ad Soyad:</b></td><td>${ad_soyad}</td></tr>
+            <tr><td><b>E-posta:</b></td><td>${email}</td></tr>
+            <tr><td><b>Telefon:</b></td><td>${telefon}</td></tr>
+            <tr><td><b>Pozisyon:</b></td><td>${pozisyon}</td></tr>
+            <tr><td><b>Şube:</b></td><td>${sube || 'Belirtilmedi'}</td></tr>
+            <tr><td><b>Deneyim:</b></td><td>${deneyim || 'Belirtilmedi'}</td></tr>
+            <tr><td><b>Mesaj:</b></td><td>${mesaj || 'Belirtilmedi'}</td></tr>
+            <tr><td><b>CV:</b></td><td>${cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi'}</td></tr>
+            <tr><td><b>Gönderilme Tarihi:</b></td><td>${tarih}</td></tr>
+          </table>
+          <div style="margin-top:24px;color:${accentColor};font-size:13px;">Bu e-posta otomatik olarak oluşturulmuştur.</div>
+        `,
+        brandColor,
+        accentColor,
+        footer: 'Pide By Pide İnsan Kaynakları'
+      });
+      // Kullanıcıya gidecek teşekkür maili (çerçeve ve logo ile)
+      const htmlKullanici = mailHtmlFrame({
+        title: 'Başvurunuz Alındı',
+        content: `
+          <p>Sayın <b>${ad_soyad}</b>,</p>
+          <p>Kariyer başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.</p>
+        `,
+        brandColor,
+        accentColor,
+        footer: 'Pide By Pide İnsan Kaynakları'
+      });
+
+      // Önce kurumsal muhataba gönder
+      const attachments = [];
+      if (cv && cv instanceof File) {
+        const arrayBuffer = await cv.arrayBuffer();
+        attachments.push({
+          filename: cv.name,
+          content: Buffer.from(arrayBuffer),
+          contentType: cv.type
+        });
+      }
+      mailKurumsal = await transporter.sendMail({
+        from: `"Pide By Pide Web Sitesi" <${process.env.SMTP_USER}>`,
+        to: process.env.MAIL_TO_KARIYER,
         subject: `Yeni Kariyer Başvurusu - ${pozisyon}`,
         text: `Ad Soyad: ${ad_soyad}\nE-posta: ${email}\nTelefon: ${telefon}\nPozisyon: ${pozisyon}\nŞube: ${sube || 'Belirtilmedi'}\nDeneyim: ${deneyim || 'Belirtilmedi'}\nMesaj: ${mesaj || 'Belirtilmedi'}\nCV: ${cv ? `${cv.name} (${Math.round(cv.size / 1024)} KB)` : 'Yüklenmedi'}\nGönderilme Tarihi: ${tarih}`,
-        html: emailHtml
+        html: htmlKurumsal,
+        attachments
       });
-      
-      console.log('Kariyer başvurusu e-postası gönderildi:', basvuruVerileri);
+
+      // Sonra kullanıcıya teşekkür maili gönder
+      mailKullanici = await transporter.sendMail({
+        from: `Pide By Pide <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: 'Başvurunuz Alındı - Pide By Pide',
+        text: `Sayın ${ad_soyad},\nKariyer başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.\nPide By Pide İnsan Kaynakları`,
+        html: htmlKullanici
+      });
+
+      console.log('Kariyer başvurusu e-postaları gönderildi:', basvuruVerileri);
     } catch (emailError) {
-      console.error('E-posta gönderme hatası:', emailError);
-      // E-posta gönderilemese bile başvuru kaydı yapılsın ve işlem başarılı sayılsın
+      // emailError tipi bilinçli olarak unknown olarak bırakıldı, detay loglanıyor
+      // Hangi mailde hata olduğunu ayırt et
+      if (!mailKurumsal) {
+        mailErrorKurumsal = emailError;
+        console.error('Kurumsal e-posta gönderme hatası:', emailError);
+      } else {
+        mailErrorKullanici = emailError;
+        console.error('Kullanıcı e-posta gönderme hatası:', emailError);
+      }
     }
-    
+
+    if (mailErrorKurumsal || !mailKurumsal || !mailKurumsal.accepted || mailKurumsal.accepted.length === 0) {
+      return NextResponse.json({
+        success: false,
+        message: 'Başvurunuz alınamadı veya kurumsal e-posta gönderilemedi. Lütfen tekrar deneyin.',
+        error: mailErrorKurumsal ? String(mailErrorKurumsal) : undefined
+      }, { status: 500 });
+    }
+    if (mailErrorKullanici || !mailKullanici || !mailKullanici.accepted || mailKullanici.accepted.length === 0) {
+      // Kurumsal mail başarılıysa, kullanıcıya gönderilemese de başvuru alınmış olur
+      return NextResponse.json({
+        success: true,
+        message: 'Başvurunuz alındı ancak bilgilendirme e-postası gönderilemedi.',
+        mailAccepted: mailKurumsal.accepted
+      });
+    }
+
     // Başvuru verilerini loglayalım
     console.log('Yeni iş başvurusu alındı:', basvuruVerileri);
-    
+
     // Başarılı yanıt
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.' 
+    return NextResponse.json({
+      success: true,
+      message: 'Başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.',
+      mailAccepted: mailKurumsal.accepted
     });
     
   } catch (error) {

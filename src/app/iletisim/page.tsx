@@ -51,22 +51,21 @@ export default function IletisimPage() {
                           <MapPinIcon className="w-6 h-6 text-[#f29b24] mt-1 flex-shrink-0" />
                           <p className="text-gray-700">
                             Pide By Pide Genel Merkez<br />
-                            Atatürk Bulvarı No:123<br />
-                            Çankaya/Ankara
+                            Adalet, Anadolu Cd. No:41 Kat:20, 35530 Bayraklı/İzmir
                           </p>
                         </div>
                         
                         <div className="flex items-center space-x-3">
                           <PhoneIcon className="w-6 h-6 text-[#f29b24] flex-shrink-0" />
-                          <a href="tel:08504417433" className="text-gray-700 hover:text-[#14543c] transition-colors">
-                            0850 441 7433
+                          <a href="tel:+902324644235" className="text-gray-700 hover:text-[#14543c] transition-colors">
+                            (0232) 464 42 35
                           </a>
                         </div>
                         
                         <div className="flex items-center space-x-3">
                           <EnvelopeIcon className="w-6 h-6 text-[#f29b24] flex-shrink-0" />
-                          <a href="mailto:info@pidebypide.com" className="text-gray-700 hover:text-[#14543c] transition-colors">
-                            info@pidebypide.com
+                          <a href="mailto:musterihizmetleri@pidebypide.com" className="text-gray-700 hover:text-[#14543c] transition-colors">
+                            musterihizmetleri@pidebypide.com
                           </a>
                         </div>
                         
